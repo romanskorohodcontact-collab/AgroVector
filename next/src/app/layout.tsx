@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { QueryProvider } from "@/app/providers/query-provider";
 
 export const metadata: Metadata = {
   title: "AgroRunok",
@@ -11,7 +12,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body suppressHydrationWarning>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
