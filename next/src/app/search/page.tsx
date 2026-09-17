@@ -1,5 +1,6 @@
 import { SearchScreen } from "@/screens/search/SearchScreen";
-import type { SearchFiltersValues } from "@/widgets/search-filters";
+import type { SearchFiltersValues } from "@/entities/load/model";
+import { Header } from "@/widgets/header";
 
 const FORM_KEYS = [
   "from",
@@ -22,5 +23,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const raw = params[key];
     initialValues[key] = Array.isArray(raw) ? (raw[0] ?? "") : (raw ?? "");
   }
-  return <SearchScreen initialValues={initialValues} />;
+  return (
+    <div className="flex h-screen flex-col overflow-hidden max-[960px]:h-auto max-[960px]:overflow-visible">
+      <Header fullWidth />
+      <SearchScreen initialValues={initialValues} />
+    </div>
+  );
 }

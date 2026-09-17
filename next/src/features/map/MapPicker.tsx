@@ -16,9 +16,10 @@ const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
 interface MapPickerProps {
   initialLocation?: GeoPoint | null;
   onSelect: (location: GeoPoint) => void;
+  className?: string;
 }
 
-export function MapPicker({ initialLocation, onSelect }: MapPickerProps) {
+export function MapPicker({ initialLocation, onSelect, className }: MapPickerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<YmapsMap | null>(null);
   const ymapsRef = useRef<YmapsApi | null>(null);
@@ -90,7 +91,7 @@ export function MapPicker({ initialLocation, onSelect }: MapPickerProps) {
 
   return (
     <div>
-      <div ref={containerRef} className="h-64 w-full border border-black" />
+      <div ref={containerRef} className={className ?? "h-64 w-full border border-black"} />
       {status === "loading" ? (
         <p className="mt-2">Загрузка карты…</p>
       ) : null}

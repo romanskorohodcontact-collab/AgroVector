@@ -16,7 +16,21 @@ export interface LoadFilters {
 export interface LoadMapItem {
   id: string;
   loadingLocation: GeoPoint;
+  cargo?: string;
+  unloadingPlace?: string;
 }
+
+export type LoadSortField = "rate" | "km" | "tons" | "ratePerKm";
+export type SortDirection = "asc" | "desc";
+
+export interface LoadSortCriterion {
+  field: LoadSortField;
+  dir: SortDirection;
+}
+
+export type LoadSort = LoadSortCriterion;
+
+export const DEFAULT_LOAD_SORT: LoadSort = { field: "rate", dir: "desc" };
 
 export interface LoadSuggestions {
   loadingPlaces: string[];
@@ -32,8 +46,24 @@ export interface LoadSearchResult {
   total: number;
 }
 
+export interface SearchFiltersValues {
+  from?: string;
+  to?: string;
+  cargo?: string;
+  tonnage?: string;
+  rate?: string;
+  distance?: string;
+  company?: string;
+}
+
+export interface LoadCustomProperty {
+  name: string;
+  value: string;
+}
+
 export interface Load {
   id: string;
+  userId?: string;
   loadingPlace: string;
   loadingLocation: GeoPoint;
   unloadingPlace: string;
@@ -41,8 +71,18 @@ export interface Load {
   rate: number;
   tonnage: number;
   cargo: string;
+  cargoTypes: string[];
   additionalInfo: string;
   customerName: string;
   customerPhone: string;
   companyName: string;
+  loadingRegion: string[] | null;
+  loadingDistrict: string[];
+  unloadingDistrict: string[];
+  unloadingRegion: string[] | null;
+  loadingType: string[] | null;
+  unloadingType: string[] | null;
+  vatType: string;
+  loadingDate: Date;
+  customProperties: LoadCustomProperty[];
 }

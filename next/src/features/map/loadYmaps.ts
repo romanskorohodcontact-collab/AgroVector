@@ -1,13 +1,25 @@
 import type { GeoPoint } from "@/entities/load/model";
 
-export interface YmapsPlacemark {}
+export interface YmapsEvent {
+  get: {
+    (name: "coords"): [number, number];
+    (name: string): unknown;
+  };
+}
+
+export interface YmapsPlacemark {
+  events: {
+    add: (type: string, handler: (event: YmapsEvent) => void) => void;
+  };
+  balloon: {
+    open: () => void;
+    close: () => void;
+  };
+}
 
 export interface YmapsMap {
   events: {
-    add: (
-      type: string,
-      handler: (event: { get: (name: string) => [number, number] }) => void
-    ) => void;
+    add: (type: string, handler: (event: YmapsEvent) => void) => void;
   };
   geoObjects: {
     add: (object: YmapsPlacemark) => void;

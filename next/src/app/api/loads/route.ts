@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import type { LoadFilters } from "@/entities/load/model";
+import {
+  DEFAULT_LOAD_SORT,
+  type LoadFilters,
+  type LoadSort,
+} from "@/entities/load/model";
+import { getCurrentUser } from "@/server/modules/auth";
 import { createLoad, searchLoads } from "@/server/modules/loads";
 
 export async function GET(request: Request) {
@@ -10,8 +15,9 @@ export async function GET(request: Request) {
     Math.max(1, parseInt(params.get("limit") ?? "5", 10) || 5)
   );
   const filters = parseFilters(params);
+  const sort = parseSort(params);
   try {
-    const result = await searchLoads(filters, page, limit);
+    const result = await searchLoads(filters, page, limit, sort);
     return NextResponse.json(result);
   } catch {
     return NextResponse.json(
@@ -37,10 +43,31 @@ function parseFilters(params: URLSearchParams): LoadFilters {
   return filters;
 }
 
+function parseSort(params: URLSearchParams): LoadSort {
+  const raw = params.get("sort");
+  if (!raw) return DEFAULT_LOAD_SORT;
+  const colon = raw.indexOf(":");
+  const field = colon === -1 ? raw : raw.slice(0, colon);
+  const dir = colon === -1 ? "desc" : raw.slice(colon + 1);
+  if (
+    field === "rate" ||
+    field === "km" ||
+    field === "tons" ||
+    field === "ratePerKm"
+  ) {
+    return { field, dir: dir === "asc" ? "asc" : "desc" };
+  }
+  return DEFAULT_LOAD_SORT;
+}
+
 export async function POST(request: Request) {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return NextResponse.json({ error: "Не авторизован" }, { status: 401 });
+  }
   const raw = await request.json().catch(() => null);
   try {
-    const load = await createLoad(raw);
+    const load = await createLoad(raw, currentUser.id);
     return NextResponse.json(load, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Некорректные данные";

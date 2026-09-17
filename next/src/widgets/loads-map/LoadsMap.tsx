@@ -7,6 +7,7 @@ import {
   toYandexCoords,
   type YmapsApi,
   type YmapsMap,
+  type YmapsPlacemark,
 } from "@/features/map/loadYmaps";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
@@ -15,14 +16,29 @@ const ZOOM_OUT_MARGIN = 2;
 
 interface LoadsMapProps {
   mapItems: LoadMapItem[];
+  className?: string;
+  onSelect?: (item: LoadMapItem) => void;
+  showHoverCard?: boolean;
 }
 
-export function LoadsMap({ mapItems }: LoadsMapProps) {
+export function LoadsMap({
+  mapItems,
+  className,
+  onSelect,
+  showHoverCard = false,
+}: LoadsMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<YmapsMap | null>(null);
   const ymapsRef = useRef<YmapsApi | null>(null);
   const mapItemsRef = useRef(mapItems);
   mapItemsRef.current = mapItems;
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
+  const showHoverCardRef = useRef(showHoverCard);
+  showHoverCardRef.current = showHoverCard;
+  const placemarkItemsRef = useRef<Map<YmapsPlacemark, LoadMapItem>>(
+    new Map()
+  );
   const renderRef = useRef<() => void>(() => {});
 
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -36,11 +52,31 @@ export function LoadsMap({ mapItems }: LoadsMapProps) {
       const ymaps = ymapsRef.current;
       if (!mapInstance || !ymaps) return;
       mapInstance.geoObjects.removeAll();
+      placemarkItemsRef.current.clear();
       const points: [number, number][] = [];
       for (const item of mapItemsRef.current) {
         if (!item.loadingLocation) continue;
         const coords = toYandexCoords(item.loadingLocation);
-        mapInstance.geoObjects.add(new ymaps.Placemark(coords));
+        // Баллун (маленькое окно с названием груза и выгрузкой) отключён.
+        // const hasHoverInfo =
+        //   showHoverCardRef.current && Boolean(item.cargo);
+        // const properties = hasHoverInfo
+        //   ? {
+        //       balloonContentHeader: item.cargo ?? "",
+        //       balloonContentBody: item.unloadingPlace ?? "",
+        //     }
+        //   : undefined;
+        const placemark = new ymaps.Placemark(coords);
+        placemarkItemsRef.current.set(placemark, item);
+        // if (hasHoverInfo) {
+        //   placemark.events.add("mouseenter", () => placemark.balloon.open());
+        //   placemark.events.add("mouseleave", () => placemark.balloon.close());
+        // }
+        if (onSelectRef.current) {
+          placemark.events.add("click", () => onSelectRef.current?.(item));
+          placemark.events.add("tap", () => onSelectRef.current?.(item));
+        }
+        mapInstance.geoObjects.add(placemark);
         points.push(coords);
       }
       if (points.length > 0) {
@@ -66,6 +102,15 @@ export function LoadsMap({ mapItems }: LoadsMapProps) {
           zoom: MAP_ZOOM,
           controls: [],
         });
+        map.events.add("click", (event) => {
+          const target = event.get("target");
+          for (const [placemark, item] of placemarkItemsRef.current) {
+            if (target === placemark) {
+              onSelectRef.current?.(item);
+              return;
+            }
+          }
+        });
         mapRef.current = map;
         renderMarkers();
         setStatus("ready");
@@ -90,13 +135,15 @@ export function LoadsMap({ mapItems }: LoadsMapProps) {
   }, [mapItems]);
 
   return (
-    <div style={{ margin: "16px" }}>
-      <div ref={containerRef} className="h-96 w-full border border-black" />
+    <div className={`relative w-full overflow-hidden bg-bg-subtle ${className ?? ""}`}>
+      <div ref={containerRef} className="absolute inset-0" />
       {status === "loading" ? (
-        <p className="mt-2">Загрузка карты…</p>
+        <p className="absolute top-3 left-1/2 -translate-x-1/2 text-xs text-text-muted">
+          Загрузка карты…
+        </p>
       ) : null}
       {status === "error" ? (
-        <p className="mt-2">
+        <p className="absolute top-3 left-1/2 -translate-x-1/2 text-xs text-text-muted">
           Не удалось загрузить карту. Проверьте NEXT_PUBLIC_YANDEX_MAPS_API_KEY.
         </p>
       ) : null}
