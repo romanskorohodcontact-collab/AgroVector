@@ -16,7 +16,7 @@ export function TransportsList() {
             </p>
           </div>
           <Link
-            href="/search"
+            href="/search?type=transport"
             className="shrink-0 pb-1 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px] hover:text-text-primary"
           >
             Все заявки

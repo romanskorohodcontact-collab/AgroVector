@@ -25,6 +25,16 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
     };
   }, [onClose]);
 
+  const loadingDate = load.loadingDate ? new Date(load.loadingDate as unknown as string) : null;
+  const loadingDateLabel =
+    loadingDate && !Number.isNaN(loadingDate.getTime())
+      ? loadingDate.toLocaleDateString("ru-RU", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : "—";
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 max-[900px]:items-start max-[900px]:p-4 max-[560px]:p-3">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
@@ -164,11 +174,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
             />*/}
             <DtcRow
               label="Дата погрузки"
-              value={load.loadingDate ? load.loadingDate.toLocaleDateString("ru-RU", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }) : "—"}
+              value={loadingDateLabel}
             />
             <DtcRow label="НДС" value={load.vatType} />
             <DtcRow

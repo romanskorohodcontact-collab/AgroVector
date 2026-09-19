@@ -8,6 +8,7 @@ import { CARGO_TYPES, TRANSPORT_TYPES } from "@/entities/transport/model";
 import { AutocompleteField } from "@/shared/ui/AutocompleteField";
 import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
 import { MultiSelectDropdown } from "@/shared/ui/MultiSelectDropdown";
+import { SearchModeToggle, type SearchMode } from "@/shared/ui/SearchModeToggle";
 import { WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
 
 async function fetchSuggestions(): Promise<LoadSearchResult> {
@@ -17,14 +18,6 @@ async function fetchSuggestions(): Promise<LoadSearchResult> {
   }
   return response.json();
 }
-
-type SearchMode = "load" | "transport";
-
-const TOGGLE_BASE =
-  "inline-flex items-center justify-center h-9 px-4 rounded-pill text-sm font-medium tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 cursor-pointer";
-const TOGGLE_ACTIVE = "bg-accent text-text-inverse";
-const TOGGLE_INACTIVE =
-  "bg-white text-text-secondary border-[0.8px] border-[#0D0D0D1A] hover:text-text-primary hover:border-[#0D0D0D33]";
 
 const SUBMIT_BUTTON =
   "inline-flex items-center justify-center h-[38px] px-[21px] gap-1.5 rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent/90 max-md:w-full";
@@ -87,6 +80,7 @@ export function SearchPanel() {
     const params = new URLSearchParams();
 
     if (mode === "load") {
+      params.set("type", "load");
       if (from.trim()) params.set("from", from.trim());
       if (to.trim()) params.set("to", to.trim());
       if (cargo.trim()) params.set("cargo", cargo.trim());
@@ -97,8 +91,7 @@ export function SearchPanel() {
       if (workRegions.length > 0) params.set("regions", workRegions.join(","));
     }
 
-    const query = params.toString();
-    router.push(query ? `/search?${query}` : "/search");
+    router.push(`/search?${params.toString()}`);
   }
 
   return (
@@ -111,24 +104,7 @@ export function SearchPanel() {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 p-6 rounded-[24px] bg-bg-subtle"
         >
-          <div className="flex items-center gap-2" role="group" aria-label="Режим поиска">
-            <button
-              type="button"
-              aria-pressed={mode === "load"}
-              onClick={() => setMode("load")}
-              className={`${TOGGLE_BASE} ${mode === "load" ? TOGGLE_ACTIVE : TOGGLE_INACTIVE}`}
-            >
-              Груз
-            </button>
-            <button
-              type="button"
-              aria-pressed={mode === "transport"}
-              onClick={() => setMode("transport")}
-              className={`${TOGGLE_BASE} ${mode === "transport" ? TOGGLE_ACTIVE : TOGGLE_INACTIVE}`}
-            >
-              Транспорт
-            </button>
-          </div>
+          <SearchModeToggle mode={mode} onChange={setMode} />
 
           {mode === "load" ? (
             <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 items-end max-lg:grid-cols-2 max-md:grid-cols-1">
@@ -140,6 +116,7 @@ export function SearchPanel() {
                 onChange={setFrom}
                 options={suggestions?.loadingPlaces ?? []}
               />
+
               <SearchField
                 id="home-to"
                 label="Выгрузка"

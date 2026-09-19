@@ -15,8 +15,8 @@ export async function Header({ activePath, fullWidth = false }: HeaderProps) {
   const user = await getCurrentUser();
 
   const navItems = [
-    { href: "/search", label: "Поиск грузов" },
-    { href: "/search", label: "Найти перевозчика" },
+    { href: "/search?type=load", label: "Поиск грузов" },
+    { href: "/search?type=transport", label: "Найти перевозчика" },
     // { href: "#", label: "Грузы" },
     // { href: "#", label: "Перевозчики" },
     { href: "/forum", label: "Сообщество" },

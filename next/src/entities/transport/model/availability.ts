@@ -7,21 +7,23 @@ export interface AvailabilityDisplay {
 
 export function getAvailabilityDisplay(
   type: string,
-  date: Date | null,
+  date: Date | string | null,
 ): AvailabilityDisplay {
   const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(type);
+  const parsed = date instanceof Date ? date : date ? new Date(date) : null;
+  const validDate = parsed && !Number.isNaN(parsed.getTime()) ? parsed : null;
   const expired =
     isDateType &&
-    date !== null &&
-    date.getTime() <= Date.now();
+    validDate !== null &&
+    validDate.getTime() <= Date.now();
 
   const effectiveType = expired ? "Свободен" : type;
-  const showDate = !expired && isDateType && date !== null;
+  const showDate = !expired && isDateType && validDate !== null;
 
   return {
     type: effectiveType,
     date: showDate
-      ? new Date(date).toLocaleDateString("ru-RU", {
+      ? validDate!.toLocaleDateString("ru-RU", {
           day: "numeric",
           month: "long",
         })

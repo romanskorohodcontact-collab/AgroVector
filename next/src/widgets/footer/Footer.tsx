@@ -9,12 +9,12 @@ const FOOTER_COLUMNS: { title: string; aria: string; links: string[] }[] = [
   {
     title: "Перевозчикам",
     aria: "Перевозчикам",
-    links: ["/search", "/transports/create", "#"],
+    links: ["/search?type=load", "/transports/create", "#"],
   },
   {
     title: "Грузоотправителям",
     aria: "Грузоотправителям",
-    links: ["/loads/create", "/search", "#"],
+    links: ["/loads/create", "/search?type=load", "#"],
   },
   {
     title: "Компания",

@@ -12,7 +12,7 @@ export function CreateLoadScreen() {
       <div className="container-app pt-8 pb-6 max-[640px]:pt-6 max-[640px]:pb-5">
         <nav aria-label="Навигация" className="flex items-center gap-2 text-sm">
           <Link
-            href="/search"
+            href="/search?type=load"
             className="text-text-secondary tracking-[-0.14px] leading-[1.43] transition-colors duration-150 hover:text-text-primary"
           >
             АгроРынок
