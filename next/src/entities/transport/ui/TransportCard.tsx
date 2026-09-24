@@ -71,14 +71,14 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
             </span>
           </div>
           <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
-            <span className="text-text-muted flex-none">Минимальная ставка</span>
+            <span className="text-text-muted flex-none">Мин. ставка</span>
             <span className="text-accent font-medium text-right tabular-nums">
               от {rate}
             </span>
           </div>
 
           <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
-            <span className="text-text-muted flex-none">Минимальная ставка за рейс</span>
+            <span className="text-text-muted flex-none">Мин. ставка за рейс</span>
             <span className="text-text-primary font-medium text-right tabular-nums">
               от {tripRate}
             </span>
@@ -132,14 +132,14 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
           <button
             type="button"
             onClick={onOpenDetail}
-            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-text-primary cursor-pointer"
+            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white cursor-pointer"
           >
             Подробнее
           </button>
         ) : (
           <a
             href="#"
-            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-text-primary"
+            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white"
           >
             Подробнее
           </a>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { usePopoverDismiss } from "@/shared/lib/usePopoverDismiss";
 import { DistrictRegionSelector } from "./DistrictRegionSelector";
 import { FilterPopover } from "./FilterPopover";
 
@@ -36,7 +37,6 @@ export function DistrictRegionSelectorPopover({
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : internalOpen;
-  const ref = useRef<HTMLDivElement>(null);
 
   const setOpen = useCallback(
     (value: boolean) => {
@@ -49,22 +49,17 @@ export function DistrictRegionSelectorPopover({
     [isControlled, onOpenChange]
   );
 
-  useEffect(() => {
-    function onMouseDown(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onMouseDown);
-    return () => document.removeEventListener("mousedown", onMouseDown);
-  }, [setOpen]);
+  usePopoverDismiss(open, () => setOpen(false));
 
   return (
     <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
       {!hideLabel && <span className={labelClass}>{label}</span>}
+
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-haspopup="dialog"
         className={triggerClass}
       >
         <div className="flex items-left gap-2 w-full min-w-0">
@@ -103,18 +98,25 @@ export function DistrictRegionSelectorPopover({
       </button>
 
       {open && (
-        <FilterPopover
-          label={label}
-          onReset={onReset}
-          hasValue={selectedRegions.length > 0}
-          panelWidthClass={panelWidthClass}
-        >
-          <DistrictRegionSelector
-            selectedRegions={selectedRegions}
-            onToggleRegion={onToggleRegion}
-            onToggleDistrict={onToggleDistrict}
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/40"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
           />
-        </FilterPopover>
+          <FilterPopover
+            label={label}
+            onReset={onReset}
+            hasValue={selectedRegions.length > 0}
+            panelWidthClass={panelWidthClass}
+          >
+            <DistrictRegionSelector
+              selectedRegions={selectedRegions}
+              onToggleRegion={onToggleRegion}
+              onToggleDistrict={onToggleDistrict}
+            />
+          </FilterPopover>
+        </>
       )}
     </div>
   );

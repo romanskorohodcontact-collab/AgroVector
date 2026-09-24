@@ -6,7 +6,7 @@ import type {
 } from "react";
 
 export const FORM_INPUT_WRAP =
-  "flex items-center gap-3 h-[38px] w-full px-4 border-[1.2px] border-[#0D0D0D0D] rounded-pill bg-bg-subtle focus-within:border-accent";
+  "flex items-center gap-3 h-[38px] w-full px-4 border-[1.2px] border-[#0D0D0D0D] rounded-pill bg-[#F3F3F3] focus-within:border-accent";
 
 export const FORM_INPUT =
   "flex-1 min-w-0 border-0 bg-transparent outline-none text-sm text-text-primary leading-[1.43] tracking-[-0.14px] placeholder:text-text-muted";

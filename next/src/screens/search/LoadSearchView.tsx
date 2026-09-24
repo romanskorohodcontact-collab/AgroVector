@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { LoadCard } from "@/entities/load";
 import {
@@ -40,6 +40,8 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
   const [sort, setSort] = useState<LoadSort>(DEFAULT_LOAD_SORT);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [filtersCollapsed, setFiltersCollapsed] = useState(false);
 
   const query = useQuery<LoadSearchResult>({
     queryKey: ["loads-search", applied, page, sort],
@@ -69,7 +71,17 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     if (result) setSuggestions(result.suggestions);
   }, [result]);
 
+  const isDirty = useMemo(
+    () => !areFiltersEqual(values, applied),
+    [values, applied]
+  );
+  const searchEnabled = !hasSearched || isDirty;
+  const resultsListClass = filtersCollapsed
+    ? "grid grid-cols-2 gap-3 max-[560px]:grid-cols-1"
+    : "flex flex-col gap-3";
+
   function handleSubmit() {
+    setHasSearched(true);
     setPage(1);
     setApplied(values);
     setSelectedId(null);
@@ -96,26 +108,25 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
       <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-[#0D0D0D12] max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className="flex flex-col gap-3 px-6 pt-4 pb-5 border-b border-[#0D0D0D12] min-h-0"
+          className={`flex flex-col gap-3 px-6 border-b border-[#0D0D0D12] min-h-0 py-2`}
           aria-label="Фильтр заявок"
         >
-
-
           <FilterForm
             values={values}
             setField={setField}
             onSubmit={handleSubmit}
             suggestions={suggestions}
             handleReset={handleReset}
+            searchEnabled={searchEnabled}
+            filtersCollapsed={filtersCollapsed}
+            onToggleFilters={() => setFiltersCollapsed((v) => !v)}
           />
-
-
         </section>
 
-        <div className="grid grid-cols-[1fr_2fr] min-h-0 max-[960px]:grid-cols-1">
-          <SortPanel sort={sort} onSort={setSort} />
+        <div className={`min-h-0 ${filtersCollapsed ? "flex flex-col" : "grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1"}`}>
+          <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
 
-          <section className="p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto" aria-label="Заявки на груз">
+          <section className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto ${filtersCollapsed ? "flex-1" : ""}`} aria-label="Заявки на груз">
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
                 {clusterFilter && clusterQuery.data
@@ -155,7 +166,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   Не удалось загрузить заявку
                 </p>
               ) : selectedQuery.data ? (
-                <div className="flex flex-col gap-3">
+                <div className={resultsListClass}>
                   <LoadCard load={selectedQuery.data} />
                 </div>
               ) : null
@@ -173,7 +184,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   Заявок не найдено
                 </p>
               ) : (
-                <div className="flex flex-col gap-3">
+                <div className={resultsListClass}>
                   {clusterQuery.data?.map((load) => (
                     <LoadCard key={load.id} load={load} />
                   ))}
@@ -192,7 +203,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                 Заявок не найдено
               </p>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className={resultsListClass}>
                 {result?.items.map((load) => (
                   <LoadCard key={load.id} load={load} />
                 ))}
@@ -237,6 +248,9 @@ interface FilterFormProps {
   onSubmit: () => void;
   suggestions: LoadSuggestions;
   handleReset: () => void;
+  searchEnabled: boolean;
+  filtersCollapsed: boolean;
+  onToggleFilters: () => void;
 }
 
 function FilterForm({
@@ -245,85 +259,134 @@ function FilterForm({
   onSubmit,
   suggestions,
   handleReset,
+  searchEnabled,
+  filtersCollapsed,
+  onToggleFilters,
 }: FilterFormProps) {
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
     onSubmit();
   }
 
+  function handleToggleFilters() {
+    onToggleFilters();
+  }
+
+  function hasAppliedFilters(f: SearchFiltersValues): boolean {
+    return (
+      (f.from?.length ?? 0) > 0 ||
+      (f.to?.length ?? 0) > 0 ||
+      (f.cargo?.length ?? 0) > 0 ||
+      (f.tonnage?.length ?? 0) > 0 ||
+      (f.distance?.length ?? 0) > 0 ||
+      (f.company?.length ?? 0) > 0 ||
+      (f.rate?.length ?? 0) > 0
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-3 gap-3 items-end max-[960px]:grid-cols-2 max-[560px]:grid-cols-1"
+      className="flex flex-col gap-3"
     >
-      <AutocompleteField
-        label="Город отправки"
-        value={values.from ?? ""}
-        onChange={(value) => setField("from", value)}
-        options={suggestions.loadingPlaces}
-        id="f-from"
-        placeholder="Краснодар"
-      />
-      <AutocompleteField
-        label="Город отправки"
-        value={values.to ?? ""}
-        onChange={(value) => setField("to", value)}
-        options={suggestions.unloadingPlaces}
-        id="f-to"
-        placeholder="Ростов-на-Дону"
-      />
-      <AutocompleteField
-        label="Груз"
-        value={values.cargo ?? ""}
-        onChange={(value) => setField("cargo", value)}
-        options={suggestions.cargo}
-        id="f-cargo"
-        placeholder="Пшеница, кукуруза…"
-      />
-      <NumberField
-        label="Вес груза"
-        value={values.tonnage ?? ""}
-        onChange={(value) => setField("tonnage", value)}
-        id="f-tons"
-        placeholder="В тоннах или кг"
-        icon="tons"
-      />
-      {/*Добавить выбор поиска т/кг*/}
-      <NumberField
-        label="Расстояние"
-        value={values.distance ?? ""}
-        onChange={(value) => setField("distance", value)}
-        id="f-km"
-        placeholder="до 600 км"
-        icon="km"
-      />
-      <NumberField
-        label="Ценна ₽/км"
-        value={values.rate ?? ""}
-        onChange={(value) => setField("rate", value)}
-        id="f-rate"
-        placeholder="от 150₽/км"
-        icon="rate"
-      />
-      <CompanySelect
-        value={values.company ?? ""}
-        onChange={(value) => setField("company", value)}
-        options={suggestions.companyNames}
-      />
+      <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
+        <AutocompleteField
+          label="Город отправки"
+          value={values.from ?? ""}
+          onChange={(value) => setField("from", value)}
+          options={suggestions.loadingPlaces}
+          id="f-from"
+          placeholder="Краснодар"
+        />
+        <AutocompleteField
+          label="Город отправки"
+          value={values.to ?? ""}
+          onChange={(value) => setField("to", value)}
+          options={suggestions.unloadingPlaces}
+          id="f-to"
+          placeholder="Ростов-на-Дону"
+        />
+        <AutocompleteField
+          label="Груз"
+          value={values.cargo ?? ""}
+          onChange={(value) => setField("cargo", value)}
+          options={suggestions.cargo}
+          id="f-cargo"
+          placeholder="Пшеница, кукуруза…"
+        />
+        <NumberField
+          label="Вес груза"
+          value={values.tonnage ?? ""}
+          onChange={(value) => setField("tonnage", value)}
+          id="f-tons"
+          placeholder="В тоннах или кг"
+          icon="tons"
+        />
+        {/*Добавить выбор поиска т/кг*/}
+        <NumberField
+          label="Расстояние"
+          value={values.distance ?? ""}
+          onChange={(value) => setField("distance", value)}
+          id="f-km"
+          placeholder="до 600 км"
+          icon="km"
+        />
+        <NumberField
+          label="Ценна ₽/км"
+          value={values.rate ?? ""}
+          onChange={(value) => setField("rate", value)}
+          id="f-rate"
+          placeholder="от 150₽/км"
+          icon="rate"
+        />
+        <CompanySelect
+          value={values.company ?? ""}
+          onChange={(value) => setField("company", value)}
+          options={suggestions.companyNames}
+        />
 
-      <button
-        type="button"
-        onClick={handleReset}
-        className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
-      >
-        Сбросить фильтры
-      </button>
-      <button
-        type="submit"
-        className="h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent/90 max-[960px]:h-10"
-      >
-        Найти
-      </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
+        >
+          Сбросить фильтры
+        </button>
+        <button
+          type="submit"
+          disabled={!searchEnabled}
+          className={`h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 max-[960px]:h-10 ${searchEnabled
+            ? "bg-accent cursor-pointer hover:bg-accent/90"
+            : "bg-accent/50 cursor-not-allowed"
+            }`}
+        >
+          Найти
+        </button>
+      </div>
+
+
+      {/*Блок сокращенного отображения*/}
+      <div className="flex justify-end gap-4">
+        {filtersCollapsed && hasAppliedFilters(values) && <>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            Сбросить фильтры
+          </button>
+          <div className="h-full border-r border-[#ECECEC]" /></>
+        }
+
+        <button
+          type="button"
+          onClick={handleToggleFilters}
+          aria-expanded={!filtersCollapsed}
+          className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+        >
+          {filtersCollapsed ? "Открыть фильтры" : "Скрыть фильтры"}
+        </button>
+      </div>
     </form>
   );
 }
@@ -399,6 +462,7 @@ function CompanySelect({ value, onChange, options }: CompanySelectProps) {
 interface SortPanelProps {
   sort: LoadSort;
   onSort: (next: LoadSort) => void;
+  horizontal?: boolean;
 }
 
 const SORT_OPTIONS: {
@@ -406,15 +470,15 @@ const SORT_OPTIONS: {
   label: string;
   hint?: string;
 }[] = [
-  { field: "rate", label: "По ставке" },
-  { field: "km", label: "По расстоянию" },
-  { field: "tons", label: "По тоннажу" },
-  {
-    field: "ratePerKm",
-    label: "Самые выгодные",
-    hint: "Ставка / расстояние",
-  },
-];
+    { field: "rate", label: "По ставке" },
+    { field: "km", label: "По расстоянию" },
+    { field: "tons", label: "По тоннажу" },
+    {
+      field: "ratePerKm",
+      label: "Самые выгодные",
+      hint: "Ставка / расстояние",
+    },
+  ];
 
 const DEFAULT_DIRS: Record<LoadSortField, SortDirection> = {
   rate: "desc",
@@ -423,7 +487,7 @@ const DEFAULT_DIRS: Record<LoadSortField, SortDirection> = {
   ratePerKm: "desc",
 };
 
-function SortPanel({ sort, onSort }: SortPanelProps) {
+function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
   const [dirs, setDirs] = useState<Record<LoadSortField, SortDirection>>(
     DEFAULT_DIRS
   );
@@ -435,13 +499,17 @@ function SortPanel({ sort, onSort }: SortPanelProps) {
 
   return (
     <aside
-      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      className={
+        horizontal
+          ? "flex items-center gap-6 flex-wrap px-4 py-2 border-b border-[#0D0D0D12]"
+          : "px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      }
       aria-label="Сортировка"
     >
-      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+      <h2 className={`${horizontal ? "hidden" : "mb-4"} text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
         Сортировка
       </h2>
-      <div className="flex flex-col gap-1">
+      <div className={horizontal ? "flex items-center justify-between w-full gap-2" : "flex flex-col gap-1"}>
         {SORT_OPTIONS.map((option) => {
           const active = sort.field === option.field;
           const activeDir = dirs[option.field];
@@ -454,28 +522,30 @@ function SortPanel({ sort, onSort }: SortPanelProps) {
                   option.field === "ratePerKm" ? "desc" : activeDir
                 )
               }
-              className={`flex items-center justify-between gap-2 w-full px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${
-                active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
-              }`}
+              className={`flex items-center justify-between gap-2 ${horizontal ? "min-w-auto" : "w-full"} px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
+                }`}
             >
               <span className="flex items-center gap-2 min-w-0">
-                <span
-                  className={`w-5 h-5 shrink-0 rounded-full border border-[#0D0D0D1A] inline-flex items-center justify-center ${
-                    active ? "border-accent bg-accent" : ""
-                  }`}
+
+                {!horizontal && (<span
+                  className={`w-5 h-5 shrink-0 rounded-full border border-[#0D0D0D1A] inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""}`}
                 >
                   {active ? (
                     <span className="w-1.5 h-1.5 rounded-full bg-white" />
                   ) : null}
-                </span>
+                </span>)}
+
                 {option.hint ? (
-                  <span className="min-w-0">
+                  <span className={`${horizontal ? "flex gap-2" : ""} min-w-0`}>
                     <span className="block text-sm leading-[1.43] tracking-[-0.14px] text-text-primary">
                       {option.label}
                     </span>
-                    <span className="block mt-0.5 text-xs leading-[1.4] text-text-muted tracking-[-0.14px]">
+                    {!horizontal && <span className="block mt-0.5 text-xs leading-[1.4] text-text-muted tracking-[-0.14px]">
                       {option.hint}
-                    </span>
+                    </span>}
+                    {horizontal && <span className="block mt-0.5 text-xs leading-[1.4] text-text-muted tracking-[-0.14px]">
+                      ₽/км
+                    </span>}
                   </span>
                 ) : (
                   <span className="text-sm leading-[1.43] tracking-[-0.14px] text-text-primary">
@@ -531,11 +601,10 @@ function DirToggleButton({
       aria-label={label}
       aria-pressed={active}
       onClick={onClick}
-      className={`flex items-center justify-center w-6 h-6 rounded-full cursor-pointer transition-colors duration-150 ${
-        active
-          ? "bg-accent text-white"
-          : "bg-white text-text-muted hover:text-text-primary"
-      }`}
+      className={`flex items-center justify-center w-6 h-6 rounded-full cursor-pointer transition-colors duration-150 ${active
+        ? "bg-accent text-white"
+        : "bg-white text-text-muted hover:text-text-primary"
+        }`}
     >
       {children}
     </button>
@@ -640,6 +709,21 @@ function FieldIcon({ icon }: { icon: FieldIconType }) {
         </svg>
       );
   }
+}
+
+function areFiltersEqual(
+  a: SearchFiltersValues,
+  b: SearchFiltersValues
+): boolean {
+  return (
+    a.from === b.from &&
+    a.to === b.to &&
+    a.cargo === b.cargo &&
+    a.tonnage === b.tonnage &&
+    a.rate === b.rate &&
+    a.distance === b.distance &&
+    a.company === b.company
+  );
 }
 
 async function fetchSearch(

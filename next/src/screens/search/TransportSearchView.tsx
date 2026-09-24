@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type {
   Transport,
@@ -39,6 +39,8 @@ export function TransportSearchView() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [filtersCollapsed, setFiltersCollapsed] = useState(false);
 
   const query = useQuery<TransportSearchResult>({
     queryKey: ["transports-search", applied, page, sort],
@@ -62,7 +64,17 @@ export function TransportSearchView() {
     ? Math.max(1, Math.ceil(result.total / PAGE_SIZE))
     : 1;
 
+  const isDirty = useMemo(
+    () => !areFiltersEqual(values, applied),
+    [values, applied]
+  );
+  const searchEnabled = !hasSearched || isDirty;
+  const resultsListClass = filtersCollapsed
+    ? "grid grid-cols-2 gap-3 max-[560px]:grid-cols-1"
+    : "flex flex-col gap-3";
+
   function handleSubmit() {
+    setHasSearched(true);
     setPage(1);
     setApplied(values);
     setSelectedId(null);
@@ -128,7 +140,7 @@ export function TransportSearchView() {
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
       <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-[#0D0D0D12] max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className="flex flex-col gap-3 px-6 pt-4 pb-5 border-b border-[#0D0D0D12] min-h-0"
+          className={`flex flex-col gap-3 px-6 border-b border-[#0D0D0D12] min-h-0 py-2`}
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -141,14 +153,20 @@ export function TransportSearchView() {
             onResetOneFilter={handleResetOneFilter}
             activeFilter={activeFilter}
             setActiveFilter={setActiveFilter}
+            searchEnabled={searchEnabled}
+            filtersCollapsed={filtersCollapsed}
+            onToggleFilters={() => setFiltersCollapsed((v) => !v)}
           />
         </section>
 
-        <div className="grid grid-cols-[1fr_2fr] min-h-0 max-[960px]:grid-cols-1">
-          <SortPanel sort={sort} onSort={setSort} />
+
+        <div className={`min-h-0 ${filtersCollapsed ? "flex flex-col" : "grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1"}`}>
+          <div className={`${filtersCollapsed ? "hidden" : ""}`}>
+            <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
+          </div>
 
           <section
-            className="p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto"
+            className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto ${filtersCollapsed ? "flex-1" : ""}`}
             aria-label="Заявки на транспорт"
           >
             <div className="flex justify-between items-center mb-3">
@@ -161,17 +179,17 @@ export function TransportSearchView() {
                 <button
                   type="button"
                   onClick={() => setSelectedId(null)}
-                  className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-white tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
-                  Сбросить выбор
+                  Сбросить выбор.
                 </button>
               ) : clusterFilter ? (
                 <button
                   type="button"
                   onClick={() => setClusterFilter(null)}
-                  className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-white tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
-                  Сбросить фильтр
+                  Сбросить фильтр..
                 </button>
               ) : result ? (
                 <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
@@ -190,7 +208,7 @@ export function TransportSearchView() {
                   Не удалось загрузить заявку
                 </p>
               ) : selectedQuery.data ? (
-                <div className="flex flex-col gap-3">
+                <div className={resultsListClass}>
                   <TransportDetailButton transport={selectedQuery.data} />
                 </div>
               ) : null
@@ -208,7 +226,7 @@ export function TransportSearchView() {
                   Заявок не найдено
                 </p>
               ) : (
-                <div className="flex flex-col gap-3">
+                <div className={resultsListClass}>
                   {clusterQuery.data?.map((transport) => (
                     <TransportDetailButton
                       key={transport.id}
@@ -230,7 +248,7 @@ export function TransportSearchView() {
                 Заявок не найдено
               </p>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className={resultsListClass}>
                 {result?.items.map((transport) => (
                   <TransportDetailButton key={transport.id} transport={transport} />
                 ))}
@@ -249,6 +267,7 @@ export function TransportSearchView() {
         </div>
       </div>
 
+      {/*Карта*/}
       <div
         role="presentation"
         className="relative flex items-center justify-center gap-2.5 min-w-0 bg-bg-subtle bg-[linear-gradient(rgba(13,13,13,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,13,13,0.05)_1px,transparent_1px)] [background-size:36px_36px] max-[960px]:h-[320px]"
@@ -264,7 +283,7 @@ export function TransportSearchView() {
           activeClusterFilter={clusterFilter}
         />
       </div>
-    </main>
+    </main >
   );
 }
 
@@ -281,6 +300,9 @@ interface FilterFormProps {
   onResetOneFilter: () => void;
   activeFilter: string | null;
   setActiveFilter: (filter: string | null) => void;
+  searchEnabled: boolean;
+  filtersCollapsed: boolean;
+  onToggleFilters: () => void;
 }
 
 function FilterForm({
@@ -293,6 +315,9 @@ function FilterForm({
   onResetOneFilter,
   activeFilter,
   setActiveFilter,
+  searchEnabled,
+  filtersCollapsed,
+  onToggleFilters,
 }: FilterFormProps) {
   const [moreFiltersOpen, setMoreFiltersOpen] = useState(false);
   const moreFiltersRef = useRef<HTMLButtonElement>(null);
@@ -302,113 +327,227 @@ function FilterForm({
     onSubmit();
   }
 
+  function handleToggleFilters() {
+    setActiveFilter(null);
+    setMoreFiltersOpen(false);
+    onToggleFilters();
+  }
+
+  function hasAppliedFilters(f: TransportFilters): boolean {
+    return (
+      f.maxRatePerKm !== undefined ||
+      (f.bodyTypes?.length ?? 0) > 0 ||
+      (f.loadingTypes?.length ?? 0) > 0 ||
+      (f.vatTypes?.length ?? 0) > 0 ||
+      (f.cargoTypes?.length ?? 0) > 0 ||
+      (f.workRegions?.length ?? 0) > 0
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-3 gap-3 items-end max-[960px]:grid-cols-2 max-[560px]:grid-cols-1"
+      className="flex flex-col gap-4"
     >
-      <DistrictRegionSelectorPopover
-        label="Регионы работы"
-        selectedRegions={values.workRegions ?? []}
-        onToggleRegion={(region) => toggleArrayField("workRegions", region)}
-        onToggleDistrict={toggleDistrict}
-        onReset={onResetOneFilter}
-        panelWidthClass="min-w-[400px] max-w-[90vw]"
-        open={activeFilter === "workRegions"}
-        onOpenChange={(v) => setActiveFilter(v ? "workRegions" : null)}
-      />
-      <MultiSelectDropdown
-        label="Тип кузова"
-        options={BODY_TYPES}
-        selected={values.bodyTypes ?? []}
-        onToggle={(item) => toggleArrayField("bodyTypes", item)}
-        placeholder="Любой"
-        panelWidthClass="min-w-[450px]"
-        open={activeFilter === "bodyTypes"}
-        onOpenChange={(v) => setActiveFilter(v ? "bodyTypes" : null)}
-        onReset={onResetOneFilter}
-      />
-      <MultiSelectDropdown
-        label="Тип загрузки"
-        options={LOADING_TYPES}
-        selected={values.loadingTypes ?? []}
-        onToggle={(item) => toggleArrayField("loadingTypes", item)}
-        placeholder="Любой"
-        panelWidthClass="min-w-[360px]"
-        open={activeFilter === "loadingTypes"}
-        onOpenChange={(v) => setActiveFilter(v ? "loadingTypes" : null)}
-        onReset={onResetOneFilter}
-      />
-      <NumberField
-        label="Ставка до ₽/км"
-        value={values.maxRatePerKm != null ? String(values.maxRatePerKm) : ""}
-        onChange={setMaxRate}
-        id="f-rate"
-        placeholder="Не имеет значения"
-      />
-      <MultiSelectDropdown
-        label="Форма оплаты"
-        options={VAT_TYPES}
-        selected={values.vatTypes ?? []}
-        onToggle={(item) => toggleArrayField("vatTypes", item)}
-        placeholder="Любой"
-        panelWidthClass="min-w-[230px]"
-        columns={1}
-        open={activeFilter === "vatTypes"}
-        onOpenChange={(v) => setActiveFilter(v ? "vatTypes" : null)}
-        onReset={onResetOneFilter}
-      />
-      <DescriptiveMultiSelect
-        label="Категория груза"
-        options={CARGO_TYPES}
-        descriptions={CARGO_TYPE_DESCRIPTIONS}
-        selected={values.cargoTypes ?? []}
-        onToggle={(item) => toggleArrayField("cargoTypes", item)}
-        placeholder="Любой"
-        panelWidthClass="min-w-[360px]"
-        open={activeFilter === "cargoTypes"}
-        onOpenChange={(v) => setActiveFilter(v ? "cargoTypes" : null)}
-        onReset={onResetOneFilter}
-      />
-      {/*открывает модальное окно, где будут дополнительные фильтры*/}
-      <>
+      {/*Блок сокращенного отображения*/}
+      <div className="flex justify-between">
+        <div className="flex gap-4">
+          <button
+            type="button"
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            Список фильтров
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
+            >
+              <path d="m4 6 4 4 4-4" />
+            </svg>
+          </button>
+          <div className="h-full border-r border-[#ECECEC]" />
+          <button
+            type="button"
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            Сортировка
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
+            >
+              <path d="m4 6 4 4 4-4" />
+            </svg>
+          </button>
+          <div className="h-full border-r border-[#ECECEC]" />
+          <button
+            type="button"
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            Вид заявок
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
+            >
+              <path d="m4 6 4 4 4-4" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex gap-4">
+
+          {filtersCollapsed && hasAppliedFilters(values) && <>
+            <button
+              type="button"
+              onClick={onReset}
+              className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+            >
+              Сбросить фильтры
+            </button>
+            <div className="h-full border-r border-[#ECECEC]" /></>
+          }
+
+
+          <button
+            type="button"
+            onClick={handleToggleFilters}
+            aria-expanded={!filtersCollapsed}
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            {filtersCollapsed ? "Открыть панель" : "Скрыть панель"}
+          </button>
+        </div>
+      </div>
+
+      {/*Панель с фильтрами*/}
+      <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
+        <DistrictRegionSelectorPopover
+          label="Регионы работы"
+          selectedRegions={values.workRegions ?? []}
+          onToggleRegion={(region) => toggleArrayField("workRegions", region)}
+          onToggleDistrict={toggleDistrict}
+          onReset={onResetOneFilter}
+          panelWidthClass="min-w-[400px] max-w-[90vw]"
+          open={activeFilter === "workRegions"}
+          onOpenChange={(v) => setActiveFilter(v ? "workRegions" : null)}
+        />
+        <MultiSelectDropdown
+          label="Тип кузова"
+          options={BODY_TYPES}
+          selected={values.bodyTypes ?? []}
+          onToggle={(item) => toggleArrayField("bodyTypes", item)}
+          placeholder="Любой"
+          panelWidthClass="min-w-[450px]"
+          open={activeFilter === "bodyTypes"}
+          onOpenChange={(v) => setActiveFilter(v ? "bodyTypes" : null)}
+          onReset={onResetOneFilter}
+        />
+        <MultiSelectDropdown
+          label="Тип загрузки"
+          options={LOADING_TYPES}
+          selected={values.loadingTypes ?? []}
+          onToggle={(item) => toggleArrayField("loadingTypes", item)}
+          placeholder="Любой"
+          panelWidthClass="min-w-[360px]"
+          open={activeFilter === "loadingTypes"}
+          onOpenChange={(v) => setActiveFilter(v ? "loadingTypes" : null)}
+          onReset={onResetOneFilter}
+        />
+        <NumberField
+          label="Ставка до ₽/км"
+          value={values.maxRatePerKm != null ? String(values.maxRatePerKm) : ""}
+          onChange={setMaxRate}
+          id="f-rate"
+          placeholder="Не имеет значения"
+        />
+        <MultiSelectDropdown
+          label="Форма оплаты"
+          options={VAT_TYPES}
+          selected={values.vatTypes ?? []}
+          onToggle={(item) => toggleArrayField("vatTypes", item)}
+          placeholder="Любой"
+          panelWidthClass="min-w-[230px]"
+          columns={1}
+          open={activeFilter === "vatTypes"}
+          onOpenChange={(v) => setActiveFilter(v ? "vatTypes" : null)}
+          onReset={onResetOneFilter}
+        />
+        <DescriptiveMultiSelect
+          label="Категория груза"
+          options={CARGO_TYPES}
+          descriptions={CARGO_TYPE_DESCRIPTIONS}
+          selected={values.cargoTypes ?? []}
+          onToggle={(item) => toggleArrayField("cargoTypes", item)}
+          placeholder="Любой"
+          panelWidthClass="min-w-[360px]"
+          open={activeFilter === "cargoTypes"}
+          onOpenChange={(v) => setActiveFilter(v ? "cargoTypes" : null)}
+          onReset={onResetOneFilter}
+        />
+        {/*открывает модальное окно, где будут дополнительные фильтры*/}
+        <>
+          <button
+            type="button"
+            ref={moreFiltersRef}
+            onClick={() => setMoreFiltersOpen((v) => !v)}
+            aria-expanded={moreFiltersOpen}
+            aria-haspopup="dialog"
+            className="flex gap-4 h-[44px] px-5 items-center justify-center rounded-pill text-sm font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-secondary max-[960px]:h-10"
+          >
+            <span> Больше фильтров </span>
+            <ChevronDown
+              className={`w-5 h-5 transition-transform duration-150 ${moreFiltersOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          <AnchoredModal
+            open={moreFiltersOpen}
+            onClose={() => setMoreFiltersOpen(false)}
+            triggerRef={moreFiltersRef}
+            title="Дополнительные фильтры"
+            panelWidthClass="min-w-[360px]"
+          ></AnchoredModal>
+        </>
         <button
           type="button"
-          ref={moreFiltersRef}
-          onClick={() => setMoreFiltersOpen((v) => !v)}
-          aria-expanded={moreFiltersOpen}
-          aria-haspopup="dialog"
-          className="flex gap-4 h-[44px] px-5 items-center justify-center rounded-pill text-sm font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-secondary max-[960px]:h-10"
+          onClick={onReset}
+          className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
         >
-          <span> Больше фильтров </span>
-          <ChevronDown
-            className={`w-5 h-5 transition-transform duration-150 ${moreFiltersOpen ? "rotate-180" : ""}`}
-          />
+          Сбросить фильтры
         </button>
-        <AnchoredModal
-          open={moreFiltersOpen}
-          onClose={() => setMoreFiltersOpen(false)}
-          triggerRef={moreFiltersRef}
-          title="Дополнительные фильтры"
-          panelWidthClass="min-w-[360px]"
-        ></AnchoredModal>
-      </>
+        <button
+          type="submit"
+          disabled={!searchEnabled}
+          className={`h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 max-[960px]:h-10 ${searchEnabled
+            ? "bg-accent cursor-pointer hover:bg-accent/90"
+            : "bg-accent/50 cursor-not-allowed"
+            }`}
+        >
+          Найти
+        </button>
+      </div>
 
-      <button
-        type="button"
-        onClick={onReset}
-        className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
-      >
-        Сбросить фильтры
-      </button>
-      <button
-        type="submit"
-        className="h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent/90 max-[960px]:h-10"
-      >
-        Найти
-      </button>
 
-    </form>
+
+    </form >
   );
 }
 
@@ -467,6 +606,7 @@ function RateIcon() {
 interface SortPanelProps {
   sort: TransportSort;
   onSort: (next: TransportSort) => void;
+  horizontal?: boolean;
 }
 
 const SORT_OPTIONS: {
@@ -486,7 +626,7 @@ const DEFAULT_DIRS: Record<TransportSortField, SortDirection> = {
   createdAt: "desc",
 };
 
-function SortPanel({ sort, onSort }: SortPanelProps) {
+function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
   const [dirs, setDirs] = useState<Record<TransportSortField, SortDirection>>(
     DEFAULT_DIRS
   );
@@ -498,13 +638,18 @@ function SortPanel({ sort, onSort }: SortPanelProps) {
 
   return (
     <aside
-      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      className={
+        horizontal
+          ? "flex items-center gap-6 flex-wrap px-4 py-2"
+          : "px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      }
       aria-label="Сортировка"
     >
-      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+
+      <h2 className={`${horizontal ? "hidden" : "mb-4"} text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
         Сортировка
       </h2>
-      <div className="flex flex-col gap-1">
+      <div className={horizontal ? "flex items-center gap-2" : "flex flex-col gap-1"}>
         {SORT_OPTIONS.map((option) => {
           const active = sort.field === option.field;
           const activeDir = dirs[option.field];
@@ -512,18 +657,18 @@ function SortPanel({ sort, onSort }: SortPanelProps) {
             <div
               key={option.field}
               onClick={() => choose(option.field, activeDir)}
-              className={`flex items-center justify-between gap-2 w-full px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
+              className={`flex items-center justify-between gap-2 ${horizontal ? "w-auto" : "w-full"} px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
                 }`}
             >
               <span className="flex items-center gap-2 min-w-0">
-                <span
-                  className={`w-5 h-5 shrink-0 rounded-full border border-[#0D0D0D1A] inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""
-                    }`}
+                {!horizontal && (<span
+                  className={`w-5 h-5 shrink-0 rounded-full border border-[#0D0D0D1A] inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""}`}
                 >
                   {active ? (
                     <span className="w-1.5 h-1.5 rounded-full bg-white" />
                   ) : null}
-                </span>
+                </span>)}
+
                 {option.hint ? (
                   <span className="min-w-0">
                     <span className="block text-sm leading-[1.43] tracking-[-0.14px] text-text-primary">
@@ -630,6 +775,25 @@ function DescIcon() {
     >
       <path d="m3.5 5.5 3.5 3.5 3.5-3.5"></path>
     </svg>
+  );
+}
+
+function arraysEqual(a: string[] | undefined, b: string[] | undefined) {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  if (a.length !== b.length) return false;
+  const set = new Set(a);
+  return b.every((item) => set.has(item));
+}
+
+function areFiltersEqual(a: TransportFilters, b: TransportFilters): boolean {
+  return (
+    a.maxRatePerKm === b.maxRatePerKm &&
+    arraysEqual(a.bodyTypes, b.bodyTypes) &&
+    arraysEqual(a.loadingTypes, b.loadingTypes) &&
+    arraysEqual(a.vatTypes, b.vatTypes) &&
+    arraysEqual(a.cargoTypes, b.cargoTypes) &&
+    arraysEqual(a.workRegions, b.workRegions)
   );
 }
 

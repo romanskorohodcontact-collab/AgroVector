@@ -29,10 +29,10 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
   const loadingDateLabel =
     loadingDate && !Number.isNaN(loadingDate.getTime())
       ? loadingDate.toLocaleDateString("ru-RU", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
       : "—";
 
   return (
@@ -224,12 +224,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Закрыть"
-              className="inline-flex items-center justify-center h-9 px-4 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]"
-            >Закрыть заявку</button>
+
           </div>
         </div>
       </div>

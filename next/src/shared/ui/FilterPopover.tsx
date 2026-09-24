@@ -19,10 +19,10 @@ export function FilterPopover({
 }: FilterPopoverProps) {
   return (
     <div
-      className={`absolute top-[calc(100%+8px)] left-0 z-50 bg-bg-subtle rounded-2xl p-1 border border-[#ECECEC] ${
-        panelWidthClass ?? "min-w-[360px] max-w-[90vw]"
-      }`}
+      className={`absolute top-[calc(100%+8px)] left-0 z-50 bg-bg-subtle rounded-2xl p-1 border border-[#ECECEC] ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"
+        }`}
     >
+
       <div className="flex items-center justify-between px-4 rounded-t-2xl pt-1.5 pb-1.5">
         <span className="text-[12px] font-medium text-text-muted tracking-[-0.12px] pt-2">
           {label}
