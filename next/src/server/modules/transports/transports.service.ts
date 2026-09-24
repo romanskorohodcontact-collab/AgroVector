@@ -9,6 +9,7 @@ import {
   deleteOwnTransport as repositoryDeleteOwnTransport,
   getOwnTransport as repositoryGetOwnTransport,
   getTransportById as repositoryGetTransportById,
+  getTransportsByIds as repositoryGetTransportsByIds,
   listTransports as repositoryListTransports,
   listTransportsByUser,
   searchTransports as repositorySearchTransports,
@@ -57,4 +58,8 @@ export function updateTransport(
 
 export function deleteTransport(id: string, userId: string): Promise<boolean> {
   return repositoryDeleteOwnTransport(id, userId);
+}
+
+export function getTransportsByIds(ids: string[]): Promise<Transport[]> {
+  return repositoryGetTransportsByIds(ids);
 }

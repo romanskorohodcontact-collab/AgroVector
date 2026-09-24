@@ -5,5 +5,5 @@ import { CreateLoadScreen } from "@/screens/create-load/CreateLoadScreen";
 export default async function CreateLoadPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  return <CreateLoadScreen />;
+  return <CreateLoadScreen user={user} />;
 }

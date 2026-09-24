@@ -5,10 +5,33 @@ import {
   type TransportSort,
 } from "@/entities/transport/model";
 import { getCurrentUser } from "@/server/modules/auth";
-import { createTransport, searchTransports } from "@/server/modules/transports";
+import {
+  createTransport,
+  getTransportsByIds,
+  searchTransports,
+} from "@/server/modules/transports";
+
+const MAX_IDS = 100;
 
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
+  const idsRaw = params.get("ids");
+  if (idsRaw) {
+    const ids = idsRaw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .slice(0, MAX_IDS);
+    try {
+      const transports = await getTransportsByIds(ids);
+      return NextResponse.json(transports);
+    } catch {
+      return NextResponse.json(
+        { error: "Не удалось получить заявки" },
+        { status: 500 }
+      );
+    }
+  }
   const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
   const limit = Math.min(
     50,
@@ -29,20 +52,27 @@ export async function GET(request: Request) {
 
 function parseFilters(params: URLSearchParams): TransportFilters {
   const filters: TransportFilters = {};
-  const get = (key: string): string => (params.get(key) ?? "").trim();
-  if (get("transportType")) filters.transportType = get("transportType");
-  if (get("bodyType")) filters.bodyType = get("bodyType");
-  const workDistricts = params.get("workDistricts");
-  if (workDistricts) {
-    const districts = workDistricts
+  const getArray = (key: string): string[] => {
+    const raw = params.get(key);
+    if (!raw) return [];
+    return raw
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
-    if (districts.length > 0) filters.workDistricts = districts;
-  }
-  const minLoadCapacity = Number(get("minLoadCapacity"));
-  if (Number.isFinite(minLoadCapacity) && minLoadCapacity > 0) {
-    filters.minLoadCapacity = minLoadCapacity;
+  };
+  const bodyTypes = getArray("bodyTypes");
+  if (bodyTypes.length > 0) filters.bodyTypes = bodyTypes;
+  const loadingTypes = getArray("loadingTypes");
+  if (loadingTypes.length > 0) filters.loadingTypes = loadingTypes;
+  const vatTypes = getArray("vatTypes");
+  if (vatTypes.length > 0) filters.vatTypes = vatTypes;
+  const cargoTypes = getArray("cargoTypes");
+  if (cargoTypes.length > 0) filters.cargoTypes = cargoTypes;
+  const workRegions = getArray("workRegions");
+  if (workRegions.length > 0) filters.workRegions = workRegions;
+  const maxRatePerKm = Number((params.get("maxRatePerKm") ?? "").trim());
+  if (Number.isFinite(maxRatePerKm) && maxRatePerKm > 0) {
+    filters.maxRatePerKm = maxRatePerKm;
   }
   return filters;
 }
@@ -56,6 +86,7 @@ function parseSort(params: URLSearchParams): TransportSort {
   if (
     field === "loadCapacityTons" ||
     field === "minRatePerKm" ||
+    field === "bodyVolumeM3" ||
     field === "createdAt"
   ) {
     return { field, dir: dir === "asc" ? "asc" : "desc" };

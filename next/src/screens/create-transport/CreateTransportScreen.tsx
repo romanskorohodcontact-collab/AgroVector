@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { CreateTransportForm } from "@/features/create-transport";
 import { Header } from "@/widgets/header";
+import type { User } from "@/entities/user";
 
-export function CreateTransportScreen() {
+interface CreateTransportScreenProps {
+  user: User;
+}
+
+export function CreateTransportScreen({ user }: CreateTransportScreenProps) {
   return (
     <main className="bg-bg-subtle">
       <div className="bg-white">
@@ -24,7 +29,7 @@ export function CreateTransportScreen() {
         </nav>
       </div>
 
-      <CreateTransportForm />
+      <CreateTransportForm user={user} />
 
       <footer className="py-6 text-center border-t border-[#0D0D0D12] bg-white text-sm text-text-muted tracking-[-0.14px]">
         © 2026 AgroRunok

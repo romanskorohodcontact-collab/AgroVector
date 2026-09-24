@@ -35,8 +35,9 @@ export function DistrictRegionSelector({
 
   return (
     <div className="flex flex-col gap-1.5">
+
       {label && <span className={labelClass}>{label}</span>}
-      <div className="border border-[#ECECEC] rounded-2xl bg-white max-h-[320px] overflow-y-auto">
+      <div className="border border-[#ECECEC] rounded-2xl bg-white max-h-[370px] overflow-y-auto">
         {Object.entries(WORK_DISTRICTS_REGIONS).map(
           ([district, regions]) => {
             const isExpanded = expanded.has(district);
@@ -51,7 +52,8 @@ export function DistrictRegionSelector({
                 key={district}
                 className="border-b border-[#ECECEC] last:border-b-0"
               >
-                <div className="flex items-center gap-2 px-4 py-3 bg-bg-subtle">
+                <div className="flex items-center gap-2 px-4 py-3 bg-bg-white subtle">
+
                   <input
                     type="checkbox"
                     checked={allSelected}

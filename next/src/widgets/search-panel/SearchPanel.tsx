@@ -197,10 +197,12 @@ function SearchField({
       </label>
       <AutocompleteField
         id={id}
+        label={label}
         value={value}
         onChange={onChange}
         options={options}
         placeholder={placeholder}
+        hideLabel
       />
     </div>
   );

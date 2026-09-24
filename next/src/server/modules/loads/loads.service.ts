@@ -7,6 +7,7 @@ import type {
 import {
   createLoad as repositoryCreateLoad,
   getLoadById as repositoryGetLoadById,
+  getLoadsByIds as repositoryGetLoadsByIds,
   getOwnLoad as repositoryGetOwnLoad,
   listLoads as repositoryListLoads,
   listLoadsByUser,
@@ -35,6 +36,10 @@ export function searchLoads(
 
 export function getLoad(id: string): Promise<Load | null> {
   return repositoryGetLoadById(id);
+}
+
+export function getLoads(ids: string[]): Promise<Load[]> {
+  return repositoryGetLoadsByIds(ids);
 }
 
 export function listMyLoads(userId: string): Promise<Load[]> {

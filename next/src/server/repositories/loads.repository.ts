@@ -23,8 +23,14 @@ export interface CreateLoadData {
   unloadingPlace: string;
   distance: number;
   rate: number;
-  tonnage: number;
+  ratePerKm: number;
+  tonnage: {
+    tonnageWeight: number;
+    tonnageUnit: "kg" | "ton";
+  };
+  bodyType: string;
   cargo: string;
+  cargoForm: string;
   cargoTypes: string[];
   additionalInfo: string;
   customerName: string;
@@ -56,6 +62,23 @@ export async function getLoadById(id: string): Promise<Load | null> {
   await connectDb();
   const doc = await LoadModel.findById(toObjectId(id)).lean();
   return doc ? toLoad(doc as unknown as LoadRecord) : null;
+}
+
+export async function getLoadsByIds(ids: string[]): Promise<Load[]> {
+  await connectDb();
+  const objectIds = ids
+    .map((id) => {
+      try {
+        return toObjectId(id);
+      } catch {
+        return null;
+      }
+    })
+    .filter((value): value is Types.ObjectId => value !== null);
+  if (objectIds.length === 0) return [];
+  const docs = (await LoadModel.find({ _id: { $in: objectIds } })
+    .lean()) as unknown as LoadRecord[];
+  return docs.map(toLoad);
 }
 
 export async function createLoad(data: CreateLoadData): Promise<Load> {
@@ -167,7 +190,7 @@ function buildLoadQuery(filters: LoadFilters): QueryFilter<LoadFields> {
     query.companyName = { $eq: filters.companyName };
   }
   if (filters.minTonnage != null) {
-    query.tonnage = { $gte: filters.minTonnage };
+    query["tonnage.tonnageWeight"] = { $gte: filters.minTonnage };
   }
   if (filters.minRate != null) {
     query.rate = { $gte: filters.minRate };
@@ -210,7 +233,7 @@ function toMapItem(doc: MapRecord): LoadMapItem {
 const SORT_FIELDS: Record<Exclude<LoadSortField, "ratePerKm">, string> = {
   rate: "rate",
   km: "distance",
-  tons: "tonnage",
+  tons: "tonnage.tonnageWeight",
 };
 
 function toSortQuery(
@@ -256,8 +279,11 @@ function toLoad(doc: LoadRecord): Load {
     unloadingPlace: doc.unloadingPlace,
     distance: doc.distance,
     rate: doc.rate,
-    tonnage: doc.tonnage,
+    ratePerKm: doc.ratePerKm ?? (doc.distance > 0 ? doc.rate / doc.distance : 0),
+    tonnage: doc.tonnage ?? { tonnageWeight: 0, tonnageUnit: "ton" },
+    bodyType: doc.bodyType ?? "",
     cargo: doc.cargo,
+    cargoForm: doc.cargoForm ?? "",
     cargoTypes: doc.cargoTypes ?? [],
     additionalInfo: doc.additionalInfo ?? "",
     customerName: doc.customerName,

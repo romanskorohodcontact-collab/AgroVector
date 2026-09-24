@@ -1,6 +1,7 @@
 export {
   createLoad,
   getLoad,
+  getLoads,
   getOwnLoad,
   listLoads,
   listMyLoads,

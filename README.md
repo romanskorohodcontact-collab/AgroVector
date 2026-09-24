@@ -51,6 +51,7 @@ docker compose up --build
 
 ## Статус
 
-Настроена базовая структура проекта. Архитектура приложения
-(`app/pages/widgets/features/entities/shared/server` внутри `next/src`) будет
-реализована на следующем этапе.
+Базовая структура проекта реализована: Next.js приложение построено по слоям
+`app/screens/widgets/features/entities/shared/server` внутри `next/src`,
+настроено подключение к MongoDB, аутентификация по телефону/паролю и
+CRUD-заявки на груз.

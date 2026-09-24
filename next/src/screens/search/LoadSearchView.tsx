@@ -39,6 +39,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     useState<LoadSuggestions>(EMPTY_SUGGESTIONS);
   const [sort, setSort] = useState<LoadSort>(DEFAULT_LOAD_SORT);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
 
   const query = useQuery<LoadSearchResult>({
     queryKey: ["loads-search", applied, page, sort],
@@ -49,6 +50,12 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     queryKey: ["load", selectedId],
     queryFn: () => fetchLoad(selectedId as string),
     enabled: Boolean(selectedId),
+  });
+
+  const clusterQuery = useQuery<Load[]>({
+    queryKey: ["loads-by-ids", clusterFilter?.join(",") ?? ""],
+    queryFn: () => fetchLoadsByIds(clusterFilter ?? []),
+    enabled: Boolean(clusterFilter && clusterFilter.length > 0),
   });
 
   useEffect(() => {
@@ -66,6 +73,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     setPage(1);
     setApplied(values);
     setSelectedId(null);
+    setClusterFilter(null);
   }
 
   function handleReset() {
@@ -73,6 +81,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     setApplied({});
     setPage(1);
     setSelectedId(null);
+    setClusterFilter(null);
   }
 
   function setField(key: keyof SearchFiltersValues, value: string) {
@@ -109,7 +118,9 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
           <section className="p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto" aria-label="Заявки на груз">
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
-                Заявки на груз
+                {clusterFilter && clusterQuery.data
+                  ? `${clusterQuery.data.length} заявок в точке`
+                  : "Заявки на груз"}
               </span>
               {selectedId ? (
                 <button
@@ -118,6 +129,14 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Сбросить выбор
+                </button>
+              ) : clusterFilter ? (
+                <button
+                  type="button"
+                  onClick={() => setClusterFilter(null)}
+                  className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Сбросить фильтр
                 </button>
               ) : result ? (
                 <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
@@ -140,6 +159,26 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   <LoadCard load={selectedQuery.data} />
                 </div>
               ) : null
+            ) : clusterFilter ? (
+              clusterQuery.isPending ? (
+                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                  Загрузка…
+                </p>
+              ) : clusterQuery.isError ? (
+                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                  Не удалось загрузить заявки
+                </p>
+              ) : clusterQuery.data && clusterQuery.data.length === 0 ? (
+                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                  Заявок не найдено
+                </p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {clusterQuery.data?.map((load) => (
+                    <LoadCard key={load.id} load={load} />
+                  ))}
+                </div>
+              )
             ) : query.isPending && !result ? (
               <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
                 Загрузка…
@@ -160,7 +199,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
               </div>
             )}
 
-            {!selectedId && result ? (
+            {!selectedId && !clusterFilter && result ? (
               <Pagination
                 page={page}
                 totalPages={totalPages}
@@ -184,6 +223,8 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
           className="h-full w-full"
           onSelect={(item) => setSelectedId(item.id)}
           showHoverCard
+          onClusterChange={(ids) => setClusterFilter(ids.length > 0 ? ids : null)}
+          activeClusterFilter={clusterFilter}
         />
       </div>
     </main>
@@ -216,20 +257,23 @@ function FilterForm({
       className="grid grid-cols-3 gap-3 items-end max-[960px]:grid-cols-2 max-[560px]:grid-cols-1"
     >
       <AutocompleteField
+        label="Город отправки"
         value={values.from ?? ""}
         onChange={(value) => setField("from", value)}
         options={suggestions.loadingPlaces}
         id="f-from"
-        placeholder="Город отправки"
+        placeholder="Краснодар"
       />
       <AutocompleteField
+        label="Город отправки"
         value={values.to ?? ""}
         onChange={(value) => setField("to", value)}
         options={suggestions.unloadingPlaces}
         id="f-to"
-        placeholder="Город назначения"
+        placeholder="Ростов-на-Дону"
       />
       <AutocompleteField
+        label="Груз"
         value={values.cargo ?? ""}
         onChange={(value) => setField("cargo", value)}
         options={suggestions.cargo}
@@ -237,13 +281,16 @@ function FilterForm({
         placeholder="Пшеница, кукуруза…"
       />
       <NumberField
+        label="Вес груза"
         value={values.tonnage ?? ""}
         onChange={(value) => setField("tonnage", value)}
         id="f-tons"
-        placeholder="Тоннаж от, т"
+        placeholder="В тоннах или кг"
         icon="tons"
       />
+      {/*Добавить выбор поиска т/кг*/}
       <NumberField
+        label="Расстояние"
         value={values.distance ?? ""}
         onChange={(value) => setField("distance", value)}
         id="f-km"
@@ -251,10 +298,11 @@ function FilterForm({
         icon="km"
       />
       <NumberField
+        label="Ценна ₽/км"
         value={values.rate ?? ""}
         onChange={(value) => setField("rate", value)}
         id="f-rate"
-        placeholder="от 10 000 ₽"
+        placeholder="от 150₽/км"
         icon="rate"
       />
       <CompanySelect
@@ -262,18 +310,19 @@ function FilterForm({
         onChange={(value) => setField("company", value)}
         options={suggestions.companyNames}
       />
-      <button
-        type="submit"
-        className="h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent/90 max-[960px]:h-10"
-      >
-        Найти
-      </button>
+
       <button
         type="button"
         onClick={handleReset}
         className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
       >
         Сбросить фильтры
+      </button>
+      <button
+        type="submit"
+        className="h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent/90 max-[960px]:h-10"
+      >
+        Найти
       </button>
     </form>
   );
@@ -282,6 +331,8 @@ function FilterForm({
 interface FieldProps {
   value: string;
   onChange: (value: string) => void;
+  label: string;
+  hideLabel?: boolean;
 }
 
 interface NumberFieldProps extends FieldProps {
@@ -290,7 +341,12 @@ interface NumberFieldProps extends FieldProps {
   icon: "tons" | "km" | "rate";
 }
 
+const labelClass =
+  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
+
 function NumberField({
+  label,
+  hideLabel = false,
   value,
   onChange,
   id,
@@ -299,6 +355,7 @@ function NumberField({
 }: NumberFieldProps) {
   return (
     <div className="min-w-0">
+      {!hideLabel && <span className={labelClass}>{label}</span>}
       <FormInputIcon
         id={id}
         type="number"
@@ -308,7 +365,7 @@ function NumberField({
         inputMode="numeric"
         min="0"
         autoComplete="off"
-        icon={<FieldIcon icon={icon} />}
+        icon={null}
       />
     </div>
   );
@@ -617,6 +674,15 @@ async function fetchLoad(id: string): Promise<Load> {
   const response = await fetch(`/api/loads/${id}`);
   if (!response.ok) {
     throw new Error("Не удалось получить заявку");
+  }
+  return response.json();
+}
+
+async function fetchLoadsByIds(ids: string[]): Promise<Load[]> {
+  if (ids.length === 0) return [];
+  const response = await fetch(`/api/loads?ids=${ids.join(",")}`);
+  if (!response.ok) {
+    throw new Error("Не удалось получить заявки");
   }
   return response.json();
 }

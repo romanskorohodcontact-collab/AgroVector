@@ -5,5 +5,5 @@ import { CreateTransportScreen } from "@/screens/create-transport/CreateTranspor
 export default async function CreateTransportPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  return <CreateTransportScreen />;
+  return <CreateTransportScreen user={user} />;
 }

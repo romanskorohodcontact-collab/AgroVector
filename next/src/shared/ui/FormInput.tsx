@@ -20,7 +20,7 @@ export function FormInput(props: InputHTMLAttributes<HTMLInputElement>) {
 }
 
 interface FormInputIconProps extends InputHTMLAttributes<HTMLInputElement> {
-  icon: ReactNode;
+  icon: ReactNode | null;
 }
 
 export function FormInputIcon({ icon, ...props }: FormInputIconProps) {

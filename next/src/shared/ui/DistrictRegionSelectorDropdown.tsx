@@ -13,12 +13,14 @@ interface DistrictRegionSelectorDropdownProps {
   label: string;
   selectedRegions: string[];
   onToggleRegion: (region: string) => void;
+  align?: "left" | "right";
 }
 
 export function DistrictRegionSelectorDropdown({
   label,
   selectedRegions,
   onToggleRegion,
+  align = "left",
 }: DistrictRegionSelectorDropdownProps) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -92,7 +94,7 @@ export function DistrictRegionSelectorDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-[calc(100%+8px)] left-0 right-0 border border-[#ECECEC] rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto">
+        <div className={`absolute top-[calc(100%+8px)] ${align === "right" ? "right-0" : "left-0"} w-[min(560px,calc(100vw-32px))] border border-[#ECECEC] rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#ECECEC] bg-bg-subtle">
             <span className="text-[12px] font-normal text-text-muted tracking-[-0.14px]">
               {label}

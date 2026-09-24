@@ -9,6 +9,8 @@ export function validateLoadInput(raw: unknown): LoadInputData {
   const loadingLocation = location(raw.loadingLocation);
   const unloadingPlace = requiredString(raw.unloadingPlace, "Место выгрузки");
   const cargo = requiredString(raw.cargo, "Груз");
+  const cargoForm = requiredString(raw.cargoForm, "Тип загрузки груза");
+  const bodyType = requiredString(raw.bodyType, "Тип кузова");
   const cargoTypes = requiredStringArray(raw.cargoTypes, "Типы грузов");
   const customerName = requiredString(raw.customerName, "Имя заказчика");
   const customerPhone = requiredString(raw.customerPhone, "Телефон заказчика");
@@ -17,15 +19,29 @@ export function validateLoadInput(raw: unknown): LoadInputData {
   const unloadingDistrict = requiredStringArray(raw.unloadingDistrict, "Федеральные округа выгрузки");
   const vatType = requiredString(raw.vatType, "Условия НДС");
   const loadingDate = requiredDate(raw.loadingDate, "Дата погрузки");
+  const distance = positiveNumber(raw.distance, "Расстояние");
+  const ratePerKm = optionalPositiveNumber(raw.ratePerKm, "Ставка за км");
+  const rate = optionalPositiveNumber(raw.rate, "Ставка за рейс");
+
+  if (ratePerKm == null && rate == null) {
+    throw new Error("Необходимо указать ставку за км или ставку за рейс");
+  }
+
+  const finalRatePerKm = ratePerKm ?? (distance > 0 ? rate! / distance : 0);
+  const finalRate = ratePerKm != null ? ratePerKm * distance : rate!;
+  const tonnage = validateTonnage(raw.tonnage);
 
   return {
     loadingPlace,
     loadingLocation,
     unloadingPlace,
-    distance: positiveNumber(raw.distance, "Расстояние"),
-    rate: positiveNumber(raw.rate, "Ставка"),
-    tonnage: positiveNumber(raw.tonnage, "Тоннаж"),
+    distance,
+    rate: finalRate,
+    ratePerKm: finalRatePerKm,
+    tonnage,
+    bodyType,
     cargo,
+    cargoForm,
     cargoTypes,
     additionalInfo: optionalString(raw.additionalInfo),
     customerName,
@@ -64,6 +80,29 @@ function positiveNumber(value: unknown, field: string): number {
     throw new Error(`${field} должно быть положительным числом`);
   }
   return number;
+}
+
+function optionalPositiveNumber(value: unknown, field: string): number | null {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+  const number = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(number) || number <= 0) {
+    throw new Error(`${field} должно быть положительным числом`);
+  }
+  return number;
+}
+
+function validateTonnage(value: unknown): { tonnageWeight: number; tonnageUnit: "kg" | "ton" } {
+  if (!isRecord(value)) {
+    throw new Error("Тоннаж должен быть объектом");
+  }
+  const tonnageWeight = positiveNumber(value.tonnageWeight, "Вес груза");
+  const tonnageUnit = value.tonnageUnit;
+  if (tonnageUnit !== "kg" && tonnageUnit !== "ton") {
+    throw new Error("Единица измерения тоннажа должна быть 'kg' или 'ton'");
+  }
+  return { tonnageWeight, tonnageUnit };
 }
 
 function location(value: unknown): { lat: number; lng: number } {

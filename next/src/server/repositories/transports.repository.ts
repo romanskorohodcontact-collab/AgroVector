@@ -2,6 +2,7 @@ import {
   DEFAULT_TRANSPORT_SORT,
   type Transport,
   type TransportFilters,
+  type TransportMapItem,
   type TransportSearchResult,
   type TransportSort,
   type TransportSortField,
@@ -73,6 +74,14 @@ export async function listTransportsByUser(userId: string): Promise<Transport[]>
   return docs.map(toTransport);
 }
 
+export async function getTransportsByIds(ids: string[]): Promise<Transport[]> {
+  await connectDb();
+  const objectIds = ids.map(toObjectId);
+  const docs = (await TransportModel.find({ _id: { $in: objectIds } })
+    .lean()) as unknown as TransportRecord[];
+  return docs.map(toTransport);
+}
+
 export async function getOwnTransport(
   id: string,
   userId: string
@@ -124,25 +133,36 @@ export async function searchTransports(
     fetchSortedTransports(query, sort, page, limit),
   ]);
 
-  return {
-    items: (itemDocs as unknown as TransportRecord[]).map(toTransport),
-    total,
-  };
+  const items = (itemDocs as unknown as TransportRecord[]).map(toTransport);
+  const mapItems: TransportMapItem[] = (itemDocs as unknown as TransportRecord[]).map(
+    (doc) => ({
+      id: doc._id.toString(),
+      transportLocation: doc.transportLocation,
+    })
+  );
+
+  return { items, mapItems, total };
 }
 
 function buildTransportQuery(filters: TransportFilters): QueryFilter<TransportFields> {
   const query: QueryFilter<TransportFields> = {};
-  if (filters.transportType) {
-    query.transportType = { $eq: filters.transportType };
+  if (filters.bodyTypes && filters.bodyTypes.length > 0) {
+    query.bodyType = { $in: filters.bodyTypes };
   }
-  if (filters.bodyType) {
-    query.bodyType = { $eq: filters.bodyType };
+  if (filters.loadingTypes && filters.loadingTypes.length > 0) {
+    query.loadingType = { $in: filters.loadingTypes };
   }
-  if (filters.workDistricts && filters.workDistricts.length > 0) {
-    query.workDistricts = { $in: filters.workDistricts };
+  if (filters.vatTypes && filters.vatTypes.length > 0) {
+    query.vatType = { $in: filters.vatTypes };
   }
-  if (filters.minLoadCapacity != null) {
-    query.loadCapacityTons = { $gte: filters.minLoadCapacity };
+  if (filters.cargoTypes && filters.cargoTypes.length > 0) {
+    query.cargoTypes = { $in: filters.cargoTypes };
+  }
+  if (filters.workRegions && filters.workRegions.length > 0) {
+    query.workRegions = { $in: filters.workRegions };
+  }
+  if (filters.maxRatePerKm != null) {
+    query.minRatePerKm = { $lte: filters.maxRatePerKm };
   }
   return query;
 }
@@ -158,6 +178,7 @@ function toCreateQuery(data: CreateTransportData) {
 const SORT_FIELDS: Record<TransportSortField, string> = {
   loadCapacityTons: "loadCapacityTons",
   minRatePerKm: "minRatePerKm",
+  bodyVolumeM3: "bodyVolumeM3",
   createdAt: "createdAt",
 };
 

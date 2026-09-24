@@ -5,11 +5,7 @@ import { getAvailabilityDisplay } from "../model";
 
 const AVAILABILITY_COLORS: Record<string, { bg: string; text: string }> = {
   "Свободен": { bg: "bg-[#E9F3EC]", text: "text-[#23793D]" },
-  "В рейсе": { bg: "bg-[#EAF1F8]", text: "text-[#286090]" },
   "Занят": { bg: "bg-[#FFF4E5]", text: "text-[#A86400]" },
-  "На ремонте": { bg: "bg-[#FFF0E8]", text: "text-[#B65322]" },
-  "Не работает": { bg: "bg-[#F4EAEA]", text: "text-[#9B3535]" },
-  "Неизвестно": { bg: "bg-[#F0F0F0]", text: "text-[#666666]" },
 };
 
 interface TransportCardProps {
@@ -23,7 +19,7 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
     transport.availability.date,
   );
 
-  const colors = AVAILABILITY_COLORS[availability.type] ?? AVAILABILITY_COLORS["Неизвестно"];
+  const colors = AVAILABILITY_COLORS[availability.type] ?? AVAILABILITY_COLORS["Свободен"];
 
   const capacity =
     transport.loadCapacityTons != null ? `${transport.loadCapacityTons} т` : "—";

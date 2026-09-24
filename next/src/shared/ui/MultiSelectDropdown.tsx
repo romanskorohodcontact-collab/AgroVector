@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { FilterPopover } from "./FilterPopover";
 
 const inputClass =
   "h-[38px] w-full px-4 border-[1.2px] border-[#0D0D0D0D] rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] transition-colors duration-150 focus:outline-none focus:border-accent cursor-pointer flex items-center";
 
 const labelClass =
-  "mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]";
+  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
 
 interface MultiSelectDropdownProps {
   label: string;
@@ -14,6 +15,12 @@ interface MultiSelectDropdownProps {
   selected: string[];
   onToggle: (item: string) => void;
   placeholder?: string;
+  hideLabel?: boolean;
+  panelWidthClass?: string;
+  columns?: 1 | 2;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onReset?: () => void;
 }
 
 export function MultiSelectDropdown({
@@ -22,9 +29,28 @@ export function MultiSelectDropdown({
   selected,
   onToggle,
   placeholder = "Выберите",
+  hideLabel = false,
+  panelWidthClass,
+  columns = 2,
+  open: controlledOpen,
+  onOpenChange,
+  onReset,
 }: MultiSelectDropdownProps) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
   const ref = useRef<HTMLDivElement>(null);
+
+  const setOpen = useCallback(
+    (value: boolean) => {
+      if (isControlled) {
+        onOpenChange?.(value);
+      } else {
+        setInternalOpen(value);
+      }
+    },
+    [isControlled, onOpenChange]
+  );
 
   useEffect(() => {
     function onMouseDown(e: MouseEvent) {
@@ -34,23 +60,23 @@ export function MultiSelectDropdown({
     }
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
-  }, []);
+  }, [setOpen]);
 
   return (
-    <div className={`flex flex-col w-full min-w-0 gap-1.5 ${open ? "relative z-50" : "relative"}`}>
-      <span className={labelClass}>{label}</span>
+    <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
+      {!hideLabel && <span className={labelClass}>{label}</span>}
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => setOpen(!open)}
         className={inputClass}
       >
-        <div className="flex items-center gap-2 w-full min-w-0">
+        <div className="flex items-left gap-2 w-full min-w-0">
           {selected.length > 0 ? (
             <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis">
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {item}
                 </span>
@@ -80,33 +106,13 @@ export function MultiSelectDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-[calc(100%+8px)] left-0 right-0 border border-[#ECECEC] rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#ECECEC] bg-bg-subtle">
-            <span className="text-[12px] font-normal text-text-muted tracking-[-0.14px]">
-              {label}
-            </span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Закрыть"
-              className="flex items-center justify-center w-8 h-8 shrink-0 rounded-pill bg-white text-text-secondary transition-colors duration-150 hover:bg-[#EFEFEF] hover:text-text-primary"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                aria-hidden="true"
-              >
-                <path d="M18 6 6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="px-4 py-2 grid grid-cols-2 gap-1 max-[640px]:grid-cols-1">
+        <FilterPopover
+          label={label}
+          onReset={onReset}
+          hasValue={selected.length > 0}
+          panelWidthClass={panelWidthClass}
+        >
+          <div className={`bg-white rounded-2xl max-h-[320px] overflow-y-auto px-4 py-2 grid ${columns === 1 ? "grid-cols-1" : "grid-cols-2"} gap-1 max-[640px]:grid-cols-1`}>
             {options.map((item) => (
               <label
                 key={item}
@@ -124,7 +130,7 @@ export function MultiSelectDropdown({
               </label>
             ))}
           </div>
-        </div>
+        </FilterPopover>
       )}
     </div>
   );

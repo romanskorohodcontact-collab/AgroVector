@@ -129,19 +129,24 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
           </div>
 
           <div className="mt-2">
-            <DtcRow label="Тоннаж" value={`${load.tonnage} т`} />
+            <DtcRow label="Тоннаж" value={`${load.tonnage.tonnageWeight} ${load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}`} />
             <DtcRow
               label="Километраж"
               value={`${load.distance.toLocaleString("ru-RU")} км`}
             />
             <DtcRow
-              label="Ставка"
+              label="Ставка за км"
+              value={`${load.ratePerKm.toFixed(2)} ₽/км`}
+            />
+            <DtcRow
+              label="Ставка за рейс"
               value={`${load.rate.toLocaleString("ru-RU")} ₽`}
             />
             <DtcRow
               label="Тип груза"
               value={load.cargoTypes?.join(", ") || "—"}
             />
+            <DtcRow label="Тип кузова" value={load.bodyType || "—"} />
             <DtcRow
               label="Округ и регион погрузки"
               value={`${(load.loadingDistrict ?? []).join(", ") || "—"}, ${load.loadingRegion?.join(", ") || "—"}`}

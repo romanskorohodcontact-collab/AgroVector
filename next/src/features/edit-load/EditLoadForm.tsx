@@ -7,7 +7,7 @@ import { useState } from "react";
 import { LoadCard } from "@/entities/load";
 import type { GeoPoint, Load, LoadCustomProperty } from "@/entities/load/model";
 import { ANY_WAY, LOADING_TYPES_WITH_ANY, UNLOADING_TYPES_WITH_ANY } from "@/entities/load/model";
-import { CARGO_TYPES, VAT_TYPES } from "@/entities/transport/model";
+import { CARGO_TYPES, LOAD_VAT_TYPES, BODY_TYPES } from "@/entities/transport/model";
 import { MapPicker } from "@/features/map";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
 import { FormInput, FormSelect, FormTextarea } from "@/shared/ui/FormInput";
@@ -38,7 +38,10 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     unloadingPlace: load.unloadingPlace,
     distance: String(load.distance),
     rate: String(load.rate),
-    tonnage: String(load.tonnage),
+    ratePerKm: String(load.ratePerKm),
+    tonnage: String(load.tonnage.tonnageWeight),
+    tonnageUnit: load.tonnage.tonnageUnit,
+    bodyType: load.bodyType,
     cargo: load.cargo,
     cargoTypes: [...load.cargoTypes],
     additionalInfo: load.additionalInfo,
@@ -81,13 +84,36 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     }
 
     const form = new FormData(event.currentTarget);
+    const distance = Number(form.get("distance"));
+    const ratePerKmRaw = form.get("ratePerKm");
+    const rateRaw = form.get("rate");
+    
+    let rate: number;
+    let ratePerKm: number;
+    
+    if (ratePerKmRaw) {
+      ratePerKm = Number(ratePerKmRaw);
+      rate = Math.round(ratePerKm * distance);
+    } else if (rateRaw) {
+      rate = Number(rateRaw);
+      ratePerKm = distance > 0 ? Math.round(rate / distance) : 0;
+    } else {
+      rate = 0;
+      ratePerKm = 0;
+    }
+    
     mutation.mutate({
       loadingPlace: form.get("loadingPlace"),
       loadingLocation: location,
       unloadingPlace: form.get("unloadingPlace"),
-      distance: Number(form.get("distance")),
-      rate: Number(form.get("rate")),
-      tonnage: Number(form.get("tonnage")),
+      distance,
+      rate,
+      ratePerKm,
+      tonnage: {
+        tonnageWeight: Number(form.get("tonnage")),
+        tonnageUnit: form.get("tonnageUnit") as "kg" | "ton",
+      },
+      bodyType: form.get("bodyType"),
       cargo: form.get("cargo"),
       cargoTypes: draft.cargoTypes,
       additionalInfo: form.get("additionalInfo"),
@@ -114,7 +140,29 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) {
     const { name, value } = event.target;
-    setDraft((prev) => ({ ...prev, [name]: value }));
+    setDraft((prev) => {
+      const next = { ...prev, [name]: value };
+      
+      if (name === "ratePerKm" || name === "rate" || name === "distance") {
+        const distance = Number(next.distance) || 0;
+        const ratePerKm = Number(next.ratePerKm) || 0;
+        const rate = Number(next.rate) || 0;
+        
+        if (name === "ratePerKm" && ratePerKm > 0 && distance > 0) {
+          next.rate = String(Math.round(ratePerKm * distance));
+        } else if (name === "rate" && rate > 0 && distance > 0) {
+          next.ratePerKm = String(Math.round(rate / distance));
+        } else if (name === "distance" && distance > 0) {
+          if (ratePerKm > 0) {
+            next.rate = String(Math.round(ratePerKm * distance));
+          } else if (rate > 0) {
+            next.ratePerKm = String(Math.round(rate / distance));
+          }
+        }
+      }
+      
+      return next;
+    });
   }
 
   function handleCargoTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -193,7 +241,12 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     unloadingPlace: draft.unloadingPlace || "Город назначения",
     distance: Number(draft.distance) || 0,
     rate: Number(draft.rate) || 0,
-    tonnage: Number(draft.tonnage) || 0,
+    ratePerKm: Number(draft.ratePerKm) || 0,
+    tonnage: {
+      tonnageWeight: Number(draft.tonnage) || 0,
+      tonnageUnit: draft.tonnageUnit as "kg" | "ton",
+    },
+    bodyType: draft.bodyType || load.bodyType,
     cargo: draft.cargo || "Название груза",
     cargoTypes: draft.cargoTypes,
     additionalInfo: draft.additionalInfo,
@@ -271,10 +324,26 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className={labelClass} htmlFor="f-rate">
-                Ставка
+                Ставка за км
               </label>
               <FormInput
                 id="f-rate"
+                type="number"
+                name="ratePerKm"
+                value={draft.ratePerKm}
+                onChange={handleFieldChange}
+                placeholder="₽/км"
+                inputMode="numeric"
+                min="0"
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className={labelClass} htmlFor="f-trip-rate">
+                Ставка за рейс
+              </label>
+              <FormInput
+                id="f-trip-rate"
                 type="number"
                 name="rate"
                 value={draft.rate}
@@ -283,7 +352,6 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
                 inputMode="numeric"
                 min="0"
                 autoComplete="off"
-                required
               />
             </div>
           </div>
@@ -335,9 +403,28 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
                 required
               >
                 <option value="">Выберите условие</option>
-                {VAT_TYPES.map((v) => (
+                {LOAD_VAT_TYPES.map((v) => (
                   <option key={v} value={v}>
                     {v}
+                  </option>
+                ))}
+              </FormSelect>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className={labelClass} htmlFor="f-body-type">
+                Тип кузова
+              </label>
+              <FormSelect
+                id="f-body-type"
+                name="bodyType"
+                value={draft.bodyType}
+                onChange={handleFieldChange}
+                required
+              >
+                <option value="">Выберите тип кузова</option>
+                {BODY_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
                   </option>
                 ))}
               </FormSelect>
@@ -403,18 +490,29 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
                 <label className={labelClass} htmlFor="f-tonnage">
                   Тоннаж
                 </label>
-                <FormInput
-                  id="f-tonnage"
-                  type="number"
-                  name="tonnage"
-                  value={draft.tonnage}
-                  onChange={handleFieldChange}
-                  placeholder="тонн"
-                  inputMode="numeric"
-                  min="0"
-                  autoComplete="off"
-                  required
-                />
+                <div className="flex gap-2">
+                  <FormInput
+                    id="f-tonnage"
+                    type="number"
+                    name="tonnage"
+                    value={draft.tonnage}
+                    onChange={handleFieldChange}
+                    placeholder="вес"
+                    inputMode="numeric"
+                    min="0"
+                    autoComplete="off"
+                    required
+                  />
+                  <FormSelect
+                    name="tonnageUnit"
+                    value={draft.tonnageUnit}
+                    onChange={handleFieldChange}
+                    required
+                  >
+                    <option value="ton">т</option>
+                    <option value="kg">кг</option>
+                  </FormSelect>
+                </div>
               </div>
             </div>
           </div>

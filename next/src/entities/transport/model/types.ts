@@ -4,13 +4,20 @@ export interface TransportAvailability {
 }
 
 export interface TransportFilters {
-  transportType?: string;
-  bodyType?: string;
-  workDistricts?: string[];
-  minLoadCapacity?: number;
+  bodyTypes?: string[];
+  loadingTypes?: string[];
+  vatTypes?: string[];
+  cargoTypes?: string[];
+  workRegions?: string[];
+  maxRatePerKm?: number;
 }
 
-export type TransportSortField = "loadCapacityTons" | "minRatePerKm" | "createdAt";
+export interface TransportMapItem {
+  id: string;
+  transportLocation?: { lat: number; lng: number };
+}
+
+export type TransportSortField = "loadCapacityTons" | "minRatePerKm" | "bodyVolumeM3" | "createdAt";
 export type SortDirection = "asc" | "desc";
 
 export interface TransportSortCriterion {
@@ -24,6 +31,7 @@ export const DEFAULT_TRANSPORT_SORT: TransportSort = { field: "createdAt", dir: 
 
 export interface TransportSearchResult {
   items: Transport[];
+  mapItems: TransportMapItem[];
   total: number;
 }
 

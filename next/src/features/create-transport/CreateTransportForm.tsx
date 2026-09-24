@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { TransportCard } from "@/entities/transport";
 import type { Transport } from "@/entities/transport/model";
+import { TransportDetailButton } from "@/widgets/transport-detail";
 import {
   TRANSPORT_TYPES,
   BODY_TYPES,
@@ -22,6 +23,7 @@ import { ChipGroup } from "@/shared/ui/ChipGroup";
 import { FormInput, FormSelect, FormTextarea } from "@/shared/ui/FormInput";
 import { DistrictRegionSelector } from "@/shared/ui/DistrictRegionSelector";
 import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
+import type { User } from "@/entities/user";
 
 const labelClass =
   "mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]";
@@ -31,7 +33,11 @@ const formGridClass = "grid grid-cols-2 gap-4 max-[640px]:grid-cols-1";
 const sectionTitleClass =
   "text-base font-semibold leading-[1.5] text-text-primary tracking-[-0.16px] mb-4";
 
-export function CreateTransportForm() {
+interface CreateTransportFormProps {
+  user?: User;
+}
+
+export function CreateTransportForm({ user }: CreateTransportFormProps) {
   const router = useRouter();
   const [location, setLocation] = useState<GeoPoint | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -51,8 +57,8 @@ export function CreateTransportForm() {
     availabilityType: "Свободен",
     availabilityDate: "",
     additionalInfo: "",
-    contactName: "",
-    contactPhone: "",
+    contactName: user?.name ?? "",
+    contactPhone: user?.phone ?? "",
   });
 
   const mutation = useMutation({
@@ -494,7 +500,7 @@ export function CreateTransportForm() {
             Предпросмотр заявки
           </h3>
           point
-          <TransportCard transport={previewTransport} />
+          <TransportDetailButton transport={previewTransport} />
         </div>
       </aside>
     </div>

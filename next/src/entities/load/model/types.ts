@@ -61,6 +61,11 @@ export interface LoadCustomProperty {
   value: string;
 }
 
+export interface Tonnage {
+  tonnageWeight: number;
+  tonnageUnit: "kg" | "ton";
+}
+
 export interface Load {
   id: string;
   userId?: string;
@@ -69,8 +74,11 @@ export interface Load {
   unloadingPlace: string;
   distance: number;
   rate: number;
-  tonnage: number;
+  ratePerKm: number;
+  tonnage: Tonnage;
+  bodyType: string;
   cargo: string;
+  cargoForm: string;
   cargoTypes: string[];
   additionalInfo: string;
   customerName: string;

@@ -17,16 +17,37 @@ export interface YmapsPlacemark {
   };
 }
 
+export interface YmapsCluster {
+  events: {
+    add: (type: string, handler: (event: YmapsEvent) => void) => void;
+  };
+  getGeoObjects: () => YmapsPlacemark[];
+  getBounds: () => unknown;
+}
+
+export interface YmapsClusterer {
+  add: (object: YmapsPlacemark) => YmapsClusterer;
+  removeAll: () => YmapsClusterer;
+  getObjectState: (object: YmapsPlacemark) => {
+    isShown: boolean;
+    isClustered: boolean;
+  };
+  createCluster?: (
+    center?: unknown,
+    geoObjects?: YmapsPlacemark[]
+  ) => YmapsCluster;
+}
+
 export interface YmapsMap {
   events: {
     add: (type: string, handler: (event: YmapsEvent) => void) => void;
   };
   geoObjects: {
-    add: (object: YmapsPlacemark) => void;
-    remove: (object: YmapsPlacemark) => void;
+    add: (object: YmapsPlacemark | YmapsClusterer) => void;
+    remove: (object: YmapsPlacemark | YmapsClusterer) => void;
     removeAll: () => void;
   };
-  setBounds: (bounds: unknown) => void;
+  setBounds: (bounds: unknown, options?: Record<string, unknown>) => void;
   setCenter: (center: [number, number], zoom?: number) => void;
   setZoom: (zoom: number) => void;
   getZoom: () => number;
@@ -43,6 +64,7 @@ export interface YmapsApi {
     coordinates: [number, number],
     properties?: Record<string, string>
   ) => YmapsPlacemark;
+  Clusterer: new (options?: Record<string, unknown>) => YmapsClusterer;
   util: {
     bounds: {
       fromPoints: (points: [number, number][]) => unknown;

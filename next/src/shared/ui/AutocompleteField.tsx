@@ -4,19 +4,25 @@ import { useState } from "react";
 import { FormInputIcon } from "./FormInput";
 
 interface AutocompleteFieldProps {
+  label: string;
   value: string;
   onChange: (value: string) => void;
   options: string[];
   id: string;
   placeholder: string;
+  hideLabel?: boolean;
 }
 
+const labelClass = "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
+
 export function AutocompleteField({
+  label,
   value,
   onChange,
   options,
   id,
   placeholder,
+  hideLabel = false
 }: AutocompleteFieldProps) {
   const [open, setOpen] = useState(false);
   const trimmed = value.trim().toLowerCase();
@@ -30,6 +36,7 @@ export function AutocompleteField({
   return (
     <div className="min-w-0">
       <div className="relative">
+        {!hideLabel && <span className={labelClass}>{label}</span>}
         <FormInputIcon
           id={id}
           type="text"
@@ -42,7 +49,7 @@ export function AutocompleteField({
           onBlur={() => setOpen(false)}
           placeholder={placeholder}
           autoComplete="off"
-          icon={<SearchIcon />}
+          icon={null}
         />
         {matches.length > 0 ? (
           <ul

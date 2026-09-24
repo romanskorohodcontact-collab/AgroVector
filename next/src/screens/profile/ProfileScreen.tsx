@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { User } from "@/entities/user/model";
-import { LoadCard } from "@/entities/load";
 import { LogoutButton } from "@/features/auth";
+import { ProfileLoadCard } from "./ui/ProfileLoadCard";
+import { ProfileTransportCardDetail } from "./ui/ProfileTransportCardDetail";
 import { listMyLoads } from "@/server/modules/loads";
+import { listMyTransports } from "@/server/modules/transports";
 import { getInitials } from "@/shared/lib/getInitials";
 import { EditIcon } from "@/shared/ui/EditIcon";
 import { Footer } from "@/widgets/footer";
@@ -14,6 +16,7 @@ interface ProfileScreenProps {
 
 export async function ProfileScreen({ user }: ProfileScreenProps) {
   const myLoads = await listMyLoads(user.id);
+  const myTransports = await listMyTransports(user.id);
 
   return (
     <main className="bg-bg-subtle">
@@ -28,12 +31,14 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
         >
           {getInitials(user.name)}
         </div>
-        <h1 className="text-2xl font-medium text-text-primary tracking-[-0.48px] mb-1.5 max-[640px]:text-xl max-[640px]:tracking-[-0.4px]">
-          {user.name || "—"}
-        </h1>
-        <p className="text-base text-text-secondary tracking-[-0.16px] mb-4">
-          {user.companyName || "—"}
-        </p>
+        <div className="w-full max-w-[720px] min-w-0 flex flex-col items-center">
+          <h1 className="w-full text-center text-2xl font-medium text-text-primary tracking-[-0.48px] mb-1.5 max-[640px]:text-xl max-[640px]:tracking-[-0.4px] truncate [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)] [mask-image:linear-gradient(to_right,black_88%,transparent_100%)]">
+            {user.name || "—"}
+          </h1>
+          <p className="w-full text-center text-base text-text-secondary tracking-[-0.16px] mb-4 truncate [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)] [mask-image:linear-gradient(to_right,black_88%,transparent_100%)]">
+            {user.companyName || "—"}
+          </p>
+        </div>
         <span className="inline-flex items-center h-6 px-3 rounded-pill bg-bg-subtle text-[13px] font-medium text-accent tracking-[-0.13px]">
           <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-accent mr-2" />
           Онлайн
@@ -71,7 +76,7 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
         <section className="min-w-0">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-lg font-semibold leading-[1.33] text-text-primary tracking-[-0.18px]">
-              Мои заявки
+              Мои заявки на груз
             </h2>
             <span className="text-sm text-text-muted tracking-[-0.14px]">
               {myLoads.length} {pluralLoads(myLoads.length)}
@@ -85,7 +90,31 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
           ) : (
             <div className="grid grid-cols-2 gap-3 max-[960px]:grid-cols-1">
               {myLoads.map((load) => (
-                <LoadCard key={load.id} load={load} editable />
+                <ProfileLoadCard key={load.id} load={load} editable />
+              ))}
+            </div>
+          )}
+
+          <div className="flex justify-between items-center mb-5 mt-10">
+            <h2 className="text-lg font-semibold leading-[1.33] text-text-primary tracking-[-0.18px]">
+              Мои заявки на транспорт
+            </h2>
+            <span className="text-sm text-text-muted tracking-[-0.14px]">
+              {myTransports.length} {pluralLoads(myTransports.length)}
+            </span>
+          </div>
+
+          {myTransports.length === 0 ? (
+            <p className="text-sm text-text-muted tracking-[-0.14px]">
+              Заявок пока нет
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 max-[960px]:grid-cols-1">
+              {myTransports.map((transport) => (
+                <ProfileTransportCardDetail
+                  key={transport.id}
+                  transport={transport}
+                />
               ))}
             </div>
           )}
@@ -116,7 +145,7 @@ interface ContactRowLabelProps {
 
 function ContactRowLabel({ icon, label, value }: ContactRowLabelProps) {
   return (
-    <div className="flex items-center gap-3.5">
+    <div className="flex items-center gap-3.5 min-w-0">
       <div className="flex items-center justify-center w-[38px] h-[38px] rounded-[10px] bg-bg-subtle text-text-muted shrink-0 max-[640px]:w-[34px] max-[640px]:h-[34px]">
         <ContactIcon name={icon} />
       </div>
@@ -124,8 +153,14 @@ function ContactRowLabel({ icon, label, value }: ContactRowLabelProps) {
         <div className="text-[13px] text-text-muted tracking-[-0.13px] mb-0.5">
           {label}
         </div>
-        <div className="text-base font-medium text-text-primary tracking-[-0.16px] max-[640px]:text-[15px] break-words">
-          {value}
+        <div className="relative min-w-0">
+          <div className="text-base font-medium text-text-primary tracking-[-0.16px] max-[640px]:text-[15px] truncate">
+            {value}
+          </div>
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none"
+          />
         </div>
       </div>
     </div>

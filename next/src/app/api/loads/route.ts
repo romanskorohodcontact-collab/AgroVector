@@ -5,10 +5,29 @@ import {
   type LoadSort,
 } from "@/entities/load/model";
 import { getCurrentUser } from "@/server/modules/auth";
-import { createLoad, searchLoads } from "@/server/modules/loads";
+import { createLoad, getLoads, searchLoads } from "@/server/modules/loads";
+
+const MAX_IDS = 100;
 
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
+  const idsRaw = params.get("ids");
+  if (idsRaw) {
+    const ids = idsRaw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .slice(0, MAX_IDS);
+    try {
+      const loads = await getLoads(ids);
+      return NextResponse.json(loads);
+    } catch {
+      return NextResponse.json(
+        { error: "Не удалось получить заявки" },
+        { status: 500 }
+      );
+    }
+  }
   const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
   const limit = Math.min(
     50,

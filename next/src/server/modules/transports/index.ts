@@ -3,6 +3,7 @@ export {
   deleteTransport,
   getOwnTransport,
   getTransport,
+  getTransportsByIds,
   listMyTransports,
   listTransports,
   searchTransports,

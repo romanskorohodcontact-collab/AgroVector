@@ -10,8 +10,14 @@ export interface LoadFields {
   unloadingPlace: string;
   distance: number;
   rate: number;
-  tonnage: number;
+  ratePerKm: number;
+  tonnage: {
+    tonnageWeight: number;
+    tonnageUnit: "kg" | "ton";
+  };
+  bodyType: string;
   cargo: string;
+  cargoForm: string;
   cargoTypes: string[];
   additionalInfo: string;
   customerName: string;
@@ -39,8 +45,14 @@ const loadSchema = new Schema<LoadFields>(
     unloadingPlace: { type: String, required: true },
     distance: { type: Number, required: true },
     rate: { type: Number, required: true },
-    tonnage: { type: Number, required: true },
+    ratePerKm: { type: Number, required: true },
+    tonnage: {
+      tonnageWeight: { type: Number, required: true },
+      tonnageUnit: { type: String, required: true, enum: ["kg", "ton"] },
+    },
+    bodyType: { type: String, required: true },
     cargo: { type: String, required: true },
+    cargoForm: { type: String, required: true },
     cargoTypes: { type: [String], required: true },
     additionalInfo: { type: String, default: "" },
     customerName: { type: String, required: true },
