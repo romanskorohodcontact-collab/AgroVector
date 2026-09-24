@@ -76,9 +76,6 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     [values, applied]
   );
   const searchEnabled = !hasSearched || isDirty;
-  const resultsListClass = filtersCollapsed
-    ? "grid grid-cols-2 gap-3 max-[560px]:grid-cols-1"
-    : "flex flex-col gap-3";
 
   function handleSubmit() {
     setHasSearched(true);
@@ -123,10 +120,10 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
           />
         </section>
 
-        <div className={`min-h-0 ${filtersCollapsed ? "flex flex-col" : "grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1"}`}>
+        <div className={`min-h-0 grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1`}>
           <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
 
-          <section className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto ${filtersCollapsed ? "flex-1" : ""}`} aria-label="Заявки на груз">
+          <section className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto`} aria-label="Заявки на груз">
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
                 {clusterFilter && clusterQuery.data
@@ -166,7 +163,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   Не удалось загрузить заявку
                 </p>
               ) : selectedQuery.data ? (
-                <div className={resultsListClass}>
+                <div className="flex flex-col gap-3">
                   <LoadCard load={selectedQuery.data} />
                 </div>
               ) : null
@@ -184,7 +181,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                   Заявок не найдено
                 </p>
               ) : (
-                <div className={resultsListClass}>
+                <div className="flex flex-col gap-3">
                   {clusterQuery.data?.map((load) => (
                     <LoadCard key={load.id} load={load} />
                   ))}
@@ -203,7 +200,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                 Заявок не найдено
               </p>
             ) : (
-              <div className={resultsListClass}>
+              <div className="flex flex-col gap-3">
                 {result?.items.map((load) => (
                   <LoadCard key={load.id} load={load} />
                 ))}
@@ -499,17 +496,13 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
 
   return (
     <aside
-      className={
-        horizontal
-          ? "flex items-center gap-6 flex-wrap px-4 py-2 border-b border-[#0D0D0D12]"
-          : "px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
-      }
+      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
       aria-label="Сортировка"
     >
       <h2 className={`${horizontal ? "hidden" : "mb-4"} text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
         Сортировка
       </h2>
-      <div className={horizontal ? "flex items-center justify-between w-full gap-2" : "flex flex-col gap-1"}>
+      <div className="flex flex-col gap-1">
         {SORT_OPTIONS.map((option) => {
           const active = sort.field === option.field;
           const activeDir = dirs[option.field];

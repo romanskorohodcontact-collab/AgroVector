@@ -14,7 +14,7 @@ import { FormInput, FormSelect, FormTextarea } from "@/shared/ui/FormInput";
 import { DistrictRegionSelector } from "@/shared/ui/DistrictRegionSelector";
 import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
 
-const labelClass = "mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]";
+const labelClass = "mb-1.5 block text-[13px] font-medium text-text-primary tracking-[-0.13px]";
 
 const formGridClass = "grid grid-cols-2 gap-4 max-[640px]:grid-cols-1";
 
@@ -87,10 +87,10 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     const distance = Number(form.get("distance"));
     const ratePerKmRaw = form.get("ratePerKm");
     const rateRaw = form.get("rate");
-    
+
     let rate: number;
     let ratePerKm: number;
-    
+
     if (ratePerKmRaw) {
       ratePerKm = Number(ratePerKmRaw);
       rate = Math.round(ratePerKm * distance);
@@ -101,7 +101,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
       rate = 0;
       ratePerKm = 0;
     }
-    
+
     mutation.mutate({
       loadingPlace: form.get("loadingPlace"),
       loadingLocation: location,
@@ -142,12 +142,12 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     const { name, value } = event.target;
     setDraft((prev) => {
       const next = { ...prev, [name]: value };
-      
+
       if (name === "ratePerKm" || name === "rate" || name === "distance") {
         const distance = Number(next.distance) || 0;
         const ratePerKm = Number(next.ratePerKm) || 0;
         const rate = Number(next.rate) || 0;
-        
+
         if (name === "ratePerKm" && ratePerKm > 0 && distance > 0) {
           next.rate = String(Math.round(ratePerKm * distance));
         } else if (name === "rate" && rate > 0 && distance > 0) {
@@ -160,7 +160,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
           }
         }
       }
-      
+
       return next;
     });
   }
