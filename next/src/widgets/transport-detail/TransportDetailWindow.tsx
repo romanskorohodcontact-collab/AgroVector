@@ -51,7 +51,7 @@ export function TransportDetailWindow({
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-[1000px] h-[80vh] bg-white border border-[#ECECEC] rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
+      <div className="relative w-full max-w-[1000px] h-[80vh] bg-white border border-border rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
         <div className="min-h-0 max-[900px]:h-[220px] max-[900px]:order-first bg-bg-subtle">
           <LoadDetailMap
             location={transport.transportLocation}

@@ -47,20 +47,20 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
 
       <div className="max-w-[1100px] mx-auto px-6 pt-8 pb-14 grid grid-cols-[1fr_2fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pt-6 max-[640px]:pb-10">
         <section className="min-w-0 self-start sticky top-0 max-[960px]:static">
-          <div className="border border-[#ECECEC] rounded-[20px] bg-white overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-[#ECECEC] max-[640px]:px-4 max-[640px]:py-3.5">
+          <div className="border border-border rounded-[20px] bg-white overflow-hidden">
+            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="phone" label="Телефон" value={user.phone} />
             </div>
 
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-[#ECECEC] max-[640px]:px-4 max-[640px]:py-3.5">
+            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="mail" label="Почта" value={user.email || "—"} />
             </div>
 
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-[#ECECEC] max-[640px]:px-4 max-[640px]:py-3.5">
+            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="building" label="Компания" value={user.companyName || "—"} />
             </div>
 
-            <div className="px-6 py-4 border-t border-[#ECECEC] flex flex-col gap-3 max-[640px]:px-4">
+            <div className="px-6 py-4 border-t border-border flex flex-col gap-3 max-[640px]:px-4">
               <Link
                 href="/profile/edit"
                 className="inline-flex items-center justify-center gap-1.5 h-9 w-full px-4 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent/90"

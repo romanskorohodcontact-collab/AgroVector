@@ -4,12 +4,7 @@ import { useCallback, useState } from "react";
 import { usePopoverDismiss } from "@/shared/lib/usePopoverDismiss";
 import { DistrictRegionSelector } from "./DistrictRegionSelector";
 import { FilterPopover } from "./FilterPopover";
-
-const triggerClass =
-  "h-[38px] w-full px-4 border-[1.2px] border-[#0D0D0D0D] rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] transition-colors duration-150 focus:outline-none focus:border-accent cursor-pointer flex items-center";
-
-const labelClass =
-  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
+import { FORM_FILTER_TRIGGER, FIELD_LABEL } from "./FormInput";
 
 interface DistrictRegionSelectorPopoverProps {
   label: string;
@@ -53,23 +48,23 @@ export function DistrictRegionSelectorPopover({
 
   return (
     <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
-      {!hideLabel && <span className={labelClass}>{label}</span>}
+      {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
 
       <button
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className={triggerClass}
+        className={FORM_FILTER_TRIGGER}
       >
-        <div className="flex items-left gap-2 w-full min-w-0">
+        <div className="flex items-center gap-2 w-full min-w-0">
 
           {selectedRegions.length > 0 ? (
             <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis">
               {selectedRegions.map((region) => (
                 <span
                   key={region}
-                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-white text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {region}
                 </span>

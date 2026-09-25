@@ -12,18 +12,23 @@
   --color-text-muted: #8f8f8f;
   --color-text-inverse: #ffffff;
   --color-bg-subtle: #f9f9f9;
+  --color-bg-input: #f3f3f3;
   --color-accent: #23793d;
   --color-accent-orange: #e95420;
+  --color-border: #ececec;
   --radius-pill: 9999px;
 }
 
 @layer utilities {
+  /* Гейтер страницы: 24px на десктопе, 16px на мобильных.
+     Максимальная ширина контента — 1152px. Тип `page-container`
+     Граница совпадает с `max-md:` (< 768px). */
   .container-app {
     width: min(100% - 48px, 1152px);
     margin-inline: auto;
   }
 
-  @media (max-width: 767px) {
+  @media (width < 768px) {
     .container-app {
       width: min(100% - 32px, 1152px);
     }

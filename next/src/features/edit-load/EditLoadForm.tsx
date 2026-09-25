@@ -270,7 +270,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     <div className="max-w-[1100px] mx-auto px-6 pb-14 grid grid-cols-[2fr_1fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-[#ECECEC] rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
+        className="border border-border rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
       >
         <section>
           <h2 className={sectionTitleClass}>Маршрут</h2>
@@ -633,7 +633,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
           </p>
         ) : null}
 
-        <div className="flex gap-3 pt-6 border-t border-[#ECECEC] max-[640px]:flex-col">
+        <div className="flex gap-3 pt-6 border-t border-border max-[640px]:flex-col">
           <button
             type="submit"
             disabled={mutation.isPending}
@@ -653,7 +653,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
       </form>
 
       <aside className="sticky top-3 self-start max-[960px]:static">
-        <div className="rounded-[20px] border border-[#ECECEC] overflow-hidden">
+        <div className="rounded-[20px] border border-border overflow-hidden">
           <MapPicker
             className="h-[320px] w-full max-[960px]:h-60"
             initialLocation={location}

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode, RefObject } from "react";
 
 interface FilterPopoverProps {
   label: string;
@@ -8,6 +8,8 @@ interface FilterPopoverProps {
   onReset?: () => void;
   hasValue?: boolean;
   panelWidthClass?: string;
+  panelStyle?: CSSProperties;
+  panelRef?: RefObject<HTMLDivElement | null>;
 }
 
 export function FilterPopover({
@@ -16,10 +18,14 @@ export function FilterPopover({
   onReset,
   hasValue = false,
   panelWidthClass,
+  panelStyle,
+  panelRef,
 }: FilterPopoverProps) {
   return (
     <div
-      className={`absolute top-[calc(100%+8px)] left-0 z-50 bg-bg-subtle rounded-2xl p-1 border border-[#ECECEC] ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"
+      ref={panelRef}
+      style={panelStyle}
+      className={`absolute top-[calc(100%+8px)] left-0 z-50 bg-bg-subtle rounded-2xl p-1 border border-border ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"
         }`}
     >
 
@@ -37,7 +43,6 @@ export function FilterPopover({
           </button>
         )}
       </div>
-
       {children}
     </div>
   );

@@ -15,7 +15,7 @@ import {
 } from "@/entities/load/model";
 import { LoadsMap } from "@/widgets/loads-map";
 import { AutocompleteField } from "@/shared/ui/AutocompleteField";
-import { FormInputIcon, FormSelect } from "@/shared/ui/FormInput";
+import { FIELD_LABEL, FormInputIcon, FormSelect } from "@/shared/ui/FormInput";
 import { Pagination } from "./ui/Pagination";
 
 const PAGE_SIZE = 5;
@@ -105,7 +105,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
       <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-[#0D0D0D12] max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className={`flex flex-col gap-3 px-6 border-b border-[#0D0D0D12] min-h-0 py-2`}
+          className="px-6 py-3 border-b border-[#0D0D0D12] min-h-0"
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -286,6 +286,59 @@ function FilterForm({
       onSubmit={handleSubmit}
       className="flex flex-col gap-3"
     >
+
+      {/*Блок сокращенного отображения*/}
+      <div className="flex justify-between">
+
+        <div className="flex">
+          <button
+            type="button"
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            Вид заявок
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
+            >
+              <path d="m4 6 4 4 4-4" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex gap-4">
+
+          {filtersCollapsed && hasAppliedFilters(values) && <>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+            >
+              Сбросить фильтры
+            </button>
+            <div className="h-full border-r border-border" /></>
+          }
+
+
+          <button
+            type="button"
+            onClick={handleToggleFilters}
+            aria-expanded={!filtersCollapsed}
+            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
+          >
+            {filtersCollapsed ? "Открыть панель" : "Скрыть панель"}
+          </button>
+        </div>
+      </div>
+      {!filtersCollapsed && <div className="w-full h-1 border-b border-border" />}
+
+
       <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
         <AutocompleteField
           label="Город отправки"
@@ -296,7 +349,7 @@ function FilterForm({
           placeholder="Краснодар"
         />
         <AutocompleteField
-          label="Город отправки"
+          label="Город назначения"
           value={values.to ?? ""}
           onChange={(value) => setField("to", value)}
           options={suggestions.unloadingPlaces}
@@ -317,24 +370,20 @@ function FilterForm({
           onChange={(value) => setField("tonnage", value)}
           id="f-tons"
           placeholder="В тоннах или кг"
-          icon="tons"
         />
-        {/*Добавить выбор поиска т/кг*/}
         <NumberField
           label="Расстояние"
           value={values.distance ?? ""}
           onChange={(value) => setField("distance", value)}
           id="f-km"
           placeholder="до 600 км"
-          icon="km"
         />
         <NumberField
-          label="Ценна ₽/км"
+          label="Цена ₽/км"
           value={values.rate ?? ""}
           onChange={(value) => setField("rate", value)}
           id="f-rate"
           placeholder="от 150₽/км"
-          icon="rate"
         />
         <CompanySelect
           value={values.company ?? ""}
@@ -345,43 +394,19 @@ function FilterForm({
         <button
           type="button"
           onClick={handleReset}
-          className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
+          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]"
         >
           Сбросить фильтры
         </button>
         <button
           type="submit"
           disabled={!searchEnabled}
-          className={`h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 max-[960px]:h-10 ${searchEnabled
+          className={`h-9 px-4 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
             ? "bg-accent cursor-pointer hover:bg-accent/90"
             : "bg-accent/50 cursor-not-allowed"
             }`}
         >
           Найти
-        </button>
-      </div>
-
-
-      {/*Блок сокращенного отображения*/}
-      <div className="flex justify-end gap-4">
-        {filtersCollapsed && hasAppliedFilters(values) && <>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-          >
-            Сбросить фильтры
-          </button>
-          <div className="h-full border-r border-[#ECECEC]" /></>
-        }
-
-        <button
-          type="button"
-          onClick={handleToggleFilters}
-          aria-expanded={!filtersCollapsed}
-          className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-        >
-          {filtersCollapsed ? "Открыть фильтры" : "Скрыть фильтры"}
         </button>
       </div>
     </form>
@@ -398,11 +423,7 @@ interface FieldProps {
 interface NumberFieldProps extends FieldProps {
   id: string;
   placeholder: string;
-  icon: "tons" | "km" | "rate";
 }
-
-const labelClass =
-  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
 
 function NumberField({
   label,
@@ -411,11 +432,10 @@ function NumberField({
   onChange,
   id,
   placeholder,
-  icon,
 }: NumberFieldProps) {
   return (
     <div className="min-w-0">
-      {!hideLabel && <span className={labelClass}>{label}</span>}
+      {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
       <FormInputIcon
         id={id}
         type="number"
@@ -640,68 +660,6 @@ function DescIcon() {
       <path d="m3.5 5.5 3.5 3.5 3.5-3.5"></path>
     </svg>
   );
-}
-
-type FieldIconType = "tons" | "km" | "rate";
-
-function FieldIcon({ icon }: { icon: FieldIconType }) {
-  switch (icon) {
-    case "tons":
-      return (
-        <svg
-          className="h-4 w-4 shrink-0 text-text-primary"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M2 8h12"></path>
-          <path d="M8 2v12"></path>
-        </svg>
-      );
-    case "km":
-      return (
-        <svg
-          className="h-4 w-4 shrink-0 text-text-primary"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="8" cy="8" r="6"></circle>
-          <path d="M8 8 11 5"></path>
-        </svg>
-      );
-    case "rate":
-      return (
-        <svg
-          className="h-4 w-4 shrink-0 text-text-primary"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M4 4h8M9 2l-2 3M11.5 6.5h-7"></path>
-          <path d="M10 14l-2-3"></path>
-          <path d="M2 9h12"></path>
-        </svg>
-      );
-  }
 }
 
 function areFiltersEqual(

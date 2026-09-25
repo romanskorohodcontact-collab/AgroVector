@@ -22,7 +22,7 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
       : "—";
 
   return (
-    <article className="flex flex-col bg-white border border-[#ECECEC] rounded-[24px] px-5 py-4 max-w-[620px]">
+    <article className="flex flex-col bg-white border border-border rounded-[24px] px-5 py-4 max-w-[620px]">
 
       {/*<div className="flex items-center justify-between gap-3">
         <span className="text-xs text-text-muted whitespace-nowrap leading-[1.5]">

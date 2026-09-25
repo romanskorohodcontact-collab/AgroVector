@@ -38,7 +38,7 @@ export function ProfileTransportCard({
       : "—";
 
   return (
-    <article className="gap-6 items-stretch bg-white border border-[#ECECEC] rounded-[24px] p-5 max-[640px]:grid-cols-1">
+    <article className="gap-6 items-stretch bg-white border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
 
       <div className="flex flex-col justify-between">
 

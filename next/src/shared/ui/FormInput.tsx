@@ -6,7 +6,13 @@ import type {
 } from "react";
 
 export const FORM_INPUT_WRAP =
-  "flex items-center gap-3 h-[38px] w-full px-4  rounded-pill bg-[#F3F3F3] focus-within:border-accent";
+  "flex items-center gap-3 h-[38px] w-full px-4 rounded-pill bg-bg-input focus-within:border-accent";
+
+export const FIELD_LABEL =
+  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
+
+export const FORM_FILTER_TRIGGER =
+  "flex items-center w-full h-[38px] px-4 rounded-pill bg-bg-input text-sm text-text-primary tracking-[-0.14px] cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export const FORM_INPUT =
   "flex-1 min-w-0 border-0 bg-transparent outline-none text-sm text-text-primary leading-[1.43] tracking-[-0.14px] placeholder:text-text-muted";

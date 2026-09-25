@@ -137,7 +137,7 @@ function HowItWorks() {
           {STEPS.map((step) => (
             <article
               key={step.number}
-              className="flex flex-col bg-white border border-[#ECECEC] rounded-[24px] p-6"
+              className="flex flex-col bg-white border border-border rounded-[24px] p-6"
             >
               <div className="flex items-center justify-center w-full h-[184px] mb-3 rounded-[24px] bg-bg-subtle text-text-muted">
                 <span className="text-[40px] font-medium tracking-[-1.6px] text-text-primary">

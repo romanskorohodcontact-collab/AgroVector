@@ -257,7 +257,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     <div className="container-app pb-14 grid grid-cols-[60fr_40fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-[#ECECEC] rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
+        className="border border-border rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
       >
         <section>
           <h2 className={sectionTitleClass}>Маршрут</h2>
@@ -626,7 +626,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
           </p>
         ) : null}
 
-        <div className="flex gap-3 pt-6 border-t border-[#ECECEC] max-[640px]:flex-col">
+        <div className="flex gap-3 pt-6 border-t border-border max-[640px]:flex-col">
           <button
             type="submit"
             disabled={mutation.isPending}
@@ -646,7 +646,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
       </form>
 
       <aside className="sticky top-3 self-start max-[960px]:static">
-        <div className="rounded-[20px] border border-[#ECECEC] overflow-hidden">
+        <div className="rounded-[20px] border border-border overflow-hidden">
           <MapPicker
             className="h-[320px] w-full max-[960px]:h-60"
             initialLocation={null}

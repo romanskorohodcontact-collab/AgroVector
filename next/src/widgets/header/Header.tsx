@@ -23,7 +23,7 @@ export async function Header({ activePath, fullWidth = false }: HeaderProps) {
   ] as const;
 
   return (
-    <header className="py-2.5 border-b border-[#ECECEC]">
+    <header className="py-2.5 border-b border-border">
       <div
         className={`${fullWidth ? "w-full px-6 max-md:px-4" : "container-app"} flex items-center justify-between gap-6 max-md:flex-wrap`}
       >

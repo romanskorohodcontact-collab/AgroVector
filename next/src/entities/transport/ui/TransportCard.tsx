@@ -33,7 +33,7 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
       : "—";
 
   return (
-    <article className="grid grid-cols-[2fr_1fr] gap-6 items-stretch bg-white border border-[#ECECEC] rounded-[24px] p-5 max-[640px]:grid-cols-1">
+    <article className="grid grid-cols-[2fr_1fr] gap-6 items-stretch bg-white border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
 
       <div className="flex flex-col justify-between">
         <div>

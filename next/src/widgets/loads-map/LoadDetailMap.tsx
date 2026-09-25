@@ -8,6 +8,7 @@ import {
   type YmapsApi,
   type YmapsMap,
 } from "@/features/map/loadYmaps";
+import { LOAD_MARKER_OPTIONS } from "@/features/map/markerIcons";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
 const POINT_ZOOM = 10;
@@ -44,7 +45,9 @@ export function LoadDetailMap({ location, className }: LoadDetailMapProps) {
           controls: [],
         });
         if (point) {
-          map.geoObjects.add(new ymaps.Placemark(toYandexCoords(point)));
+          map.geoObjects.add(
+            new ymaps.Placemark(toYandexCoords(point), LOAD_MARKER_OPTIONS)
+          );
         }
         mapRef.current = map;
         setStatus("ready");

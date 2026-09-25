@@ -94,8 +94,8 @@ export function DistrictRegionSelectorDropdown({
       </button>
 
       {open && (
-        <div className={`absolute top-[calc(100%+8px)] ${align === "right" ? "right-0" : "left-0"} w-[min(560px,calc(100vw-32px))] border border-[#ECECEC] rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto`}>
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#ECECEC] bg-bg-subtle">
+        <div className={`absolute top-[calc(100%+8px)] ${align === "right" ? "right-0" : "left-0"} w-[min(560px,calc(100vw-32px))] border border-border rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto`}>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-bg-subtle">
             <span className="text-[12px] font-normal text-text-muted tracking-[-0.14px]">
               {label}
             </span>
@@ -131,7 +131,7 @@ export function DistrictRegionSelectorDropdown({
             return (
               <div
                 key={district}
-                className="border-b border-[#ECECEC] last:border-b-0"
+                className="border-b border-border last:border-b-0"
               >
                 <div className="flex items-center gap-2 px-4 py-3 bg-bg-subtle">
                   <button

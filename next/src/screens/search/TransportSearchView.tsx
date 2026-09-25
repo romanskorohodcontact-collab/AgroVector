@@ -25,7 +25,7 @@ import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelecto
 import { MultiSelectDropdown } from "@/shared/ui/MultiSelectDropdown";
 import { DescriptiveMultiSelect } from "@/shared/ui/DescriptiveMultiSelect";
 import { AnchoredModal } from "@/shared/ui/AnchoredModal";
-import { FormInputIcon } from "@/shared/ui/FormInput";
+import { FIELD_LABEL, FormInputIcon } from "@/shared/ui/FormInput";
 import { Pagination } from "./ui/Pagination";
 import { BadgeRussianRuble, ChevronDown } from "lucide-react";
 
@@ -69,9 +69,7 @@ export function TransportSearchView() {
     [values, applied]
   );
   const searchEnabled = !hasSearched || isDirty;
-  const resultsListClass = filtersCollapsed
-    ? "grid grid-cols-2 gap-3 max-[560px]:grid-cols-1"
-    : "flex flex-col gap-3";
+  const resultsListClass = "flex flex-col gap-3"
 
   function handleSubmit() {
     setHasSearched(true);
@@ -140,7 +138,7 @@ export function TransportSearchView() {
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
       <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-[#0D0D0D12] max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className={`flex flex-col gap-3 px-6 border-b border-[#0D0D0D12] min-h-0 py-2`}
+          className="px-6 py-3 border-b border-[#0D0D0D12] min-h-0"
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -160,10 +158,8 @@ export function TransportSearchView() {
         </section>
 
 
-        <div className={`min-h-0 ${filtersCollapsed ? "flex flex-col" : "grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1"}`}>
-          <div className={`${filtersCollapsed ? "hidden" : ""}`}>
-            <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
-          </div>
+        <div className={`min-h-0 grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1`}>
+          <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
 
           <section
             className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto ${filtersCollapsed ? "flex-1" : ""}`}
@@ -347,51 +343,11 @@ function FilterForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-3"
     >
       {/*Блок сокращенного отображения*/}
       <div className="flex justify-between">
         <div className="flex gap-4">
-          <button
-            type="button"
-            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-          >
-            Список фильтров
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
-            >
-              <path d="m4 6 4 4 4-4" />
-            </svg>
-          </button>
-          <div className="h-full border-r border-[#ECECEC]" />
-          <button
-            type="button"
-            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-          >
-            Сортировка
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
-            >
-              <path d="m4 6 4 4 4-4" />
-            </svg>
-          </button>
-          <div className="h-full border-r border-[#ECECEC]" />
           <button
             type="button"
             className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
@@ -423,7 +379,7 @@ function FilterForm({
             >
               Сбросить фильтры
             </button>
-            <div className="h-full border-r border-[#ECECEC]" /></>
+            <div className="h-full border-r border-border" /></>
           }
 
 
@@ -437,6 +393,7 @@ function FilterForm({
           </button>
         </div>
       </div>
+      {!filtersCollapsed && <div className="w-full h-1 border-b border-border" />}
 
       {/*Панель с фильтрами*/}
       <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
@@ -504,6 +461,7 @@ function FilterForm({
           onReset={onResetOneFilter}
         />
         {/*открывает модальное окно, где будут дополнительные фильтры*/}
+
         <>
           <button
             type="button"
@@ -511,11 +469,11 @@ function FilterForm({
             onClick={() => setMoreFiltersOpen((v) => !v)}
             aria-expanded={moreFiltersOpen}
             aria-haspopup="dialog"
-            className="flex gap-4 h-[44px] px-5 items-center justify-center rounded-pill text-sm font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-secondary max-[960px]:h-10"
+            className="flex gap-2 h-[38px] px-4 items-center justify-center rounded-pill bg-bg-input text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-border"
           >
             <span> Больше фильтров </span>
             <ChevronDown
-              className={`w-5 h-5 transition-transform duration-150 ${moreFiltersOpen ? "rotate-180" : ""}`}
+              className={`w-4 h-4 transition-transform duration-150 ${moreFiltersOpen ? "rotate-180" : ""}`}
             />
           </button>
           <AnchoredModal
@@ -523,20 +481,19 @@ function FilterForm({
             onClose={() => setMoreFiltersOpen(false)}
             triggerRef={moreFiltersRef}
             title="Дополнительные фильтры"
-            panelWidthClass="min-w-[360px]"
-          ></AnchoredModal>
+          >Content</AnchoredModal>
         </>
         <button
           type="button"
           onClick={onReset}
-          className="h-[44px] px-4 gap-1.5 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33] max-[960px]:h-10"
+          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]"
         >
           Сбросить фильтры
         </button>
         <button
           type="submit"
           disabled={!searchEnabled}
-          className={`h-[44px] px-5 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 max-[960px]:h-10 ${searchEnabled
+          className={`h-9 px-4 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
             ? "bg-accent cursor-pointer hover:bg-accent/90"
             : "bg-accent/50 cursor-not-allowed"
             }`}
@@ -544,9 +501,6 @@ function FilterForm({
           Найти
         </button>
       </div>
-
-
-
     </form >
   );
 }
@@ -559,14 +513,10 @@ interface NumberFieldProps {
   label: string;
 }
 
-const labelClass =
-  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
-
-
 function NumberField({ label, value, onChange, id, placeholder }: NumberFieldProps) {
   return (
     <div className="min-w-0">
-      <span className={labelClass}>{label}</span>
+      <span className={FIELD_LABEL}>{label}</span>
       <FormInputIcon
         id={id}
         type="number"
@@ -638,18 +588,14 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
 
   return (
     <aside
-      className={
-        horizontal
-          ? "flex items-center gap-6 flex-wrap px-4 py-2"
-          : "px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
-      }
+      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
       aria-label="Сортировка"
     >
 
-      <h2 className={`${horizontal ? "hidden" : "mb-4"} text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
+      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
         Сортировка
       </h2>
-      <div className={horizontal ? "flex items-center gap-2" : "flex flex-col gap-1"}>
+      <div className="flex flex-col gap-1">
         {SORT_OPTIONS.map((option) => {
           const active = sort.field === option.field;
           const activeDir = dirs[option.field];
@@ -657,7 +603,7 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
             <div
               key={option.field}
               onClick={() => choose(option.field, activeDir)}
-              className={`flex items-center justify-between gap-2 ${horizontal ? "w-auto" : "w-full"} px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
+              className={`flex items-center justify-between gap-2 w-full px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
                 }`}
             >
               <span className="flex items-center gap-2 min-w-0">

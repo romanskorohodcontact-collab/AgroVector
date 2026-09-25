@@ -48,8 +48,8 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto mt-8 mb-14 p-9 bg-white border border-[#ECECEC] rounded-[20px] max-[640px]:mt-6 max-[640px]:mx-4 max-[640px]:mb-10 max-[640px]:py-6 max-[640px]:px-4">
-      <div className="flex items-center gap-4 pb-7 mb-7 border-b border-[#ECECEC] max-[640px]:gap-3 max-[640px]:pb-5 max-[640px]:mb-5">
+    <div className="w-full max-w-[720px] mx-auto mt-8 mb-14 p-9 bg-white border border-border rounded-[20px] max-[640px]:mt-6 max-[640px]:mx-4 max-[640px]:mb-10 max-[640px]:py-6 max-[640px]:px-4">
+      <div className="flex items-center gap-4 pb-7 mb-7 border-b border-border max-[640px]:gap-3 max-[640px]:pb-5 max-[640px]:mb-5">
         <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[linear-gradient(135deg,#23793D,#2d994d)] text-[22px] font-medium text-white tracking-[-0.5px] shrink-0 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:text-[19px]">
           {getInitials(user.name)}
         </div>
@@ -121,7 +121,7 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
           </p>
         ) : null}
 
-        <div className="flex justify-end gap-3 mt-7 pt-6 border-t border-[#ECECEC] max-[640px]:flex-col-reverse max-[640px]:gap-2.5">
+        <div className="flex justify-end gap-3 mt-7 pt-6 border-t border-border max-[640px]:flex-col-reverse max-[640px]:gap-2.5">
           <Link
             href="/profile"
             role="button"

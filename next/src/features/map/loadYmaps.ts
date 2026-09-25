@@ -1,5 +1,22 @@
 import type { GeoPoint } from "@/entities/load/model";
 
+export interface YmapsIconLayout {
+  image: string;
+  iconSize: [number, number];
+  iconOffset: [number, number];
+}
+
+export interface YmapsIconShape {
+  type: "Rectangle";
+  coordinates: [number, number, number, number];
+  fill: string;
+}
+
+export interface YmapsPlacemarkOptions {
+  iconLayout?: YmapsIconLayout;
+  iconShape?: YmapsIconShape;
+}
+
 export interface YmapsEvent {
   get: {
     (name: "coords"): [number, number];
@@ -54,6 +71,13 @@ export interface YmapsMap {
   destroy: () => void;
 }
 
+export interface YmapsTemplateLayoutFactory {
+  createClass: (
+    name: string,
+    proto: Record<string, unknown>
+  ) => unknown;
+}
+
 export interface YmapsApi {
   ready: (callback: () => void) => void;
   Map: new (
@@ -62,9 +86,11 @@ export interface YmapsApi {
   ) => YmapsMap;
   Placemark: new (
     coordinates: [number, number],
+    options?: Record<string, unknown> | YmapsPlacemarkOptions,
     properties?: Record<string, string>
   ) => YmapsPlacemark;
   Clusterer: new (options?: Record<string, unknown>) => YmapsClusterer;
+  templateLayoutFactory: YmapsTemplateLayoutFactory;
   util: {
     bounds: {
       fromPoints: (points: [number, number][]) => unknown;

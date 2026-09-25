@@ -12,6 +12,11 @@ import {
   type YmapsMap,
   type YmapsPlacemark,
 } from "@/features/map/loadYmaps";
+import { createClusterLayout } from "@/features/map/clusterLayout";
+import {
+  TRANSPORT_MARKER_FILL,
+  TRANSPORT_MARKER_OPTIONS,
+} from "@/features/map/markerIcons";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
 const MAP_ZOOM = 5;
@@ -99,7 +104,10 @@ export function TransportsMap({
       for (const item of mapItemsRef.current) {
         if (!item.transportLocation) continue;
         const coords = toYandexCoords(item.transportLocation);
-        const placemark = new ymapsRef.current!.Placemark(coords);
+        const placemark = new ymapsRef.current!.Placemark(
+          coords,
+          TRANSPORT_MARKER_OPTIONS
+        );
         placemarkItemsRef.current.set(placemark, item);
         if (onSelectRef.current) {
           placemark.events.add("click", () => onSelectRef.current?.(item));
@@ -135,7 +143,7 @@ export function TransportsMap({
           controls: [],
         });
         const clusterer = new ymaps.Clusterer({
-          preset: "islands#blueClusterIcons",
+          clusterLayout: createClusterLayout(ymaps, TRANSPORT_MARKER_FILL),
           clusterDisableClickZoom: true,
           hasBalloon: false,
           hasHint: false,

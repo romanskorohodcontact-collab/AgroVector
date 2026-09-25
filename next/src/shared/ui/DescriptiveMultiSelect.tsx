@@ -3,12 +3,7 @@
 import { useCallback, useState } from "react";
 import { usePopoverDismiss } from "@/shared/lib/usePopoverDismiss";
 import { FilterPopover } from "./FilterPopover";
-
-const inputClass =
-  "h-[38px] w-full px-4 border-[1.2px] border-[#0D0D0D0D] rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] transition-colors duration-150 focus:outline-none focus:border-accent cursor-pointer flex items-center";
-
-const labelClass =
-  "mb-1.5 block text-[12px] font-medium text-text-muted tracking-[-0.12px]";
+import { FORM_FILTER_TRIGGER, FIELD_LABEL } from "./FormInput";
 
 interface DescriptiveMultiSelectProps {
   label: string;
@@ -56,13 +51,13 @@ export function DescriptiveMultiSelect({
 
   return (
     <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
-      {!hideLabel && <span className={labelClass}>{label}</span>}
+      {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
       <button
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className={inputClass}
+        className={FORM_FILTER_TRIGGER}
       >
 
         <div className="flex items-center gap-2 w-full min-w-0">
@@ -72,7 +67,7 @@ export function DescriptiveMultiSelect({
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-white text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {item}
                 </span>

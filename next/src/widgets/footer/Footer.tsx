@@ -34,7 +34,7 @@ const FOOTER_LABELS: string[][] = [
 
 export function Footer() {
   return (
-    <footer className="bg-bg-subtle border-t border-[#ECECEC] py-16 pb-10 max-md:py-12 max-md:pb-8">
+    <footer className="bg-bg-subtle border-t border-border py-16 pb-10 max-md:py-12 max-md:pb-8">
       <div className="container-app">
         <div className="grid grid-cols-[2fr_repeat(4,1fr)] gap-12 max-lg:grid-cols-2 max-lg:gap-10 max-md:grid-cols-1 max-md:gap-8">
           <div>
@@ -80,7 +80,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="flex justify-between gap-4 flex-wrap mt-12 pt-6 border-t border-[#ECECEC]">
+        <div className="flex justify-between gap-4 flex-wrap mt-12 pt-6 border-t border-border">
           <span className="text-xs leading-[1.5] whitespace-nowrap text-text-muted">
             © 2026 AgroRunok.
           </span>

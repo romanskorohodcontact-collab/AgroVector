@@ -39,7 +39,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 max-[900px]:items-start max-[900px]:p-4 max-[560px]:p-3">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
 
-      <div className="relative w-full max-w-[1000px] h-[80vh] bg-white border border-[#ECECEC] rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
+      <div className="relative w-full max-w-[1000px] h-[80vh] bg-white border border-border rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
         <div className="min-h-0 max-[900px]:h-[220px] max-[900px]:order-first bg-bg-subtle">
           <LoadDetailMap location={load.loadingLocation} className="h-full w-full" />
         </div>
