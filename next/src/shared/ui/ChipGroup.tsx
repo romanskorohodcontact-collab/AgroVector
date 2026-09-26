@@ -31,8 +31,8 @@ export function ChipGroup({
               onClick={() => onToggle(opt)}
               className={`inline-flex items-center px-[10px] py-[5px] rounded-pill text-[12px] whitespace-nowrap transition-colors duration-150 ${
                 active
-                  ? "bg-accent text-white"
-                  : "bg-bg-subtle text-text-secondary hover:bg-[#EFEFEF]"
+                  ? "bg-accent text-text-inverse"
+                  : "bg-bg-subtle text-text-secondary hover:bg-bg-hover"
               }`}
             >
               {opt}

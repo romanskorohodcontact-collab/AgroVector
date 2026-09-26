@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 
 const buttonStyle: React.CSSProperties = {
   padding: "6px 12px",
-  border: "1px solid #000",
+  border: "1px solid var(--color-outline)",
   background: "none",
   cursor: "pointer",
 };

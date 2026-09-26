@@ -20,14 +20,14 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
 
   return (
     <main className="bg-bg-subtle">
-      <div className="bg-white">
+      <div className="bg-bg-surface">
         <Header />
       </div>
 
-      <section className="flex flex-col items-center px-6 pt-14 pb-11 bg-[linear-gradient(160deg,#edf7f0_0%,#ffffff_50%)] max-[640px]:px-4 max-[640px]:pt-10 max-[640px]:pb-8">
+      <section className="flex flex-col items-center px-6 pt-14 pb-11 bg-[linear-gradient(160deg,var(--color-success-soft)_0%,var(--color-bg-surface)_50%)] max-[640px]:px-4 max-[640px]:pt-10 max-[640px]:pb-8">
         <div
           aria-hidden="true"
-          className="flex items-center justify-center w-[120px] h-[120px] rounded-full bg-[linear-gradient(135deg,#23793D,#2d994d)] text-[48px] font-medium text-text-inverse tracking-[-1px] mb-6 shadow-[0_4px_20px_rgba(35,121,61,0.2)] max-[640px]:w-24 max-[640px]:h-24 max-[640px]:text-[38px] max-[640px]:mb-5"
+          className="flex items-center justify-center w-[120px] h-[120px] rounded-full bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[48px] font-medium text-text-inverse tracking-[-1px] mb-6 shadow-[0_4px_20px] shadow-accent/20 max-[640px]:w-24 max-[640px]:h-24 max-[640px]:text-[38px] max-[640px]:mb-5"
         >
           {getInitials(user.name)}
         </div>
@@ -47,7 +47,7 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
 
       <div className="max-w-[1100px] mx-auto px-6 pt-8 pb-14 grid grid-cols-[1fr_2fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pt-6 max-[640px]:pb-10">
         <section className="min-w-0 self-start sticky top-0 max-[960px]:static">
-          <div className="border border-border rounded-[20px] bg-white overflow-hidden">
+          <div className="border border-border rounded-[20px] bg-bg-surface overflow-hidden">
             <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="phone" label="Телефон" value={user.phone} />
             </div>
@@ -68,7 +68,7 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
                 <EditIcon />
                 Редактировать профиль
               </Link>
-              <LogoutButton className="inline-flex items-center justify-center gap-1.5 h-9 w-full px-4 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]" />
+              <LogoutButton className="inline-flex items-center justify-center gap-1.5 h-9 w-full px-4 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover" />
             </div>
           </div>
         </section>
@@ -159,7 +159,7 @@ function ContactRowLabel({ icon, label, value }: ContactRowLabelProps) {
           </div>
           <div
             aria-hidden="true"
-            className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none"
+            className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-bg-surface to-transparent pointer-events-none"
           />
         </div>
       </div>

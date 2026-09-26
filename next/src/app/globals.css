@@ -6,16 +6,48 @@
   /*--font-ui: var(--font-manrope);*/
   --font-ui: var(--font-onest);
 
+  /* Текст */
   --color-text-dark: #181818;
   --color-text-primary: #282828;
   --color-text-secondary: #5d5d5d;
   --color-text-muted: #8f8f8f;
   --color-text-inverse: #ffffff;
-  --color-bg-subtle: #f9f9f9;
-  --color-bg-input: #f3f3f3;
-  --color-accent: #23793d;
+
+  /* Иконки в полях и селектах */
+  --color-icon: #6d6e78;
+  --color-icon-subtle: #9799a3;
+
+  /* Фоны */
+  --color-bg-surface: #ffffff;
+  --color-bg-input: #f4f4f6;
+  --color-bg-subtle: #edeff0;
+  --color-bg-hover: #e4e6e8;
+  --color-bg-inverse: #333333;
+  --color-bg-overlay: #00000066;
+
+  /* Акценты */
+  --color-accent: #0bb552;
+  --color-accent-hover: #099845;
+  --color-accent-active: #077a38;
   --color-accent-orange: #e95420;
+
+  /* Статусы */
+  --color-success-soft: #e4f7ec;
+  --color-warning: #a86400;
+  --color-warning-soft: #fff4e5;
+  --color-danger: #9b3535;
+  --color-danger-soft: #f4eaea;
+
+  /* Границы */
   --color-border: #ececec;
+  --color-divider: #0d0d0d0f;
+  --color-divider-strong: #0d0d0d12;
+  --color-outline: #0d0d0d1a;
+  --color-outline-input: #0d0d0d0d;
+  --color-outline-hover: #0d0d0d33;
+  --color-disabled: #0d0d0d33;
+  --color-grid-line: rgba(13, 13, 13, 0.05);
+
   --radius-pill: 9999px;
 }
 

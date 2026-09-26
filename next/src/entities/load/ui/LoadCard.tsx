@@ -22,7 +22,7 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
       : "—";
 
   return (
-    <article className="flex flex-col bg-white border border-border rounded-[24px] px-6 py-3 max-w-[620px]">
+    <article className="flex flex-col bg-bg-surface border border-border rounded-[24px] px-6 py-3 max-w-[620px]">
 
       {/*<div className="flex items-center justify-between gap-3">
         <span className="text-xs text-text-muted whitespace-nowrap leading-[1.5]">
@@ -64,7 +64,7 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 mt-4 py-3 border-y border-[#F0F0F0]">
+      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 mt-4 py-3 border-y border-border">
         <span className="text-xs text-text-muted whitespace-nowrap">
           <b className="font-medium text-sm text-text-primary tracking-[-0.14px] tabular-nums">
             {load.tonnage.tonnageWeight}
@@ -149,7 +149,7 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
           {editable ? (
             <Link
               href={`/loads/${load.id}/edit`}
-              className="inline-flex items-center justify-center rounded-pill bg-bg-subtle px-4 h-9 gap-1.5 text-sm font-medium text-text-primary text-center leading-[1.43] tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#EFEFEF] max-md:flex-1"
+              className="inline-flex items-center justify-center rounded-pill bg-bg-subtle px-4 h-9 gap-1.5 text-sm font-medium text-text-primary text-center leading-[1.43] tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover max-md:flex-1"
             >
               <EditIcon />
               Редактировать

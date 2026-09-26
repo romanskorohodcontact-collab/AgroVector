@@ -91,7 +91,7 @@ export function MapPicker({ initialLocation, onSelect, className }: MapPickerPro
 
   return (
     <div>
-      <div ref={containerRef} className={className ?? "h-64 w-full border border-black"} />
+      <div ref={containerRef} className={className ?? "h-64 w-full border border-border"} />
       {status === "loading" ? (
         <p className="mt-2">Загрузка карты…</p>
       ) : null}

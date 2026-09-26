@@ -84,7 +84,7 @@ export function RegisterForm() {
               type="button"
               onClick={() => setShowPassword((value) => !value)}
               aria-label={showPassword ? "Скрыть пароль" : "Показать пароль"}
-              className="flex cursor-pointer border-0 bg-transparent p-1 text-text-muted transition-colors duration-150 hover:text-text-secondary"
+              className="flex cursor-pointer border-0 bg-transparent p-1 text-icon-subtle transition-colors duration-150 hover:text-icon"
             >
               <EyeIcon />
             </button>
@@ -111,7 +111,7 @@ export function RegisterForm() {
               type="button"
               onClick={() => setShowPasswordConfirm((value) => !value)}
               aria-label={showPasswordConfirm ? "Скрыть пароль" : "Показать пароль"}
-              className="flex cursor-pointer border-0 bg-transparent p-1 text-text-muted transition-colors duration-150 hover:text-text-secondary"
+              className="flex cursor-pointer border-0 bg-transparent p-1 text-icon-subtle transition-colors duration-150 hover:text-icon"
             >
               <EyeIcon />
             </button>
@@ -119,12 +119,12 @@ export function RegisterForm() {
         />
       </div>
 
-      {error ? <p className="text-sm leading-[1.43] text-red-600">{error}</p> : null}
+      {error ? <p className="text-sm leading-[1.43] text-danger">{error}</p> : null}
 
       <button
         type="submit"
         disabled={mutation.isPending}
-        className="mt-2 flex h-12 items-center justify-center gap-[6px] whitespace-nowrap rounded-pill bg-accent px-[21.28px] text-base font-medium leading-none tracking-[-0.16px] text-white transition-colors duration-150 hover:bg-[#1D6132] active:bg-[#185530] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-[#0D0D0D33] disabled:text-white/80"
+        className="mt-2 flex h-12 items-center justify-center gap-[6px] whitespace-nowrap rounded-pill bg-accent px-[21.28px] text-base font-medium leading-none tracking-[-0.16px] text-text-inverse transition-colors duration-150 hover:bg-accent-hover active:bg-accent-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-disabled disabled:text-text-inverse/80"
       >
         {mutation.isPending ? "Регистрация…" : "Зарегистрироваться"}
       </button>

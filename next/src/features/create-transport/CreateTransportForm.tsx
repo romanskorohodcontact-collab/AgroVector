@@ -200,7 +200,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     <div className="container-app pb-14 grid grid-cols-[60fr_40fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-border rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
+        className="border border-border rounded-[20px] bg-bg-surface p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
       >
         <section>
           <h2 className={sectionTitleClass}>Транспорт</h2>
@@ -460,7 +460,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
         </section>
 
         {error ? (
-          <p className="text-sm text-red-600 text-center tracking-[-0.14px]">
+          <p className="text-sm text-danger text-center tracking-[-0.14px]">
             {error}
           </p>
         ) : null}
@@ -469,7 +469,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#1E6834] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <PlusIcon />
             {mutation.isPending ? "Публикация…" : "Опубликовать заявку"}
@@ -477,7 +477,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
           <Link
             href="/profile"
             role="button"
-            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#EFEFEF]"
+            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
           >
             Отмена
           </Link>

@@ -22,7 +22,7 @@ export function EditProfileScreen({ user }: EditProfileScreenProps) {
 
       <EditProfileForm user={user} />
 
-      <footer className="mt-auto py-6 px-4 text-center border-t border-[#0D0D0D12] bg-white text-sm text-text-muted tracking-[-0.14px]">
+      <footer className="mt-auto py-6 px-4 text-center border-t border-divider-strong bg-bg-surface text-sm text-text-muted tracking-[-0.14px]">
         © 2026 AgroRunok
       </footer>
     </main>

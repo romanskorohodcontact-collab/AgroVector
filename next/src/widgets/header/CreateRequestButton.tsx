@@ -58,7 +58,7 @@ export function CreateRequestButton() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-56 rounded-2xl border border-border bg-white shadow-lg p-1.5">
+        <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-56 rounded-2xl border border-border bg-bg-surface shadow-lg p-1.5">
           {OPTIONS.map((option) => (
             <Link
               key={option.href}

@@ -9,7 +9,7 @@ interface HeaderProps {
 }
 
 const BTN_OUTLINE =
-  "inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm font-normal text-text-secondary tracking-[-0.14px] leading-[1.43] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]";
+  "inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm font-normal text-text-secondary tracking-[-0.14px] leading-[1.43] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover";
 
 export async function Header({ activePath, fullWidth = false }: HeaderProps) {
   const user = await getCurrentUser();

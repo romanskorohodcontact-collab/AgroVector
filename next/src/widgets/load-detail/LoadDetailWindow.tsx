@@ -37,14 +37,14 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 max-[900px]:items-start max-[900px]:p-4 max-[560px]:p-3">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
+      <div className="absolute inset-0 bg-bg-overlay" onClick={onClose} aria-hidden="true" />
 
-      <div className="relative w-full max-w-[1000px] h-[80vh] bg-white border border-border rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
+      <div className="relative w-full max-w-[1000px] h-[80vh] bg-bg-surface border border-border rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
         <div className="min-h-0 max-[900px]:h-[220px] max-[900px]:order-first bg-bg-subtle">
           <LoadDetailMap location={load.loadingLocation} className="h-full w-full" />
         </div>
 
-        <div className="min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:#E0E0E0_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
+        <div className="min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
           <div className="flex items-start justify-between gap-5">
             <div className="min-w-0">
               {/*<span className="block mb-1.5 text-xs text-text-muted whitespace-nowrap">
@@ -70,12 +70,12 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               type="button"
               onClick={onClose}
               aria-label="Закрыть"
-              className="flex items-center justify-center w-8 h-8 shrink-0 rounded-pill bg-bg-subtle text-text-secondary transition-colors duration-150 hover:bg-[#EFEFEF] hover:text-text-primary"
+              className="flex items-center justify-center w-8 h-8 shrink-0 rounded-pill bg-bg-subtle text-text-secondary transition-colors duration-150 hover:bg-bg-hover hover:text-text-primary"
             >
               <CloseIcon />
             </button>
 
-            {/*<div className="mt-5  w-[100px] h-[100px] shrink-0  aspect-square bg-[#EBEDEB] rounded-[16px] flex items-center justify-center overflow-hidden">
+            {/*<div className="mt-5  w-[100px] h-[100px] shrink-0  aspect-square bg-bg-subtle rounded-[16px] flex items-center justify-center overflow-hidden">
               <img
                 src="/photoTr1.png"
                 alt=""
@@ -204,7 +204,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
             />
           </div>
 
-          <div className="flex items-end justify-between gap-4 flex-wrap mt-5 pt-4 border-t border-[#0D0D0D0F]">
+          <div className="flex items-end justify-between gap-4 flex-wrap mt-5 pt-4 border-t border-divider">
             <div className="flex items-center gap-4">
               <svg
                 viewBox="0 0 24 24"
@@ -242,7 +242,7 @@ function DtcRow({ label, value, block = false }: DtcRowProps) {
   return (
     <div
       className={
-        "flex items-baseline justify-between gap-4 py-[11px] border-b border-[#0D0D0D0F] last:border-b-0 " +
+        "flex items-baseline justify-between gap-4 py-[11px] border-b border-divider last:border-b-0 " +
         (block ? "flex-col items-start gap-1" : "")
       }
     >

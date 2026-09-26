@@ -67,14 +67,14 @@ export function DescriptiveMultiSelect({
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-white text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-bg-surface text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {item}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-text-muted">
+            <span className="flex-1 min-w-0 truncate text-icon-subtle">
               {placeholder}
             </span>
           )}
@@ -87,7 +87,7 @@ export function DescriptiveMultiSelect({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 transition-transform duration-150 ${
+            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${
               open ? "rotate-180" : ""
             }`}
           >
@@ -99,7 +99,7 @@ export function DescriptiveMultiSelect({
       {open && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/40"
+            className="fixed inset-0 z-40 bg-bg-overlay"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
@@ -109,7 +109,7 @@ export function DescriptiveMultiSelect({
           hasValue={selected.length > 0}
           panelWidthClass={panelWidthClass}
         >
-          <div className="bg-white rounded-2xl max-h-[320px] overflow-y-auto py-2">
+          <div className="bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto py-2">
             {options.map((item) => (
               <label
                 key={item}

@@ -37,7 +37,7 @@ export function DistrictRegionSelector({
     <div className="flex flex-col gap-1.5">
 
       {label && <span className={labelClass}>{label}</span>}
-      <div className="border border-border rounded-2xl bg-white max-h-[370px] overflow-y-auto">
+      <div className="border border-border rounded-2xl bg-bg-surface max-h-[370px] overflow-y-auto">
         {Object.entries(WORK_DISTRICTS_REGIONS).map(
           ([district, regions]) => {
             const isExpanded = expanded.has(district);
@@ -52,7 +52,7 @@ export function DistrictRegionSelector({
                 key={district}
                 className="border-b border-border last:border-b-0"
               >
-                <div className="flex items-center gap-2 px-4 py-3 bg-bg-white subtle">
+                <div className="flex items-center gap-2 px-4 py-3 bg-bg-subtle">
 
                   <input
                     type="checkbox"
@@ -75,7 +75,7 @@ export function DistrictRegionSelector({
                   <button
                     type="button"
                     onClick={() => toggleExpand(district)}
-                    className="text-text-muted hover:text-text-primary transition-colors duration-150"
+                    className="text-icon hover:text-text-primary transition-colors duration-150"
                     aria-label={isExpanded ? "Свернуть" : "Развернуть"}
                   >
                     <svg

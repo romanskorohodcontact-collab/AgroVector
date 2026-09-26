@@ -89,7 +89,7 @@ export function AnchoredModal({
   return (
     <div className="fixed inset-0 z-50">
       <div
-        className="absolute inset-0 z-40 bg-black/40"
+        className="absolute inset-0 z-40 bg-bg-overlay"
         onClick={onClose}
         aria-hidden="true"
       />

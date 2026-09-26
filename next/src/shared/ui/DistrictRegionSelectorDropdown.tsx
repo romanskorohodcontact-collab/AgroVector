@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
 
 const inputClass =
-  "min-h-[38px] w-full px-4 py-2 border-[1.2px] border-[#0D0D0D0D] rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] transition-colors duration-150 focus:outline-none focus:border-accent cursor-pointer";
+  "min-h-[38px] w-full px-4 py-2 border-[1.2px] border-outline-input rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] transition-colors duration-150 focus:outline-none focus:border-accent cursor-pointer";
 
 const labelClass =
   "mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]";
@@ -73,7 +73,7 @@ export function DistrictRegionSelectorDropdown({
               ))}
             </div>
           ) : (
-            <span className="text-text-muted">Выберите регионы</span>
+            <span className="text-icon-subtle">Выберите регионы</span>
           )}
           <svg
             width="16"
@@ -84,7 +84,7 @@ export function DistrictRegionSelectorDropdown({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 transition-transform duration-150 ${
+            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${
               open ? "rotate-180" : ""
             }`}
           >
@@ -94,7 +94,7 @@ export function DistrictRegionSelectorDropdown({
       </button>
 
       {open && (
-        <div className={`absolute top-[calc(100%+8px)] ${align === "right" ? "right-0" : "left-0"} w-[min(560px,calc(100vw-32px))] border border-border rounded-2xl bg-white shadow-lg max-h-[320px] overflow-y-auto`}>
+        <div className={`absolute top-[calc(100%+8px)] ${align === "right" ? "right-0" : "left-0"} w-[min(560px,calc(100vw-32px))] border border-border rounded-2xl bg-bg-surface shadow-lg max-h-[320px] overflow-y-auto`}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-bg-subtle">
             <span className="text-[12px] font-normal text-text-muted tracking-[-0.14px]">
               {label}
@@ -103,7 +103,7 @@ export function DistrictRegionSelectorDropdown({
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="text-[14px] font-medium text-text-mute d text-[#9B3535] bg-[#F4EAEA] h-9 px-4 rounded-full transition-colors duration-150 flex items-center gap-6"
+              className="text-[14px] font-medium text-text-mute d text-danger bg-danger-soft h-9 px-4 rounded-full transition-colors duration-150 flex items-center gap-6"
               aria-label="Закрыть"
             >
               <span>Закрыть</span>
@@ -149,7 +149,7 @@ export function DistrictRegionSelectorDropdown({
                   <button
                     type="button"
                     onClick={() => toggleExpand(district)}
-                    className="text-text-muted hover:text-text-primary transition-colors duration-150"
+                    className="text-icon hover:text-text-primary transition-colors duration-150"
                     aria-label={isExpanded ? "Свернуть" : "Развернуть"}
                   >
                     <svg

@@ -20,18 +20,18 @@ export function RegisterScreen() {
           <RegisterForm />
 
           <div className="my-6 flex items-center gap-4">
-            <span className="h-px flex-1 bg-[#0D0D0D1A]" />
+            <span className="h-px flex-1 bg-outline" />
             <span className="whitespace-nowrap text-sm font-normal tracking-[-0.14px] text-text-muted">
               или
             </span>
-            <span className="h-px flex-1 bg-[#0D0D0D1A]" />
+            <span className="h-px flex-1 bg-outline" />
           </div>
 
           <p className="text-center text-sm font-normal leading-[1.43] tracking-[-0.14px] text-text-secondary">
             Уже есть аккаунт?{" "}
             <Link
               href="/login"
-              className="font-medium text-accent transition-colors duration-150 hover:text-[#1D6132]"
+              className="font-medium text-accent transition-colors duration-150 hover:text-accent-hover"
             >
               Войти
             </Link>

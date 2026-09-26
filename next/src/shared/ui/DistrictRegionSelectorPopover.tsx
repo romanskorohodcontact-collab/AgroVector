@@ -64,14 +64,14 @@ export function DistrictRegionSelectorPopover({
               {selectedRegions.map((region) => (
                 <span
                   key={region}
-                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-white text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-bg-surface text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {region}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-text-muted">
+            <span className="flex-1 min-w-0 truncate text-icon-subtle">
               Выберите регионы
             </span>
           )}
@@ -84,7 +84,7 @@ export function DistrictRegionSelectorPopover({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 transition-transform duration-150 ${open ? "rotate-180" : ""
+            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${open ? "rotate-180" : ""
               }`}
           >
             <path d="m4 6 4 4 4-4" />
@@ -95,7 +95,7 @@ export function DistrictRegionSelectorPopover({
       {open && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/40"
+            className="fixed inset-0 z-40 bg-bg-overlay"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />

@@ -51,7 +51,7 @@ export function AutocompleteField({
         />
         {matches.length > 0 ? (
           <ul
-            className="absolute top-[calc(100%+4px)] left-0 right-0 z-10 m-0 list-none max-h-[200px] overflow-auto rounded-xl border border-border bg-white py-1 shadow-lg"
+            className="absolute top-[calc(100%+4px)] left-0 right-0 z-10 m-0 list-none max-h-[200px] overflow-auto rounded-xl border border-border bg-bg-surface py-1 shadow-lg"
             onMouseDown={(event) => event.preventDefault()}
           >
             {matches.map((option) => (

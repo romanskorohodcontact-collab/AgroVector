@@ -136,9 +136,9 @@ export function TransportSearchView() {
 
   return (
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
-      <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-[#0D0D0D12] max-[960px]:grid-rows-none max-[960px]:border-r-0">
+      <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-divider-strong max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className="px-6 py-3 border-b border-[#0D0D0D12] min-h-0"
+          className="px-6 py-3 border-b border-divider-strong min-h-0"
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -175,7 +175,7 @@ export function TransportSearchView() {
                 <button
                   type="button"
                   onClick={() => setSelectedId(null)}
-                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-white tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
+                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
                   Сбросить выбор.
                 </button>
@@ -183,7 +183,7 @@ export function TransportSearchView() {
                 <button
                   type="button"
                   onClick={() => setClusterFilter(null)}
-                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-white tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
+                  className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
                   Сбросить фильтр..
                 </button>
@@ -266,9 +266,9 @@ export function TransportSearchView() {
       {/*Карта*/}
       <div
         role="presentation"
-        className="relative flex items-center justify-center gap-2.5 min-w-0 bg-bg-subtle bg-[linear-gradient(rgba(13,13,13,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,13,13,0.05)_1px,transparent_1px)] [background-size:36px_36px] max-[960px]:h-[320px]"
+        className="relative flex items-center justify-center gap-2.5 min-w-0 bg-bg-subtle bg-[linear-gradient(var(--color-grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--color-grid-line)_1px,transparent_1px)] [background-size:36px_36px] max-[960px]:h-[320px]"
       >
-        <span className="absolute top-5 left-5 z-10 px-3.5 py-2 rounded-pill bg-white shadow-[0_4px_16px_rgba(24,24,24,0.08)] text-[13px] font-medium text-text-primary tracking-[-0.13px]">
+        <span className="absolute top-5 left-5 z-10 px-3.5 py-2 rounded-pill bg-bg-surface shadow-[0_4px_16px_rgba(24,24,24,0.08)] text-[13px] font-medium text-text-primary tracking-[-0.13px]">
           Заявки на карте
         </span>
         <TransportsMap
@@ -486,7 +486,7 @@ function FilterForm({
         <button
           type="button"
           onClick={onReset}
-          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-[#0D0D0D1A] bg-white text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-[#0D0D0D33]"
+          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
         >
           Сбросить фильтры
         </button>
@@ -588,14 +588,14 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
 
   return (
     <aside
-      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-[#0D0D0D12] max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-divider-strong max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
       aria-label="Сортировка"
     >
 
       <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
         Сортировка
       </h2>
-      <div className="flex flex-col gap-1">
+      <div className="mb-4 flex flex-col gap-1">
         {SORT_OPTIONS.map((option) => {
           const active = sort.field === option.field;
           const activeDir = dirs[option.field];
@@ -608,10 +608,10 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
             >
               <span className="flex items-center gap-2 min-w-0">
                 {!horizontal && (<span
-                  className={`w-5 h-5 shrink-0 rounded-full border border-[#0D0D0D1A] inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""}`}
+                  className={`w-5 h-5 shrink-0 rounded-full border border-outline inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""}`}
                 >
                   {active ? (
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-bg-surface" />
                   ) : null}
                 </span>)}
 
@@ -653,6 +653,10 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
           );
         })}
       </div>
+
+      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+        Фильтры
+      </h2>
     </aside>
   );
 }
@@ -677,8 +681,8 @@ function DirToggleButton({
       aria-pressed={active}
       onClick={onClick}
       className={`flex items-center justify-center w-6 h-6 rounded-full cursor-pointer transition-colors duration-150 ${active
-        ? "bg-accent text-white"
-        : "bg-white text-text-muted hover:text-text-primary"
+        ? "bg-accent text-text-inverse"
+        : "bg-bg-surface text-text-muted hover:text-text-primary"
         }`}
     >
       {children}

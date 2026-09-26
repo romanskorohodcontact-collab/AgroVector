@@ -4,8 +4,8 @@ import { getAvailabilityDisplay } from "../model";
 // Не используются: id, userId, loadingType, unloadingType, workRegions, additionalInfo
 
 const AVAILABILITY_COLORS: Record<string, { bg: string; text: string }> = {
-  "Свободен": { bg: "bg-[#E9F3EC]", text: "text-[#23793D]" },
-  "Занят": { bg: "bg-[#FFF4E5]", text: "text-[#A86400]" },
+  "Свободен": { bg: "bg-success-soft", text: "text-accent" },
+  "Занят": { bg: "bg-warning-soft", text: "text-warning" },
 };
 
 interface TransportCardProps {
@@ -33,7 +33,7 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
       : "—";
 
   return (
-    <article className="grid grid-cols-[2fr_1fr] gap-6 items-stretch bg-white border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
+    <article className="grid grid-cols-[2fr_1fr] gap-6 items-stretch bg-bg-surface border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
 
       <div className="flex flex-col justify-between">
         <div>
@@ -58,26 +58,26 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
             ))}
           </div>
 
-          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
             <span className="text-text-muted flex-none">Тоннаж / объём</span>
             <span className="text-text-primary font-medium text-right tabular-nums">
               {capacity} · {volume}
             </span>
           </div>
-          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
             <span className="text-text-muted flex-none">НДС</span>
             <span className="text-text-primary font-medium text-right">
               {transport.vatType}
             </span>
           </div>
-          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
             <span className="text-text-muted flex-none">Мин. ставка</span>
             <span className="text-accent font-medium text-right tabular-nums">
               от {rate}
             </span>
           </div>
 
-          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+          <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
             <span className="text-text-muted flex-none">Мин. ставка за рейс</span>
             <span className="text-text-primary font-medium text-right tabular-nums">
               от {tripRate}
@@ -110,7 +110,7 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
       </div>
 
       <div className="flex flex-col gap-0.5">
-        <div className="aspect-square bg-[#F6F6F6] rounded-[16px] flex items-center justify-center overflow-hidden">
+        <div className="aspect-square bg-bg-subtle rounded-[16px] flex items-center justify-center overflow-hidden">
           <img
             src="/photoTr1.png"
             alt=""
@@ -132,14 +132,14 @@ export function TransportCard({ transport, onOpenDetail }: TransportCardProps) {
           <button
             type="button"
             onClick={onOpenDetail}
-            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white cursor-pointer"
+            className="mt-auto w-full h-9 rounded-pill bg-bg-inverse border border-outline text-[14px] font-medium text-text-inverse tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-outline-hover hover:text-text-inverse cursor-pointer"
           >
             Подробнее
           </button>
         ) : (
           <a
             href="#"
-            className="mt-auto w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white"
+            className="mt-auto w-full h-9 rounded-pill bg-bg-inverse border border-outline text-[14px] font-medium text-text-inverse tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-outline-hover hover:text-text-inverse"
           >
             Подробнее
           </a>

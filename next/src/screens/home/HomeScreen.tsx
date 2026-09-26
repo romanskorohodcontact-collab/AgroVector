@@ -10,9 +10,9 @@ import { TransportsList } from "@/widgets/transports-list";
 const BTN_MD_FILL =
   "inline-flex items-center justify-center h-12 px-[21.28px] gap-1.5 rounded-pill bg-accent text-base font-medium text-text-inverse whitespace-nowrap tracking-[-0.16px] transition-colors duration-150 hover:bg-accent/90";
 const BTN_MD_WHITE =
-  "inline-flex items-center justify-center h-12 px-[21.28px] gap-1.5 rounded-pill bg-white text-base font-medium text-text-primary whitespace-nowrap tracking-[-0.16px] transition-colors duration-150 hover:bg-[#F0F0F0]";
+  "inline-flex items-center justify-center h-12 px-[21.28px] gap-1.5 rounded-pill bg-bg-surface text-base font-medium text-text-primary whitespace-nowrap tracking-[-0.16px] transition-colors duration-150 hover:bg-bg-hover";
 const BTN_SM_GHOST =
-  "inline-flex items-center justify-center h-9 w-full rounded-pill bg-bg-subtle text-sm font-medium text-text-primary whitespace-nowrap tracking-[-0.16px] transition-colors duration-150 hover:bg-[#F0F0F0]";
+  "inline-flex items-center justify-center h-9 w-full rounded-pill bg-bg-subtle text-sm font-medium text-text-primary whitespace-nowrap tracking-[-0.16px] transition-colors duration-150 hover:bg-bg-hover";
 
 const STATS = [
   { value: "2 400+", label: "Активных перевозчиков" },
@@ -75,13 +75,13 @@ function Hero() {
   return (
     <section className="bg-[linear-gradient(rgba(20,20,20,0.55),rgba(20,20,20,0.75)),url('/photo1.jpg')] bg-cover bg-center py-[128px] text-center max-md:py-20">
       <div className="container-app">
-        <span className="block mb-4 text-sm leading-[1.43] tracking-[-0.14px] text-white/90">
+        <span className="block mb-4 text-sm leading-[1.43] tracking-[-0.14px] text-text-inverse/90">
           Аграрная логистика
         </span>
         <h1 className="text-[64px] font-medium leading-[1.04] tracking-[-4.62px] text-text-inverse max-lg:text-[60px] max-lg:tracking-[-3.2px] max-md:text-[44px] max-md:tracking-[-2.4px]">
           Грузы и транспорт для аграрного рынка
         </h1>
-        <p className="mt-7 mx-auto max-w-[680px] text-lg leading-[1.78] tracking-[-0.18px] text-white/85">
+        <p className="mt-7 mx-auto max-w-[680px] text-lg leading-[1.78] tracking-[-0.18px] text-text-inverse/85">
           Публикуйте заявки на груз или транспорт и находите подходящие предложения от заказчиков и перевозчиков.
         </p>
         <div className="flex items-center justify-center gap-3 mt-8">
@@ -137,7 +137,7 @@ function HowItWorks() {
           {STEPS.map((step) => (
             <article
               key={step.number}
-              className="flex flex-col bg-white border border-border rounded-[24px] p-6"
+              className="flex flex-col bg-bg-surface border border-border rounded-[24px] p-6"
             >
               <div className="flex items-center justify-center w-full h-[184px] mb-3 rounded-[24px] bg-bg-subtle text-text-muted">
                 <span className="text-[40px] font-medium tracking-[-1.6px] text-text-primary">
@@ -167,10 +167,10 @@ function Cta() {
   return (
     <section className="py-[120px] text-center bg-[linear-gradient(rgba(20,20,20,0.55),rgba(20,20,20,0.75)),url('/photo2.jpg')] bg-cover bg-center max-md:py-20">
       <div className="container-app">
-        <h2 className="mx-auto max-w-[640px] text-[26px] font-medium leading-[1.5] tracking-[-0.52px] text-white">
+        <h2 className="mx-auto max-w-[640px] text-[26px] font-medium leading-[1.5] tracking-[-0.52px] text-text-inverse">
           Готовы начать?
         </h2>
-        <p className="mx-auto mt-3 max-w-[560px] text-base leading-[1.75] text-white/85 tracking-[-0.16px]">
+        <p className="mx-auto mt-3 max-w-[560px] text-base leading-[1.75] text-text-inverse/85 tracking-[-0.16px]">
           Разместите первую заявку за пару минут и найдите перевозчика для вашего
           груза.
         </p>

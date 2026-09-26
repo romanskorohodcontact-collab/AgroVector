@@ -21,8 +21,12 @@ const TRUCK_SHAPES = [
   '<circle cx="7" cy="18" r="2"/>',
 ];
 
-/** Токены `--color-accent` и `--color-accent-orange` из `app/globals.css`. */
-const LOAD_FILL = "#23793D";
+/**
+ * Токены `--color-accent` и `--color-accent-orange` из `app/globals.css`.
+ * В data-URI SVG (iconLayout у `ymaps`) CSS-переменные не резолвятся,
+ * поэтому значения продублированы здесь.
+ */
+const LOAD_FILL = "#0BB552";
 const TRANSPORT_FILL = "#E95420";
 
 const MAP_MARKER_SIZE = 32;

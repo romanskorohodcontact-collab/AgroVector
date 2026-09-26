@@ -48,9 +48,9 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto mt-8 mb-14 p-9 bg-white border border-border rounded-[20px] max-[640px]:mt-6 max-[640px]:mx-4 max-[640px]:mb-10 max-[640px]:py-6 max-[640px]:px-4">
+    <div className="w-full max-w-[720px] mx-auto mt-8 mb-14 p-9 bg-bg-surface border border-border rounded-[20px] max-[640px]:mt-6 max-[640px]:mx-4 max-[640px]:mb-10 max-[640px]:py-6 max-[640px]:px-4">
       <div className="flex items-center gap-4 pb-7 mb-7 border-b border-border max-[640px]:gap-3 max-[640px]:pb-5 max-[640px]:mb-5">
-        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[linear-gradient(135deg,#23793D,#2d994d)] text-[22px] font-medium text-white tracking-[-0.5px] shrink-0 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:text-[19px]">
+        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[22px] font-medium text-text-inverse tracking-[-0.5px] shrink-0 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:text-[19px]">
           {getInitials(user.name)}
         </div>
         <div>
@@ -116,7 +116,7 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
         </div>
 
         {error ? (
-          <p className="text-sm text-center text-red-600 tracking-[-0.14px] mt-6 max-[640px]:mt-5">
+          <p className="text-sm text-center text-danger tracking-[-0.14px] mt-6 max-[640px]:mt-5">
             {error}
           </p>
         ) : null}
@@ -126,14 +126,14 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
             href="/profile"
             role="button"
             title="Отмена"
-            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#E5E5E5] max-[640px]:w-full"
+            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover max-[640px]:w-full"
           >
             Отмена
           </Link>
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-accent text-base font-medium text-white tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#1E6834] disabled:opacity-60 disabled:cursor-not-allowed max-[640px]:w-full"
+            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed max-[640px]:w-full"
           >
             {mutation.isPending ? "Сохранение…" : "Сохранить"}
           </button>

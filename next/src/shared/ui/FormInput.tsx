@@ -15,7 +15,7 @@ export const FORM_FILTER_TRIGGER =
   "flex items-center w-full h-[38px] px-4 rounded-pill bg-bg-input text-sm text-text-primary tracking-[-0.14px] cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export const FORM_INPUT =
-  "flex-1 min-w-0 border-0 bg-transparent outline-none text-sm text-text-primary leading-[1.43] tracking-[-0.14px] placeholder:text-text-muted";
+  "flex-1 min-w-0 border-0 bg-transparent outline-none text-sm text-text-primary leading-[1.43] tracking-[-0.14px] placeholder:text-icon-subtle";
 
 export function FormInput(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
@@ -57,7 +57,7 @@ export function FormSelect({ children, ...props }: FormSelectProps) {
 }
 
 export const FORM_TEXTAREA =
-  "w-full min-h-[96px] px-4 py-3 border-[1.2px] border-[#0D0D0D0D] rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] placeholder:text-text-muted resize-y transition-colors duration-150 focus:outline-none focus:border-accent";
+  "w-full min-h-[96px] px-4 py-3 border-[1.2px] border-outline-input rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] placeholder:text-icon-subtle resize-y transition-colors duration-150 focus:outline-none focus:border-accent";
 
 export function FormTextarea(
   props: TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -68,7 +68,7 @@ export function FormTextarea(
 function ChevronIcon() {
   return (
     <svg
-      className="h-4 w-4 shrink-0 text-text-primary"
+      className="h-4 w-4 shrink-0 text-icon"
       width="16"
       height="16"
       viewBox="0 0 16 16"

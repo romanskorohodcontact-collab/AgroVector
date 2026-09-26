@@ -11,7 +11,7 @@ const TOGGLE_BASE =
   "inline-flex items-center justify-center h-9 px-4 rounded-pill text-sm font-medium tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 cursor-pointer";
 const TOGGLE_ACTIVE = "bg-accent text-text-inverse";
 const TOGGLE_INACTIVE =
-  "bg-white text-text-secondary border-[0.8px] border-[#0D0D0D1A] hover:text-text-primary hover:border-[#0D0D0D33]";
+  "bg-bg-surface text-text-secondary border-[0.8px] border-outline hover:text-text-primary hover:border-outline-hover";
 
 export function SearchModeToggle({ mode, onChange }: SearchModeToggleProps) {
   return (

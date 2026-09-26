@@ -270,7 +270,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
     <div className="max-w-[1100px] mx-auto px-6 pb-14 grid grid-cols-[2fr_1fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-border rounded-[20px] bg-white p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
+        className="border border-border rounded-[20px] bg-bg-surface p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
       >
         <section>
           <h2 className={sectionTitleClass}>Маршрут</h2>
@@ -558,7 +558,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
                 <button
                   type="button"
                   onClick={() => removeCustomProperty(index)}
-                  className="inline-flex items-center justify-center h-[38px] w-[40px] rounded-2xl border-[1.2px] border-[#0D0D0D0D] bg-bg-subtle text-text-muted transition-colors duration-150 hover:text-red-600"
+                  className="inline-flex items-center justify-center h-[38px] w-[40px] rounded-2xl border-[1.2px] border-outline-input bg-bg-subtle text-text-muted transition-colors duration-150 hover:text-danger"
                   aria-label="Удалить свойство"
                 >
                   <CloseIcon />
@@ -569,7 +569,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
           <button
             type="button"
             onClick={addCustomProperty}
-            className="inline-flex items-center gap-1.5 h-11 px-4 mt-4 rounded-pill bg-bg-subtle text-sm font-medium text-text-primary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:bg-[#EFEFEF]"
+            className="inline-flex items-center gap-1.5 h-11 px-4 mt-4 rounded-pill bg-bg-subtle text-sm font-medium text-text-primary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
           >
             <PlusIcon />
             Добавить своё свойство
@@ -628,7 +628,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
         </section>
 
         {error ? (
-          <p className="text-sm text-red-600 text-center tracking-[-0.14px]">
+          <p className="text-sm text-danger text-center tracking-[-0.14px]">
             {error}
           </p>
         ) : null}
@@ -637,7 +637,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#1E6834] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <EditIcon />
             {mutation.isPending ? "Сохранение…" : "Отредактировать заявку"}
@@ -645,7 +645,7 @@ export function EditLoadForm({ load }: EditLoadFormProps) {
           <Link
             href="/profile"
             role="button"
-            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-[#EFEFEF]"
+            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
           >
             Отмена
           </Link>

@@ -4,8 +4,8 @@ import { getAvailabilityDisplay } from "@/entities/transport/model";
 import { EditIcon } from "@/shared/ui/EditIcon";
 
 const AVAILABILITY_COLORS: Record<string, { bg: string; text: string }> = {
-  "Свободен": { bg: "bg-[#E9F3EC]", text: "text-[#23793D]" },
-  "Занят": { bg: "bg-[#FFF4E5]", text: "text-[#A86400]" },
+  "Свободен": { bg: "bg-success-soft", text: "text-accent" },
+  "Занят": { bg: "bg-warning-soft", text: "text-warning" },
 };
 
 interface ProfileTransportCardProps {
@@ -38,7 +38,7 @@ export function ProfileTransportCard({
       : "—";
 
   return (
-    <article className="gap-6 items-stretch bg-white border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
+    <article className="gap-6 items-stretch bg-bg-surface border border-border rounded-[24px] p-5 max-[640px]:grid-cols-1">
 
       <div className="flex flex-col justify-between">
 
@@ -63,26 +63,26 @@ export function ProfileTransportCard({
           ))}
         </div>
 
-        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
           <span className="text-text-muted flex-none">Тоннаж / объём</span>
           <span className="text-text-primary font-medium text-right tabular-nums">
             {capacity} · {volume}
           </span>
         </div>
-        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
           <span className="text-text-muted flex-none">НДС</span>
           <span className="text-text-primary font-medium text-right">
             {transport.vatType}
           </span>
         </div>
-        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
           <span className="text-text-muted flex-none">Минимальная ставка</span>
           <span className="text-accent font-medium text-right tabular-nums">
             от {rate}
           </span>
         </div>
 
-        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-[#0D0D0D0F] text-[14px] tracking-[-0.14px]">
+        <div className="flex items-baseline justify-between gap-4 py-[7px] border-b border-divider text-[14px] tracking-[-0.14px]">
           <span className="text-text-muted flex-none">Минимальная ставка за рейс</span>
           <span className="text-text-primary font-medium text-right tabular-nums">
             от {tripRate}
@@ -97,7 +97,7 @@ export function ProfileTransportCard({
         {editable ? (
           <Link
             href={`/transports/${transport.id}/edit`}
-            className="w-full h-9 rounded-pill bg-bg-subtle text-[14px] font-medium text-text-primary tracking-[-0.16px] flex items-center justify-center gap-1.5 transition-colors duration-150 hover:bg-[#EFEFEF]"
+            className="w-full h-9 rounded-pill bg-bg-subtle text-[14px] font-medium text-text-primary tracking-[-0.16px] flex items-center justify-center gap-1.5 transition-colors duration-150 hover:bg-bg-hover"
           >
             <EditIcon />
             Редактировать
@@ -107,14 +107,14 @@ export function ProfileTransportCard({
           <button
             type="button"
             onClick={onOpenDetail}
-            className="w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white cursor-pointer"
+            className="w-full h-9 rounded-pill bg-bg-inverse border border-outline text-[14px] font-medium text-text-inverse tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-outline-hover hover:text-text-inverse cursor-pointer"
           >
             Подробнее
           </button>
         ) : (
           <a
             href="#"
-            className="w-full h-9 rounded-pill bg-[#333333] border border-[#0D0D0D1A] text-[14px] font-medium text-white tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-[#0D0D0D2E] hover:text-white"
+            className="w-full h-9 rounded-pill bg-bg-inverse border border-outline text-[14px] font-medium text-text-inverse tracking-[-0.16px] flex items-center justify-center transition-colors duration-150 hover:border-outline-hover hover:text-text-inverse"
           >
             Подробнее
           </a>

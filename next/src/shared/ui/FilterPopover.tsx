@@ -37,7 +37,7 @@ export function FilterPopover({
           <button
             type="button"
             onClick={onReset}
-            className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-white tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
+            className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
           >
             Сбросить
           </button>

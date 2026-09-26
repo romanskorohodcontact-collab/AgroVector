@@ -10,7 +10,7 @@ interface CreateLoadScreenProps {
 export function CreateLoadScreen({ user }: CreateLoadScreenProps) {
   return (
     <main className="bg-bg-subtle">
-      <div className="bg-white">
+      <div className="bg-bg-surface">
         <Header />
       </div>
 
@@ -31,7 +31,7 @@ export function CreateLoadScreen({ user }: CreateLoadScreenProps) {
 
       <CreateLoadForm user={user} />
 
-      <footer className="py-6 text-center border-t border-[#0D0D0D12] bg-white text-sm text-text-muted tracking-[-0.14px]">
+      <footer className="py-6 text-center border-t border-divider-strong bg-bg-surface text-sm text-text-muted tracking-[-0.14px]">
         © 2026 AgroRunok
       </footer>
     </main>
