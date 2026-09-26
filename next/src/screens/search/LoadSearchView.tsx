@@ -17,6 +17,7 @@ import { LoadsMap } from "@/widgets/loads-map";
 import { AutocompleteField } from "@/shared/ui/AutocompleteField";
 import { FIELD_LABEL, FormInputIcon, FormSelect } from "@/shared/ui/FormInput";
 import { Pagination } from "./ui/Pagination";
+import { ChevronDown } from "lucide-react";
 
 const PAGE_SIZE = 5;
 
@@ -287,58 +288,7 @@ function FilterForm({
       className="flex flex-col gap-3"
     >
 
-      {/*Блок сокращенного отображения*/}
-      <div className="flex justify-between">
-
-        <div className="flex">
-          <button
-            type="button"
-            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-          >
-            Вид заявок
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`w-4 h-4 shrink-0 transition-transform duration-150`}
-            >
-              <path d="m4 6 4 4 4-4" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="flex gap-4">
-
-          {filtersCollapsed && hasAppliedFilters(values) && <>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-            >
-              Сбросить фильтры
-            </button>
-            <div className="h-full border-r border-border" /></>
-          }
-
-
-          <button
-            type="button"
-            onClick={handleToggleFilters}
-            aria-expanded={!filtersCollapsed}
-            className="flex items-center justify-end gap-2 text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary"
-          >
-            {filtersCollapsed ? "Открыть панель" : "Скрыть панель"}
-          </button>
-        </div>
-      </div>
-      {!filtersCollapsed && <div className="w-full h-1 border-b border-border" />}
-
-
+      {/*Форма с фитрами*/}
       <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
         <AutocompleteField
           label="Город отправки"
@@ -385,7 +335,7 @@ function FilterForm({
           id="f-rate"
           placeholder="от 150₽/км"
         />
-        <CompanySelect
+        {/*<CompanySelect
           value={values.company ?? ""}
           onChange={(value) => setField("company", value)}
           options={suggestions.companyNames}
@@ -407,8 +357,41 @@ function FilterForm({
             }`}
         >
           Найти
+        </button>*/}
+      </div>
+      {/*Блок сокращенного отображения*/}
+      <div className="grid grid-cols-3 gap-3">
+        <button
+          type="button"
+          onClick={handleToggleFilters}
+          aria-expanded={!filtersCollapsed}
+          className="flex gap-2 h-[38px] px-4 items-center justify-center rounded-pill bg-bg-input text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-border"
+        >
+          <span>{filtersCollapsed ? "Открыть панель" : "Скрыть панель"}</span>
+          <ChevronDown
+            className={`w-4 h-4 transition-transform duration-150 ${filtersCollapsed ? "" : "rotate-180"}`}
+          />
+        </button>
+
+        <button
+          type="button"
+          onClick={handleReset}
+          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
+        >
+          Сбросить фильтры
+        </button>
+        <button
+          type="submit"
+          disabled={!searchEnabled}
+          className={`h-9 px-4 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
+            ? "bg-accent cursor-pointer hover:bg-accent/90"
+            : "bg-accent/50 cursor-not-allowed"
+            }`}
+        >
+          Найти
         </button>
       </div>
+
     </form>
   );
 }

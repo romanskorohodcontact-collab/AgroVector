@@ -592,6 +592,11 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
       aria-label="Сортировка"
     >
 
+
+      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+        Фильтры
+      </h2>
+
       <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
         Сортировка
       </h2>
@@ -654,9 +659,6 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
         })}
       </div>
 
-      <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
-        Фильтры
-      </h2>
     </aside>
   );
 }
