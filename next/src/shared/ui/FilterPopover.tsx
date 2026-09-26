@@ -10,6 +10,7 @@ interface FilterPopoverProps {
   panelWidthClass?: string;
   panelStyle?: CSSProperties;
   panelRef?: RefObject<HTMLDivElement | null>;
+  placement?: "bottom" | "top";
 }
 
 export function FilterPopover({
@@ -20,13 +21,16 @@ export function FilterPopover({
   panelWidthClass,
   panelStyle,
   panelRef,
+  placement = "bottom",
 }: FilterPopoverProps) {
   return (
     <div
       ref={panelRef}
       style={panelStyle}
-      className={`absolute top-[calc(100%+8px)] left-0 z-50 bg-bg-subtle rounded-2xl p-1 border border-border ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"
-        }`}
+      className={`absolute left-0 z-50 bg-white rounded-2xl p-1 border border-border ${placement === "top"
+          ? "bottom-[calc(100%+8px)]"
+          : "top-[calc(100%+8px)]"
+        } ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"}`}
     >
 
       <div className="flex items-center justify-between px-4 rounded-t-2xl pt-1.5 pb-1.5">

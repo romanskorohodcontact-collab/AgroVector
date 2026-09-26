@@ -6,6 +6,7 @@ interface ChipGroupProps {
   selected: string[];
   onToggle: (item: string) => void;
   required?: boolean;
+  hideLabel?: boolean;
 }
 
 export function ChipGroup({
@@ -14,13 +15,16 @@ export function ChipGroup({
   selected,
   onToggle,
   required,
+  hideLabel,
 }: ChipGroupProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]">
-        {label}
-        {required ? " *" : ""}
-      </span>
+      {hideLabel ? null : (
+        <span className="mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]">
+          {label}
+          {required ? " *" : ""}
+        </span>
+      )}
       <div className="flex flex-wrap gap-2">
         {options.map((opt) => {
           const active = selected.includes(opt);

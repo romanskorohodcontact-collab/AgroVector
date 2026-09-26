@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { usePopoverDismiss } from "@/shared/lib/usePopoverDismiss";
+import { useAnchoredPopover } from "@/shared/lib/useAnchoredPopover";
 import { DistrictRegionSelector } from "./DistrictRegionSelector";
 import { FilterPopover } from "./FilterPopover";
 import { FORM_FILTER_TRIGGER, FIELD_LABEL } from "./FormInput";
@@ -29,34 +28,29 @@ export function DistrictRegionSelectorPopover({
   open: controlledOpen,
   onOpenChange,
 }: DistrictRegionSelectorPopoverProps) {
-  const [internalOpen, setInternalOpen] = useState(false);
-  const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : internalOpen;
-
-  const setOpen = useCallback(
-    (value: boolean) => {
-      if (isControlled) {
-        onOpenChange?.(value);
-      } else {
-        setInternalOpen(value);
-      }
-    },
-    [isControlled, onOpenChange]
-  );
-
-  usePopoverDismiss(open, () => setOpen(false));
+  const { open, setOpen, toggle, anchorRef, panelRef, placement } =
+    useAnchoredPopover({
+      panelMaxHeight: 370,
+      open: controlledOpen,
+      onOpenChange,
+    });
 
   return (
-    <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
+    <div
+      ref={anchorRef}
+      className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}
+    >
+
       {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
 
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={toggle}
         aria-expanded={open}
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
+
         <div className="flex items-center gap-2 w-full min-w-0">
 
           {selectedRegions.length > 0 ? (
@@ -71,7 +65,7 @@ export function DistrictRegionSelectorPopover({
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-icon-subtle">
+            <span className="flex-1 min-w-0 truncate text-left text-icon-subtle">
               Выберите регионы
             </span>
           )}
@@ -99,11 +93,14 @@ export function DistrictRegionSelectorPopover({
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
+
           <FilterPopover
             label={label}
             onReset={onReset}
             hasValue={selectedRegions.length > 0}
             panelWidthClass={panelWidthClass}
+            panelRef={panelRef}
+            placement={placement}
           >
             <DistrictRegionSelector
               selectedRegions={selectedRegions}

@@ -20,18 +20,15 @@ import {
 import { MapPicker } from "@/features/map";
 import type { GeoPoint } from "@/entities/load/model";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
-import { FormInput, FormSelect, FormTextarea } from "@/shared/ui/FormInput";
+import { FormInput, FormSelect, FormTextarea, FIELD_LABEL_INLINE, FIELD_ROW, FIELD_ROW_TOP } from "@/shared/ui/FormInput";
 import { DistrictRegionSelector } from "@/shared/ui/DistrictRegionSelector";
 import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
 import type { User } from "@/entities/user";
 
-const labelClass =
-  "mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]";
-
-const formGridClass = "grid grid-cols-2 gap-4 max-[640px]:grid-cols-1";
+const formGridClass = "grid grid-cols-1 gap-3";
 
 const sectionTitleClass =
-  "text-base font-semibold leading-[1.5] text-text-primary tracking-[-0.16px] mb-4";
+  "text-base font-medium leading-[1.5] text-text-primary tracking-[-0.16px] mb-4";
 
 interface CreateTransportFormProps {
   user?: User;
@@ -196,17 +193,23 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     contactPhone: draft.contactPhone || "+7 (___) ___-__-__",
   };
 
+  const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(
+    draft.availabilityType,
+  );
+
   return (
     <div className="container-app pb-14 grid grid-cols-[60fr_40fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-border rounded-[20px] bg-bg-surface p-8 flex flex-col gap-8 max-[640px]:px-4 max-[640px]:py-6"
+        className="border border-border rounded-[20px] bg-bg-surface p-6 flex flex-col gap-8 max-[640px]:p-4"
       >
         <section>
           <h2 className={sectionTitleClass}>Транспорт</h2>
+          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+
           <div className={formGridClass}>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-transport-type">
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-transport-type">
                 Тип транспорта
               </label>
               <FormSelect
@@ -224,8 +227,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-body-type">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-body-type">
                 Тип кузова
               </label>
               <FormSelect
@@ -243,8 +248,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-capacity">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-capacity">
                 Грузоподъёмность
               </label>
               <FormInput
@@ -259,8 +266,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 autoComplete="off"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-volume">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-volume">
                 Объём кузова
               </label>
               <FormInput
@@ -280,36 +289,53 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Грузы и погрузка</h2>
-          <ChipGroup
-            label="Перевозимые типы груза"
-            options={CARGO_TYPES}
-            selected={draft.cargoTypes}
-            onToggle={(item) => toggleArrayItem("cargoTypes", item)}
-            required
-          />
-          <div className="mt-4">
-            <ChipGroup
-              label="Способы загрузки"
-              options={LOADING_TYPES}
-              selected={draft.loadingType}
-              onToggle={(item) => toggleArrayItem("loadingType", item)}
-            />
-          </div>
-          <div className="mt-4">
-            <ChipGroup
-              label="Способы выгрузки"
-              options={UNLOADING_TYPES}
-              selected={draft.unloadingType}
-              onToggle={(item) => toggleArrayItem("unloadingType", item)}
-            />
+          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+
+          <div className={formGridClass}>
+            <div className={`${FIELD_ROW} items-start`}>
+              <span className={FIELD_LABEL_INLINE}>Перевозимые типы груза *</span>
+              <ChipGroup
+                label="Перевозимые типы груза"
+                options={CARGO_TYPES}
+                selected={draft.cargoTypes}
+                onToggle={(item) => toggleArrayItem("cargoTypes", item)}
+                hideLabel
+              />
+            </div>
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={`${FIELD_ROW} items-start`}>
+              <span className={FIELD_LABEL_INLINE}>Способы загрузки</span>
+              <ChipGroup
+                label="Способы загрузки"
+                options={LOADING_TYPES}
+                selected={draft.loadingType}
+                onToggle={(item) => toggleArrayItem("loadingType", item)}
+                hideLabel
+              />
+            </div>
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={`${FIELD_ROW} items-start`}>
+              <span className={FIELD_LABEL_INLINE}>Способы выгрузки</span>
+              <ChipGroup
+                label="Способы выгрузки"
+                options={UNLOADING_TYPES}
+                selected={draft.unloadingType}
+                onToggle={(item) => toggleArrayItem("unloadingType", item)}
+                hideLabel
+              />
+            </div>
           </div>
         </section>
 
         <section>
           <h2 className={sectionTitleClass}>Работа и ставка</h2>
+          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+
           <div className={formGridClass}>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-rate-km">
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-rate-km">
                 Ставка за км
               </label>
               <FormInput
@@ -324,8 +350,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 autoComplete="off"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-trip-rate">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-trip-rate">
                 Стоимость рейса
               </label>
               <FormInput
@@ -340,8 +368,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 autoComplete="off"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-vat">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-vat">
                 Условия НДС
               </label>
               <FormSelect
@@ -359,8 +389,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-availability">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-availability">
                 Доступность
               </label>
               <FormSelect
@@ -377,40 +409,45 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-          </div>
-          {(AVAILABILITY_DATE_TYPES as readonly string[]).includes(
-            draft.availabilityType,
-          ) && (
-            <div className="mt-4 flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-busy-until">
-                Работает до
-              </label>
-              <FormInput
-                id="f-busy-until"
-                type="date"
-                name="availabilityDate"
-                value={draft.availabilityDate}
-                onChange={handleFieldChange}
-                required
+            {isDateType ? (
+              <>
+                <div className="w-full h-1 border-b border-bg-subtle" />
+                <div className={FIELD_ROW}>
+                  <label className={FIELD_LABEL_INLINE} htmlFor="f-busy-until">
+                    Работает до
+                  </label>
+                  <FormInput
+                    id="f-busy-until"
+                    type="date"
+                    name="availabilityDate"
+                    value={draft.availabilityDate}
+                    onChange={handleFieldChange}
+                    required
+                  />
+                </div>
+              </>
+            ) : null}
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={`${FIELD_ROW} items-start`}>
+              <span className={FIELD_LABEL_INLINE}>Регионы работы</span>
+              <DistrictRegionSelector
+                selectedRegions={draft.workRegions}
+                onToggleRegion={(region) =>
+                  toggleArrayItem("workRegions", region)
+                }
+                onToggleDistrict={toggleDistrict}
               />
             </div>
-          )}
-          <div className="mt-4">
-            <DistrictRegionSelector
-              label="В каких Федеральных округах и регионах работаете"
-              selectedRegions={draft.workRegions}
-              onToggleRegion={(region) =>
-                toggleArrayItem("workRegions", region)
-              }
-              onToggleDistrict={toggleDistrict}
-            />
           </div>
         </section>
 
         <section>
           <h2 className={sectionTitleClass}>Доп. информация</h2>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col gap-1.5">
+          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+
+          <div className={formGridClass}>
+            <div className={FIELD_ROW_TOP}>
               <FormTextarea
                 id="f-note"
                 name="additionalInfo"
@@ -425,9 +462,11 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Контакты</h2>
+          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+
           <div className={formGridClass}>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-name">
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-name">
                 Контактное лицо
               </label>
               <FormInput
@@ -441,8 +480,10 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 required
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className={labelClass} htmlFor="f-phone">
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <div className={FIELD_ROW}>
+              <label className={FIELD_LABEL_INLINE} htmlFor="f-phone">
                 Телефон
               </label>
               <FormInput
@@ -465,11 +506,11 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
           </p>
         ) : null}
 
-        <div className="flex gap-3 pt-6 border-t border-border max-[640px]:flex-col">
+        <div className="flex gap-3 pt-6 max-[640px]:flex-col">
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <PlusIcon />
             {mutation.isPending ? "Публикация…" : "Опубликовать заявку"}
@@ -477,7 +518,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
           <Link
             href="/profile"
             role="button"
-            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
+            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
           >
             Отмена
           </Link>
@@ -496,23 +537,14 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
         </div>
 
         <div className="mt-4" aria-label="Предпросмотр заявки">
-          <h3 className="text-sm font-semibold text-text-primary tracking-[-0.14px] mb-3">
+          <h3 className="text-lg font-medium leading-[1.33] text-text-primary tracking-[-0.18px] mb-3">
             Предпросмотр заявки
           </h3>
-          point
           <TransportDetailButton transport={previewTransport} />
         </div>
       </aside>
     </div>
   );
-}
-
-interface ChipGroupProps {
-  label: string;
-  options: readonly string[];
-  selected: string[];
-  onToggle: (item: string) => void;
-  required?: boolean;
 }
 
 function PlusIcon() {

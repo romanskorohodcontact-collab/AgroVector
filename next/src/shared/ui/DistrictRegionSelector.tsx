@@ -34,7 +34,7 @@ export function DistrictRegionSelector({
   }
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5 w-full">
 
       {label && <span className={labelClass}>{label}</span>}
       <div className="border border-border rounded-2xl bg-bg-surface max-h-[370px] overflow-y-auto">
@@ -60,11 +60,13 @@ export function DistrictRegionSelector({
                     onChange={() => onToggleDistrict(district)}
                     className="w-4 h-4 accent-accent cursor-pointer"
                   />
+
                   <button
                     type="button"
                     onClick={() => toggleExpand(district)}
                     className="flex-1 text-left text-[14px] font-medium text-text-primary tracking-[-0.14px] cursor-pointer"
                   >
+
                     {district}
                     {someSelected && (
                       <span className="ml-2 text-[12px] text-text-muted">
