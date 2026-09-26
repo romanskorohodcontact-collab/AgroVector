@@ -94,6 +94,14 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     setClusterFilter(null);
   }
 
+  function handleCompanyChange(value: string) {
+    setValues((current) => ({ ...current, company: value }));
+    setApplied((current) => ({ ...current, company: value }));
+    setPage(1);
+    setSelectedId(null);
+    setClusterFilter(null);
+  }
+
   function setField(key: keyof SearchFiltersValues, value: string) {
     setValues((current) => ({ ...current, [key]: value }));
   }
@@ -122,7 +130,14 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
         </section>
 
         <div className={`min-h-0 grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1`}>
-          <SortPanel sort={sort} onSort={setSort} horizontal={filtersCollapsed} />
+          <SortPanel
+            sort={sort}
+            onSort={setSort}
+            horizontal={filtersCollapsed}
+            company={values.company ?? ""}
+            companyOptions={suggestions.companyNames}
+            onCompanyChange={handleCompanyChange}
+          />
 
           <section className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto`} aria-label="Заявки на груз">
             <div className="flex justify-between items-center mb-3">
@@ -335,29 +350,6 @@ function FilterForm({
           id="f-rate"
           placeholder="от 150₽/км"
         />
-        {/*<CompanySelect
-          value={values.company ?? ""}
-          onChange={(value) => setField("company", value)}
-          options={suggestions.companyNames}
-        />
-
-        <button
-          type="button"
-          onClick={handleReset}
-          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
-        >
-          Сбросить фильтры
-        </button>
-        <button
-          type="submit"
-          disabled={!searchEnabled}
-          className={`h-9 px-4 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
-            ? "bg-accent cursor-pointer hover:bg-accent/90"
-            : "bg-accent/50 cursor-not-allowed"
-            }`}
-        >
-          Найти
-        </button>*/}
       </div>
       {/*Блок сокращенного отображения*/}
       <div className="grid grid-cols-3 gap-3">
@@ -463,6 +455,9 @@ interface SortPanelProps {
   sort: LoadSort;
   onSort: (next: LoadSort) => void;
   horizontal?: boolean;
+  company: string;
+  companyOptions: string[];
+  onCompanyChange: (value: string) => void;
 }
 
 const SORT_OPTIONS: {
@@ -487,7 +482,14 @@ const DEFAULT_DIRS: Record<LoadSortField, SortDirection> = {
   ratePerKm: "desc",
 };
 
-function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
+function SortPanel({
+  sort,
+  onSort,
+  horizontal = false,
+  company,
+  companyOptions,
+  onCompanyChange,
+}: SortPanelProps) {
   const [dirs, setDirs] = useState<Record<LoadSortField, SortDirection>>(
     DEFAULT_DIRS
   );
@@ -502,7 +504,7 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
       className="px-4 py-5 min-h-0 overflow-y-auto border-r border-divider-strong max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
       aria-label="Сортировка"
     >
-      <h2 className={`${horizontal ? "hidden" : "mb-4"} text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
+      <h2 className={`mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
         Сортировка
       </h2>
       <div className="flex flex-col gap-1">
@@ -573,6 +575,17 @@ function SortPanel({ sort, onSort, horizontal = false }: SortPanelProps) {
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-5">
+        <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+          Доп. фильтры
+        </h2>
+        <CompanySelect
+          value={company}
+          onChange={onCompanyChange}
+          options={companyOptions}
+        />
       </div>
     </aside>
   );
