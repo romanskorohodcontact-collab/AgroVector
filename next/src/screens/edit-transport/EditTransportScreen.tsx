@@ -14,10 +14,10 @@ export function EditTransportScreen({ transport }: EditTransportScreenProps) {
         <Header />
       </div>
 
-      <div className="container-app pt-8 pb-6 max-[640px]:pt-6 max-[640px]:pb-5">
+      <div className="container-app pt-4 pb-4 max-[640px]:pt-6 max-[640px]:pb-5">
         <nav aria-label="Навигация" className="flex items-center gap-2 text-sm">
           <Link
-            href="/search?type=load"
+            href="/search?type=transport"
             className="text-text-secondary tracking-[-0.14px] leading-[1.43] transition-colors duration-150 hover:text-text-primary"
           >
             АгроРынок

@@ -1,5 +1,7 @@
-import { ForumScreen } from "@/screens/forum/ForumScreen";
+import { ForumHomeScreen } from "@/screens/forum/ForumHomeScreen";
+
+export const dynamic = "force-dynamic";
 
 export default function ForumPage() {
-  return <ForumScreen />;
+  return <ForumHomeScreen />;
 }

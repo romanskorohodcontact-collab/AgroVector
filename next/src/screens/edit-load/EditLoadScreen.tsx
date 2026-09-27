@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Load } from "@/entities/load/model";
 import { EditLoadForm } from "@/features/edit-load";
 import { Header } from "@/widgets/header";
@@ -13,13 +14,19 @@ export function EditLoadScreen({ load }: EditLoadScreenProps) {
         <Header />
       </div>
 
-      <div className="max-w-[1100px] mx-auto px-6 pt-10 pb-8 text-center max-[640px]:px-4 max-[640px]:pt-7 max-[640px]:pb-6">
-        <h1 className="text-[30px] font-semibold leading-[1.4] text-text-dark tracking-[-0.6px] max-[640px]:text-2xl max-[640px]:tracking-[-0.48px]">
-          Редактировать заявку на груз
-        </h1>
-        <p className="mt-4 text-lg leading-[1.78] text-text-secondary tracking-[-0.18px]">
-          Внесите изменения в заявку и сохраните её
-        </p>
+      <div className="container-app pt-4 pb-4 max-[640px]:pt-6 max-[640px]:pb-5">
+        <nav aria-label="Навигация" className="flex items-center gap-2 text-sm">
+          <Link
+            href="/search?type=load"
+            className="text-text-secondary tracking-[-0.14px] leading-[1.43] transition-colors duration-150 hover:text-text-primary"
+          >
+            АгроРынок
+          </Link>
+          <span className="text-text-muted">›</span>
+          <span className="font-medium text-text-primary tracking-[-0.14px]">
+            Редактирование груза
+          </span>
+        </nav>
       </div>
 
       <EditLoadForm load={load} />

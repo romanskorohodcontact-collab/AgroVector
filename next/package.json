@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "db:seed-transports": "tsx src/server/db/seed-transports.ts"
+    "db:seed-transports": "tsx src/server/db/seed-transports.ts",
+    "db:seed-forum": "tsx src/server/db/seed-forum.ts"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",

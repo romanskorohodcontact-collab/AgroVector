@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePopoverDismiss } from "@/shared/lib/usePopoverDismiss";
 import {
   POPOVER_PANEL_CHROME,
+  POPOVER_VIEWPORT_MARGIN,
   resolvePopoverPlacement,
   scrollPopoverIntoView,
   type PopoverPlacement,
@@ -11,12 +12,14 @@ import {
 
 interface UseAnchoredPopoverOptions {
   panelMaxHeight: number;
+  alignAnchorTop?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 export function useAnchoredPopover({
   panelMaxHeight,
+  alignAnchorTop = false,
   open: controlledOpen,
   onOpenChange,
 }: UseAnchoredPopoverOptions) {
@@ -58,18 +61,33 @@ export function useAnchoredPopover({
     if (panel) measuredHeightRef.current = panel.offsetHeight;
   }, [open]);
 
-  const toggle = useCallback(async () => {
-    if (open) {
-      setOpen(false);
-      return;
-    }
+  const openWithScroll = useCallback(async () => {
+    if (open) return;
     if (pendingRef.current) return;
     pendingRef.current = true;
     try {
       const panelHeight =
         measuredHeightRef.current ?? panelMaxHeight + POPOVER_PANEL_CHROME;
-      const { placement: nextPlacement, scrollTarget } =
-        resolvePopoverPlacement(anchorRef.current, panelHeight);
+      const anchor = anchorRef.current;
+      const resolved = resolvePopoverPlacement(anchor, panelHeight);
+
+      let scrollTarget = resolved.scrollTarget;
+      let nextPlacement = resolved.placement;
+
+      if (alignAnchorTop && anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const maxScroll =
+          document.documentElement.scrollHeight - window.innerHeight;
+        scrollTarget = Math.max(
+          0,
+          Math.min(
+            window.scrollY + rect.top - POPOVER_VIEWPORT_MARGIN,
+            maxScroll
+          )
+        );
+        nextPlacement = "bottom";
+      }
+
       setPlacement(nextPlacement);
 
       if (scrollTarget !== null) {
@@ -85,7 +103,15 @@ export function useAnchoredPopover({
     } finally {
       pendingRef.current = false;
     }
-  }, [open, panelMaxHeight, setOpen]);
+  }, [open, panelMaxHeight, alignAnchorTop, setOpen]);
 
-  return { open, setOpen, toggle, anchorRef, panelRef, placement };
+  const toggle = useCallback(async () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    await openWithScroll();
+  }, [open, openWithScroll, setOpen]);
+
+  return { open, setOpen, toggle, openWithScroll, anchorRef, panelRef, placement };
 }
