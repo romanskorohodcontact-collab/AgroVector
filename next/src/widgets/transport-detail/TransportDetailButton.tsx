@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Transport } from "@/entities/transport/model";
 import { TransportCard } from "@/entities/transport/ui";
 import { TransportDetailWindow } from "./TransportDetailWindow";
+import { TransportCardTest } from "@/entities/transport/ui/TransportCardTest";
 
 interface TransportDetailButtonProps {
   transport: Transport;
@@ -14,7 +15,8 @@ export function TransportDetailButton({ transport }: TransportDetailButtonProps)
 
   return (
     <>
-      <TransportCard
+      {/*<TransportCard*/}
+      <TransportCardTest
         transport={transport}
         onOpenDetail={() => setOpen(true)}
       />

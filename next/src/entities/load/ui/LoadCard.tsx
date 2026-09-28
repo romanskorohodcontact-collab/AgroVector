@@ -15,14 +15,14 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
   const loadingDateLabel =
     loadingDate && !Number.isNaN(loadingDate.getTime())
       ? loadingDate.toLocaleDateString("ru-RU", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
       : "—";
 
   return (
-    <article className="flex flex-col bg-bg-surface border border-border rounded-[24px] px-6 py-3 max-w-[620px]">
+    <article className="flex flex-col gap-3 bg-bg-surface border border-border rounded-[24px] px-5 pb-4 pt-3 max-w-[620px]">
 
       {/*<div className="flex items-center justify-between gap-3">
         <span className="text-xs text-text-muted whitespace-nowrap leading-[1.5]">
@@ -37,13 +37,8 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
         </span>
       </div>*/}
 
-      {/*<h3 className="mt-3 text-xl font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
-        {load.cargo}
-      </h3>*/}
-      {/*<p className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
-        {load.loadingPlace} → {load.unloadingPlace}
-      </p>*/}
-      <div className="flex justify-between">
+      {/*Откуда куда*/}
+      <div className="flex justify-between items-center">
         <div className="flex flex-col">
           <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
             {load.loadingRegion}
@@ -52,7 +47,7 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
             className="text-xs text-text-muted whitespace-nowrap"
           > {load.loadingPlace}</span>
         </div>
-        →
+        <span>→</span>
         <div className="flex flex-col">
           <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
             {load.unloadingRegion}
@@ -64,7 +59,27 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 mt-4 py-3 border-y border-border">
+      {/*Пэйджи*/}
+      <div className="flex gap-2 mt- 2">
+        <span
+          className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+        >
+          {load.cargo}
+        </span>
+        {/*<span
+          className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+        >
+          {load.vatType}
+        </span>*/}
+        <span
+          className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+        >
+          {loadingDateLabel}
+        </span>
+      </div>
+
+      {/*Основная инфа*/}
+      <div className="flex justify-between items-center py-1 gap-x-5 gap-y-2 border-y border-border">
         <span className="text-xs text-text-muted whitespace-nowrap">
           <b className="font-medium text-sm text-text-primary tracking-[-0.14px] tabular-nums">
             {load.tonnage.tonnageWeight}
@@ -80,60 +95,29 @@ export function LoadCard({ load, editable = false }: LoadCardProps) {
           км
           {/*· Расстояние*/}
         </span>
+
         <span className="text-xs text-text-muted whitespace-nowrap">
-          <b className="font-medium text-sm text-text-primary tracking-[-0.14px] tabular-nums">
-            {load.ratePerKm.toFixed(2)}
-          </b>{" "}
-          ₽/км
-        </span>
-        <span className="text-xs text-text-muted whitespace-nowrap">
-          <b className="font-medium text-lg text-accent tracking-[-0.24px] tabular-nums">
+          <b
+            // className="font-medium text-lg text-accent tracking-[-0.24px] tabular-nums"
+            className="font-medium text-sm text-text-primary tracking-[-0.14px] tabular-nums"
+
+
+          >
             {load.rate.toLocaleString("ru-RU")}
           </b>{" "}
           {/*· Ставка*/}
           ₽/рейс
         </span>
+        <span className="text-xs text-text-muted whitespace-nowrap">
+          <b className="font-medium text-lg text-text-primary tracking-[-0.24px] tabular-nums">
+            {load.ratePerKm.toFixed(2)}
+          </b>{" "}
+          ₽/км
+        </span>
       </div>
 
-
-      <div className="flex flex-wrap gap-2 mt-4">
-        {/*{load.bodyType ? (
-          <span
-            className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-          >
-            {load.bodyType}
-          </span>
-        ) : null}
-        {load.loadingType && load.loadingType.map((type) => (
-         <span
-           key={type}
-           className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-         >
-            {type}
-         </span>
-        ))}*/}
-        {/*Эта часть новая*/}
-        <div className="flex gap-2">
-          <span
-            className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-          >
-            {load.cargo}
-          </span>
-          <span
-            className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-          >
-            {load.vatType}
-          </span>
-          <span
-            className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-          >
-            {loadingDateLabel}
-          </span>
-        </div>
-        {/*Конец новой части*/}
-      </div>
-
-      <footer className="flex items-center justify-between flex-wrap gap-4 mt-4 mt- 8 max-md:flex-col max-md:items-stretch">
+      {/*Контакты + Подробнее*/}
+      <footer className="flex items-end justify-between flex-wrap max-md:flex-col max-md:items-stretch">
         <div className="flex flex-col items-baseline gap-0 max-md:justify-between">
           <span className="text-sm text-text-primary tracking-[-0.14px] leading-[1.43]">
             {load.customerName}
