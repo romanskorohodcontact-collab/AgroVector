@@ -11,6 +11,7 @@ interface DistrictRegionSelectorProps {
   selectedRegions: string[];
   onToggleRegion: (region: string) => void;
   onToggleDistrict: (district: string) => void;
+  single?: boolean;
 }
 
 export function DistrictRegionSelector({
@@ -18,6 +19,7 @@ export function DistrictRegionSelector({
   selectedRegions,
   onToggleRegion,
   onToggleDistrict,
+  single = false,
 }: DistrictRegionSelectorProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
@@ -44,7 +46,8 @@ export function DistrictRegionSelector({
             const selectedCount = regions.filter((r) =>
               selectedRegions.includes(r)
             ).length;
-            const allSelected = selectedCount === regions.length;
+            const allSelected =
+              selectedCount === regions.length && regions.length > 0;
             const someSelected = selectedCount > 0 && !allSelected;
 
             return (
@@ -54,12 +57,14 @@ export function DistrictRegionSelector({
               >
                 <div className="flex items-center gap-2 px-4 py-3 bg-bg-subtle">
 
-                  <input
-                    type="checkbox"
-                    checked={allSelected}
-                    onChange={() => onToggleDistrict(district)}
-                    className="w-4 h-4 accent-accent cursor-pointer"
-                  />
+                  {!single && (
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={() => onToggleDistrict(district)}
+                      className="w-4 h-4 accent-accent cursor-pointer"
+                    />
+                  )}
 
                   <button
                     type="button"
@@ -95,7 +100,29 @@ export function DistrictRegionSelector({
                     </svg>
                   </button>
                 </div>
-                {isExpanded && (
+                {isExpanded && single && (
+                  <div className="px-4 py-2.5 flex flex-wrap gap-2">
+                    {regions.map((region) => {
+                      const active = selectedRegions.includes(region);
+                      return (
+                        <button
+                          key={region}
+                          type="button"
+                          onClick={() => onToggleRegion(region)}
+                          aria-pressed={active}
+                          className={`inline-flex items-center px-[10px] py-[5px] rounded-pill text-[12px] whitespace-nowrap transition-colors duration-150 cursor-pointer ${
+                            active
+                              ? "bg-accent text-text-inverse"
+                              : "bg-bg-subtle text-text-secondary hover:bg-bg-hover"
+                          }`}
+                        >
+                          {region}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {isExpanded && !single && (
                   <div className="px-4 py-2 grid grid-cols-2 gap-1 max-[640px]:grid-cols-1">
                     {regions.map((region) => (
                       <label

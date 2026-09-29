@@ -28,7 +28,7 @@ export interface CreateLoadData {
     tonnageWeight: number;
     tonnageUnit: "kg" | "ton";
   };
-  bodyType: string;
+  bodyType: string[];
   cargo: string;
   cargoForm: string;
   cargoTypes: string[];
@@ -42,8 +42,9 @@ export interface CreateLoadData {
   unloadingRegion: string[] | null;
   loadingType: string[] | null;
   unloadingType: string[] | null;
-  vatType: string;
-  loadingDate: Date;
+  vatType: string[];
+  loadingDate: Date | null;
+  advance: string | null;
   customProperties: { name: string; value: string }[];
 }
 
@@ -213,6 +214,11 @@ function toCreateQuery(data: CreateLoadData) {
   return { ...data, userId: toObjectId(data.userId) };
 }
 
+function toArray(value: string | string[] | null | undefined): string[] {
+  if (Array.isArray(value)) return value;
+  return value ? [value] : [];
+}
+
 function toStrings(values: unknown[]): string[] {
   return values
     .filter((value): value is string => typeof value === "string")
@@ -281,7 +287,7 @@ function toLoad(doc: LoadRecord): Load {
     rate: doc.rate,
     ratePerKm: doc.ratePerKm ?? (doc.distance > 0 ? doc.rate / doc.distance : 0),
     tonnage: doc.tonnage ?? { tonnageWeight: 0, tonnageUnit: "ton" },
-    bodyType: doc.bodyType ?? "",
+    bodyType: toArray(doc.bodyType),
     cargo: doc.cargo,
     cargoForm: doc.cargoForm ?? "",
     cargoTypes: doc.cargoTypes ?? [],
@@ -295,8 +301,9 @@ function toLoad(doc: LoadRecord): Load {
     unloadingRegion: doc.unloadingRegion ?? null,
     loadingType: doc.loadingType ?? null,
     unloadingType: doc.unloadingType ?? null,
-    vatType: doc.vatType,
-    loadingDate: doc.loadingDate ?? new Date(0),
+    vatType: toArray(doc.vatType),
+    loadingDate: doc.loadingDate ?? null,
+    advance: doc.advance ?? null,
     customProperties: doc.customProperties ?? [],
   };
 }

@@ -21,6 +21,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Работаю с документами, опыт 8 лет.",
     contactName: "Алексей Петров",
     contactPhone: "+7 (915) 123-45-67",
+    createdAt: new Date("2026-09-28"),
   },
   {
     id: "mock-tr-2",
@@ -42,6 +43,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Температурный режим от -25 до +25 °C, самописец.",
     contactName: "Игорь Смирнов",
     contactPhone: "+7 (928) 234-56-78",
+    createdAt: new Date("2026-09-26"),
   },
   {
     id: "mock-tr-3",
@@ -63,6 +65,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Работа на карьерах и стройках, круглосуточно.",
     contactName: "Сергей Козлов",
     contactPhone: "+7 (912) 345-67-89",
+    createdAt: new Date("2026-09-24"),
   },
   {
     id: "mock-tr-4",
@@ -84,6 +87,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "ДОПОГ, алюминий, 2 секции.",
     contactName: "Дмитрий Волков",
     contactPhone: "+7 (917) 456-78-90",
+    createdAt: new Date("2026-09-22"),
   },
   {
     id: "mock-tr-5",
@@ -105,6 +109,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Вместимость до 8 легковых, закрытый тип.",
     contactName: "Андрей Новиков",
     contactPhone: "+7 (921) 567-89-01",
+    createdAt: new Date("2026-09-19"),
   },
   {
     id: "mock-tr-6",
@@ -126,6 +131,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Сортиментовоз, манипулятор Palfinger.",
     contactName: "Михаил Орлов",
     contactPhone: "+7 (921) 678-90-12",
+    createdAt: new Date("2026-09-17"),
   },
   {
     id: "mock-tr-7",
@@ -147,6 +153,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Стрела 7 м, г/п манипулятора 3 т.",
     contactName: "Олег Сидоров",
     contactPhone: "+7 (916) 789-01-23",
+    createdAt: new Date("2026-09-14"),
   },
   {
     id: "mock-tr-8",
@@ -168,6 +175,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Городские и междугородние перевозки.",
     contactName: "Екатерина Белова",
     contactPhone: "+7 (903) 890-12-34",
+    createdAt: new Date("2026-09-11"),
   },
   {
     id: "mock-tr-9",
@@ -189,6 +197,7 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Площадка под 20/40 футов, работа с портом Владивостока.",
     contactName: "Виктор Тихонов",
     contactPhone: "+7 (914) 901-23-45",
+    createdAt: new Date("2026-09-07"),
   },
   {
     id: "mock-tr-10",
@@ -210,5 +219,6 @@ export const MOCK_TRANSPORTS: Transport[] = [
     additionalInfo: "Низкорамный, удлинённая платформа, сопровождение.",
     contactName: "Павел Жуков",
     contactPhone: "+7 (912) 012-34-56",
+    createdAt: new Date("2026-09-02"),
   },
 ];

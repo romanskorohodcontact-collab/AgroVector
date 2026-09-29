@@ -15,6 +15,7 @@ interface DistrictRegionSelectorPopoverProps {
   panelWidthClass?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  single?: boolean;
 }
 
 export function DistrictRegionSelectorPopover({
@@ -27,6 +28,7 @@ export function DistrictRegionSelectorPopover({
   panelWidthClass,
   open: controlledOpen,
   onOpenChange,
+  single = false,
 }: DistrictRegionSelectorPopoverProps) {
   const { open, setOpen, toggle, anchorRef, panelRef, placement } =
     useAnchoredPopover({
@@ -51,14 +53,14 @@ export function DistrictRegionSelectorPopover({
         className={FORM_FILTER_TRIGGER}
       >
 
-        <div className="flex items-center gap-2 w-full min-w-0">
+        <div className="flex justify-between items-center gap-2 w-full min-w-0">
 
           {selectedRegions.length > 0 ? (
-            <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis">
+            <div className="overflow-hidden whitespace-nowrap text-ellipsis">
               {selectedRegions.map((region) => (
                 <span
                   key={region}
-                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg-bg-surface text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg- bg-surface text-xs text-text-primary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {region}
                 </span>
@@ -66,7 +68,7 @@ export function DistrictRegionSelectorPopover({
             </div>
           ) : (
             <span className="flex-1 min-w-0 truncate text-left text-icon-subtle">
-              Выберите регионы
+              {single ? "Выберите регион" : "Выберите регионы"}
             </span>
           )}
           <svg
@@ -106,6 +108,7 @@ export function DistrictRegionSelectorPopover({
               selectedRegions={selectedRegions}
               onToggleRegion={onToggleRegion}
               onToggleDistrict={onToggleDistrict}
+              single={single}
             />
           </FilterPopover>
         </>

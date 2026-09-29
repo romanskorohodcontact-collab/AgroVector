@@ -10,6 +10,7 @@ import {
   TRANSPORT_TYPES,
   BODY_TYPES,
   CARGO_TYPES,
+  CARGO_TYPE_DESCRIPTIONS,
   LOADING_TYPES,
   UNLOADING_TYPES,
   VAT_TYPES,
@@ -19,6 +20,7 @@ import {
 import { MapPicker } from "@/features/map";
 import type { GeoPoint } from "@/entities/load/model";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
+import { DescriptiveMultiSelect } from "@/shared/ui/DescriptiveMultiSelect";
 import {
   FormInput,
   FormSelect,
@@ -27,7 +29,8 @@ import {
   FIELD_ROW,
   FIELD_ROW_TOP,
 } from "@/shared/ui/FormInput";
-import { DistrictRegionSelector } from "@/shared/ui/DistrictRegionSelector";
+import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
+import { ToggleField } from "@/shared/ui/ToggleField";
 import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
 
 const formGridClass = "grid grid-cols-1 gap-3";
@@ -52,6 +55,7 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
   const router = useRouter();
   const [location, setLocation] = useState<GeoPoint | null>(transport.transportLocation);
   const [formError, setFormError] = useState<string | null>(null);
+  const [openFilter, setOpenFilter] = useState<string | null>(null);
 
   const [draft, setDraft] = useState({
     transportType: transport.transportType,
@@ -64,6 +68,7 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
     workRegions: transport.workRegions ?? [],
     minRatePerKm: numberToString(transport.minRatePerKm),
     minTripRate: numberToString(transport.minTripRate),
+    showTripRate: transport.minTripRate != null,
     vatType: transport.vatType,
     availabilityType: transport.availability.type,
     availabilityDate: toDateInputValue(transport.availability.date),
@@ -126,9 +131,10 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
       minRatePerKm: form.get("minRatePerKm")
         ? Number(form.get("minRatePerKm"))
         : null,
-      minTripRate: form.get("minTripRate")
-        ? Number(form.get("minTripRate"))
-        : null,
+      minTripRate:
+        draft.showTripRate && form.get("minTripRate")
+          ? Number(form.get("minTripRate"))
+          : null,
       vatType: form.get("vatType"),
       availability: { type: availabilityType, date },
       transportLocation: location,
@@ -189,7 +195,10 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
     workRegions: draft.workRegions.length > 0 ? draft.workRegions : null,
     workDistricts: deriveDistrictsFromRegions(draft.workRegions),
     minRatePerKm: draft.minRatePerKm ? Number(draft.minRatePerKm) : null,
-    minTripRate: draft.minTripRate ? Number(draft.minTripRate) : null,
+    minTripRate:
+      draft.showTripRate && draft.minTripRate
+        ? Number(draft.minTripRate)
+        : null,
     vatType: draft.vatType || transport.vatType,
     availability: {
       type: draft.availabilityType || transport.availability.type,
@@ -305,13 +314,18 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
           <div className="w-full h-1 border-b border-bg-subtle mb-4" />
 
           <div className={formGridClass}>
-            <div className={`${FIELD_ROW} items-start`}>
+            <div className={FIELD_ROW}>
               <span className={FIELD_LABEL_INLINE}>Перевозимые типы груза *</span>
-              <ChipGroup
+              <DescriptiveMultiSelect
                 label="Перевозимые типы груза"
                 options={CARGO_TYPES}
+                descriptions={CARGO_TYPE_DESCRIPTIONS}
                 selected={draft.cargoTypes}
                 onToggle={(item) => toggleArrayItem("cargoTypes", item)}
+                placeholder="Выберите типы груза"
+                panelWidthClass="w-full sm:w-[420px]"
+                open={openFilter === "cargoTypes"}
+                onOpenChange={(v) => setOpenFilter(v ? "cargoTypes" : null)}
                 hideLabel
               />
             </div>
@@ -365,22 +379,34 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
-            <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-trip-rate">
-                Стоимость рейса
-              </label>
-              <FormInput
-                id="f-trip-rate"
-                type="number"
-                name="minTripRate"
-                value={draft.minTripRate}
-                onChange={handleFieldChange}
-                placeholder="₽ за рейс"
-                inputMode="numeric"
-                min="0"
-                autoComplete="off"
-              />
-            </div>
+            <ToggleField
+              label="Указать мин. ставку за рейс"
+              checked={draft.showTripRate}
+              onChange={(checked) =>
+                setDraft((prev) => ({
+                  ...prev,
+                  showTripRate: checked,
+                  minTripRate: checked ? prev.minTripRate : "",
+                }))
+              }
+            >
+              <div className={FIELD_ROW}>
+                <label className={FIELD_LABEL_INLINE} htmlFor="f-trip-rate">
+                  Стоимость рейса
+                </label>
+                <FormInput
+                  id="f-trip-rate"
+                  type="number"
+                  name="minTripRate"
+                  value={draft.minTripRate}
+                  onChange={handleFieldChange}
+                  placeholder="₽ за рейс"
+                  inputMode="numeric"
+                  min="0"
+                  autoComplete="off"
+                />
+              </div>
+            </ToggleField>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
@@ -442,14 +468,20 @@ export function EditTransportForm({ transport }: EditTransportFormProps) {
             ) : null}
             <div className="w-full h-1 border-b border-bg-subtle" />
 
-            <div className={`${FIELD_ROW} items-start`}>
+            <div className={FIELD_ROW}>
               <span className={FIELD_LABEL_INLINE}>Регионы работы</span>
-              <DistrictRegionSelector
+              <DistrictRegionSelectorPopover
+                label="Регионы работы"
                 selectedRegions={draft.workRegions}
-                onToggleRegion={(region) =>
-                  toggleArrayItem("workRegions", region)
-                }
+                onToggleRegion={(region) => toggleArrayItem("workRegions", region)}
                 onToggleDistrict={toggleDistrict}
+                onReset={() =>
+                  setDraft((prev) => ({ ...prev, workRegions: [] }))
+                }
+                panelWidthClass="w-full sm:w-[420px]"
+                open={openFilter === "workRegions"}
+                onOpenChange={(v) => setOpenFilter(v ? "workRegions" : null)}
+                hideLabel
               />
             </div>
           </div>

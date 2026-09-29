@@ -66,14 +66,14 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
                 </span>
               </div>*/}
             </div>
-            <button
+            {/*<button
               type="button"
               onClick={onClose}
               aria-label="Закрыть"
-              className="flex items-center justify-center w-8 h-8 shrink-0 rounded-pill bg-bg-subtle text-text-secondary transition-colors duration-150 hover:bg-bg-hover hover:text-text-primary"
+              className="flex items-center justify-center w-8 h-8 shrink-0 rounded-pill bg-text-primary text-white transition-colors duration-150 hover:bg-text-primary/90"
             >
               <CloseIcon />
-            </button>
+            </button>*/}
 
             {/*<div className="mt-5  w-[100px] h-[100px] shrink-0  aspect-square bg-bg-subtle rounded-[16px] flex items-center justify-center overflow-hidden">
               <img
@@ -96,7 +96,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               </strong>*/}
               <div className="flex flex-col">
                 <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
-                  {load.loadingRegion}
+                  {load.loadingRegion?.join(", ")}
                 </span>
                 <span
                   className="text-xs text-text-muted whitespace-nowrap"
@@ -118,7 +118,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               </strong>*/}
               <div className="flex flex-col">
                 <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
-                  {load.unloadingRegion}
+                  {load.unloadingRegion?.join(", ")}
                 </span>
                 <span
                   className="text-xs text-text-muted whitespace-nowrap"
@@ -128,7 +128,10 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
             </div>
           </div>
 
-          <div className="mt-2">
+
+          <div className="mt-4">
+            <div className="border-b border-border" />
+
             <DtcRow label="Тоннаж" value={`${load.tonnage.tonnageWeight} ${load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}`} />
             <DtcRow
               label="Километраж"
@@ -137,51 +140,16 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
             <DtcRow
               label="Ставка за км"
               value={`${load.ratePerKm.toFixed(2)} ₽/км`}
+              accent
             />
             <DtcRow
               label="Ставка за рейс"
               value={`${load.rate.toLocaleString("ru-RU")} ₽`}
             />
-            <DtcRow
-              label="Тип груза"
-              value={load.cargoTypes?.join(", ") || "—"}
-            />
-            <DtcRow label="Тип кузова" value={load.bodyType || "—"} />
-            <DtcRow
-              label="Округ и регион погрузки"
-              value={`${(load.loadingDistrict ?? []).join(", ") || "—"}, ${load.loadingRegion?.join(", ") || "—"}`}
-              block
-            />
-            {/*<DtcRow
-              label="Регион погрузки"
-              value={load.loadingRegion?.join(", ") || "—"}
-              block
-            />*/}
-            {/*<DtcRow
-              label="Округ погрузки"
-              value={(load.loadingDistrict ?? []).join(", ") || "—"}
-              block
-            />*/}
-            <DtcRow
-              label="Округ и регион выгрузки"
-              value={`${(load.unloadingDistrict ?? []).join(", ") || "—"}, ${load.unloadingRegion?.join(", ") || "—"}`}
-              block
-            />
-            {/*<DtcRow
-              label="Регион выгрузки"
-              value={load.unloadingRegion?.join(", ") || "—"}
-              block
-            />
-            <DtcRow
-              label="Округ выгрузки"
-              value={(load.unloadingDistrict ?? []).join(", ") || "—"}
-              block
-            />*/}
-            <DtcRow
-              label="Дата погрузки"
-              value={loadingDateLabel}
-            />
-            <DtcRow label="НДС" value={load.vatType} />
+            <DtcRow label="НДС" value={load.vatType.join(", ") || "—"} />
+
+            <div className="border-b border-border" />
+
             <DtcRow
               label="Требуемый способ загрузки"
               value={load.loadingType?.join(", ") || "—"}
@@ -192,28 +160,72 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               value={load.unloadingType?.join(", ") || "—"}
               block
             />
-            <DtcRow label="Компания" value={load.companyName} />
 
+            <div className="border-b border-border" />
+
+            <DtcRow
+              label="Тип груза"
+              value={load.cargoTypes?.join(", ") || "—"}
+            />
+            <DtcRow
+              label="Тип загрузки груза"
+              value={load.cargoForm || "—"}
+            />
+            <DtcRow label="Тип кузова" value={load.bodyType.join(", ") || "—"} />
+            <DtcRow label="Компания" value={load.companyName || "—"} />
+            <DtcRow
+              label="Дата погрузки"
+              value={loadingDateLabel}
+            />
+
+            <div className="border-b border-border" />
+            {/*<DtcRow
+              label="Округ и регион погрузки"
+              value={`${(load.loadingDistrict ?? []).join(", ") || "—"}, ${load.loadingRegion?.join(", ") || "—"}`}
+              block
+            />*/}
+
+            {/*<DtcRow
+              label="Регион погрузки"
+              value={load.loadingRegion?.join(", ") || "—"}
+              block
+            />*/}
+            {/*<DtcRow
+              label="Округ погрузки"
+              value={(load.loadingDistrict ?? []).join(", ") || "—"}
+              block
+            />*/}
+            {/*<DtcRow
+              label="Округ и регион выгрузки"
+              value={`${(load.unloadingDistrict ?? []).join(", ") || "—"}, ${load.unloadingRegion?.join(", ") || "—"}`}
+              block
+            />*/}
+            {/*<DtcRow
+              label="Регион выгрузки"
+              value={load.unloadingRegion?.join(", ") || "—"}
+              block
+            />
+            <DtcRow
+              label="Округ выгрузки"
+              value={(load.unloadingDistrict ?? []).join(", ") || "—"}
+              block
+            />*/}
+
+            {/*
             {load.customProperties.map((prop) => (
               <DtcRow key={prop.name} label={prop.name} value={prop.value} />
-            ))}
+            ))}*/}
+
             <DtcRow
               label="Доп. информация"
               value={load.additionalInfo || "—"}
               block
             />
-          </div>
-
-          <div className="flex items-end justify-between gap-4 flex-wrap mt-5 pt-4 border-t border-divider">
-            <div className="flex items-center gap-4">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-4 h-4 flex-none text-text-muted"
-              >
-                <path d="M6.6 10.8c1.5 2.7 3.9 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1.2.2 2.4.7 3.5.1.3.1.7-.3 1z" />
-              </svg>
-              <span className="flex flex-col text-sm text-text-secondary tracking-[-0.14px]">
+            <div className="flex justify-between items-start gap-4 mt-2">
+              <span className="text-xs text-text-muted whitespace-nowrap">
+                Контакты
+              </span>
+              <span className="flex flex-col items-end text-sm text-text-secondary tracking-[-0.14px]">
                 <span>{load.customerName}</span>
                 <a
                   href={`tel:${load.customerPhone}`}
@@ -223,8 +235,6 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
                 </a>
               </span>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -236,14 +246,15 @@ interface DtcRowProps {
   label: string;
   value: string;
   block?: boolean;
+  accent?: boolean
 }
 
-function DtcRow({ label, value, block = false }: DtcRowProps) {
+function DtcRow({ label, value, block = false, accent = false }: DtcRowProps) {
   return (
     <div
       className={
-        "flex items-baseline justify-between gap-4 py-[11px] border-b border-divider last:border-b-0 " +
-        (block ? "flex-col items-start gap-1" : "")
+        "flex items-baseline justify-between py-2 " +
+        (block ? "flex-col items-start gap-1" : "gap-4")
       }
     >
       <span className="text-xs text-text-muted whitespace-nowrap">
@@ -254,7 +265,7 @@ function DtcRow({ label, value, block = false }: DtcRowProps) {
           {value}
         </span>
       ) : (
-        <span className="text-base font-medium text-text-primary tracking-[-0.16px] text-right tabular-nums">
+        <span className={"text-base font-medium tracking-[-0.16px] text-right tabular-nums " + (accent ? "text-accent" : "text-text-primary")}>
           {value}
         </span>
       )}

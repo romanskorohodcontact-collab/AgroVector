@@ -9,26 +9,23 @@ export function validateLoadInput(raw: unknown): LoadInputData {
   const loadingLocation = location(raw.loadingLocation);
   const unloadingPlace = requiredString(raw.unloadingPlace, "Место выгрузки");
   const cargo = requiredString(raw.cargo, "Груз");
-  const cargoForm = requiredString(raw.cargoForm, "Тип загрузки груза");
-  const bodyType = requiredString(raw.bodyType, "Тип кузова");
+  const cargoForm = optionalString(raw.cargoForm);
+  const bodyType = requiredStringArray(raw.bodyType, "Тип кузова");
   const cargoTypes = requiredStringArray(raw.cargoTypes, "Типы грузов");
   const customerName = requiredString(raw.customerName, "Имя заказчика");
   const customerPhone = requiredString(raw.customerPhone, "Телефон заказчика");
-  const companyName = requiredString(raw.companyName, "Название компании");
+  const companyName = optionalString(raw.companyName);
+  const loadingRegion = singleStringArray(raw.loadingRegion, "Регион погрузки");
+  const unloadingRegion = singleStringArray(raw.unloadingRegion, "Регион выгрузки");
   const loadingDistrict = requiredStringArray(raw.loadingDistrict, "Федеральные округа погрузки");
   const unloadingDistrict = requiredStringArray(raw.unloadingDistrict, "Федеральные округа выгрузки");
-  const vatType = requiredString(raw.vatType, "Условия НДС");
-  const loadingDate = requiredDate(raw.loadingDate, "Дата погрузки");
+  const vatType = requiredStringArray(raw.vatType, "Условия НДС");
+  const loadingDate = optionalDate(raw.loadingDate, "Дата погрузки");
   const distance = positiveNumber(raw.distance, "Расстояние");
-  const ratePerKm = optionalPositiveNumber(raw.ratePerKm, "Ставка за км");
+  const ratePerKm = requiredPositiveNumber(raw.ratePerKm, "Ставка за км");
   const rate = optionalPositiveNumber(raw.rate, "Ставка за рейс");
 
-  if (ratePerKm == null && rate == null) {
-    throw new Error("Необходимо указать ставку за км или ставку за рейс");
-  }
-
-  const finalRatePerKm = ratePerKm ?? (distance > 0 ? rate! / distance : 0);
-  const finalRate = ratePerKm != null ? ratePerKm * distance : rate!;
+  const finalRate = rate ?? Math.round(ratePerKm * distance);
   const tonnage = validateTonnage(raw.tonnage);
 
   return {
@@ -37,7 +34,7 @@ export function validateLoadInput(raw: unknown): LoadInputData {
     unloadingPlace,
     distance,
     rate: finalRate,
-    ratePerKm: finalRatePerKm,
+    ratePerKm,
     tonnage,
     bodyType,
     cargo,
@@ -47,14 +44,15 @@ export function validateLoadInput(raw: unknown): LoadInputData {
     customerName,
     customerPhone,
     companyName,
-    loadingRegion: optionalStringArray(raw.loadingRegion),
+    loadingRegion,
     loadingDistrict,
     unloadingDistrict,
-    unloadingRegion: optionalStringArray(raw.unloadingRegion),
+    unloadingRegion,
     loadingType: optionalStringArray(raw.loadingType),
     unloadingType: optionalStringArray(raw.unloadingType),
     vatType,
     loadingDate,
+    advance: optionalString(raw.advance) || null,
     customProperties: optionalCustomProperties(raw.customProperties),
   };
 }
@@ -85,6 +83,17 @@ function positiveNumber(value: unknown, field: string): number {
 function optionalPositiveNumber(value: unknown, field: string): number | null {
   if (value === null || value === undefined || value === "") {
     return null;
+  }
+  const number = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(number) || number <= 0) {
+    throw new Error(`${field} должно быть положительным числом`);
+  }
+  return number;
+}
+
+function requiredPositiveNumber(value: unknown, field: string): number {
+  if (value === null || value === undefined || value === "") {
+    throw new Error(`${field} обязательно`);
   }
   const number = typeof value === "number" ? value : Number(value);
   if (!Number.isFinite(number) || number <= 0) {
@@ -151,9 +160,17 @@ function optionalStringArray(value: unknown): string[] | null {
   return result.length > 0 ? result : null;
 }
 
-function requiredDate(value: unknown, field: string): Date {
+function singleStringArray(value: unknown, field: string): string[] {
+  const result = requiredStringArray(value, field);
+  if (result.length > 1) {
+    throw new Error(`${field}: можно выбрать только одно значение`);
+  }
+  return result;
+}
+
+function optionalDate(value: unknown, field: string): Date | null {
   if (value === null || value === undefined || value === "") {
-    throw new Error(`${field} обязательно`);
+    return null;
   }
   const date = value instanceof Date ? value : new Date(value as string);
   if (Number.isNaN(date.getTime())) {

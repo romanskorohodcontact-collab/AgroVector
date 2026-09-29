@@ -10,10 +10,12 @@ import { ANY_WAY, LOADING_TYPES_WITH_ANY, UNLOADING_TYPES_WITH_ANY } from "@/ent
 import { CARGO_FORMS, CARGO_TYPE_DESCRIPTIONS, CARGO_TYPES, LOAD_VAT_TYPES, BODY_TYPES } from "@/entities/transport/model";
 import { MapPicker } from "@/features/map";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
+import { MultiSelectDropdown } from "@/shared/ui/MultiSelectDropdown";
 import { DescriptiveSelectPopover } from "@/shared/ui/DescriptiveSelectPopover";
 import { FormInput, FormSelect, FormTextarea, FIELD_LABEL_INLINE, FIELD_ROW, FIELD_ROW_TOP } from "@/shared/ui/FormInput";
 import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
-import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
+import { ToggleField } from "@/shared/ui/ToggleField";
+import { deriveDistrictsFromRegions } from "@/shared/data/rfRegions";
 import type { User } from "@/entities/user";
 
 const formGridClass = "grid grid-cols-1 gap-3";
@@ -36,9 +38,12 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     distance: "",
     rate: "",
     ratePerKm: "",
+    showTripRate: false,
+    showCargoForm: false,
+    showLoadingDate: false,
     tonnage: "",
     tonnageUnit: "ton",
-    bodyType: "",
+    bodyType: [] as string[],
     cargo: "",
     cargoForm: "",
     cargoTypes: [] as string[],
@@ -50,7 +55,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     unloadingRegions: [] as string[],
     loadingTypes: [ANY_WAY] as string[],
     unloadingTypes: [ANY_WAY] as string[],
-    vatType: "",
+    vatType: [] as string[],
     loadingDate: "",
     customProperties: [] as LoadCustomProperty[],
   });
@@ -86,19 +91,8 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     const ratePerKmRaw = form.get("ratePerKm");
     const rateRaw = form.get("rate");
 
-    let rate: number;
-    let ratePerKm: number;
-
-    if (ratePerKmRaw) {
-      ratePerKm = Number(ratePerKmRaw);
-      rate = Math.round(ratePerKm * distance);
-    } else if (rateRaw) {
-      rate = Number(rateRaw);
-      ratePerKm = distance > 0 ? Math.round(rate / distance) : 0;
-    } else {
-      rate = 0;
-      ratePerKm = 0;
-    }
+    const ratePerKm = Number(ratePerKmRaw);
+    const rate = draft.showTripRate && rateRaw ? Number(rateRaw) : null;
 
     mutation.mutate({
       loadingPlace: form.get("loadingPlace"),
@@ -111,22 +105,22 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
         tonnageWeight: Number(form.get("tonnage")),
         tonnageUnit: form.get("tonnageUnit") as "kg" | "ton",
       },
-      bodyType: form.get("bodyType"),
+      bodyType: draft.bodyType,
       cargo: form.get("cargo"),
-      cargoForm: form.get("cargoForm"),
+      cargoForm: form.get("cargoForm") || "",
       cargoTypes: draft.cargoTypes,
-      additionalInfo: form.get("additionalInfo"),
+      additionalInfo: form.get("additionalInfo") || "",
       customerName: form.get("customerName"),
       customerPhone: form.get("customerPhone"),
-      companyName: form.get("companyName"),
+      companyName: form.get("companyName") || "",
       loadingRegion: draft.loadingRegions.length > 0 ? draft.loadingRegions : null,
       loadingDistrict: deriveDistrictsFromRegions(draft.loadingRegions),
       unloadingDistrict: deriveDistrictsFromRegions(draft.unloadingRegions),
       unloadingRegion: draft.unloadingRegions.length > 0 ? draft.unloadingRegions : null,
       loadingType: draft.loadingTypes.length > 0 ? draft.loadingTypes : null,
       unloadingType: draft.unloadingTypes.length > 0 ? draft.unloadingTypes : null,
-      vatType: form.get("vatType"),
-      loadingDate: form.get("loadingDate"),
+      vatType: draft.vatType,
+      loadingDate: form.get("loadingDate") || null,
       customProperties: draft.customProperties.filter(
         (p) => p.name.trim() && p.value.trim()
       ),
@@ -169,7 +163,11 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
   }
 
   function toggleArrayItem(
-    key: "loadingRegions" | "unloadingRegions" | "loadingTypes" | "unloadingTypes",
+    key:
+      | "bodyType"
+      | "vatType"
+      | "loadingTypes"
+      | "unloadingTypes",
     item: string
   ) {
     setDraft((prev) => {
@@ -192,20 +190,14 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     });
   }
 
-  function toggleDistrict(
+  function selectSingleRegion(
     key: "loadingRegions" | "unloadingRegions",
-    district: string
+    region: string
   ) {
-    const districtRegions = WORK_DISTRICTS_REGIONS[district];
-    if (!districtRegions) return;
-    setDraft((prev) => {
-      const current = prev[key];
-      const allSelected = districtRegions.every((r) => current.includes(r));
-      const next = allSelected
-        ? current.filter((r) => !districtRegions.includes(r))
-        : [...new Set([...current, ...districtRegions])];
-      return { ...prev, [key]: next };
-    });
+    setDraft((prev) => ({
+      ...prev,
+      [key]: prev[key].includes(region) ? [] : [region],
+    }));
   }
 
   function addCustomProperty() {
@@ -247,7 +239,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
       tonnageWeight: Number(draft.tonnage) || 0,
       tonnageUnit: draft.tonnageUnit as "kg" | "ton",
     },
-    bodyType: draft.bodyType || "Тип кузова",
+    bodyType: draft.bodyType.length > 0 ? draft.bodyType : ["Тип кузова"],
     cargo: draft.cargo || "Название груза",
     cargoForm: draft.cargoForm || "Тип загрузки груза",
     cargoTypes: draft.cargoTypes,
@@ -261,8 +253,9 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     unloadingRegion: draft.unloadingRegions.length > 0 ? draft.unloadingRegions : null,
     loadingType: draft.loadingTypes.length > 0 ? draft.loadingTypes : null,
     unloadingType: draft.unloadingTypes.length > 0 ? draft.unloadingTypes : null,
-    vatType: draft.vatType || "НДС",
-    loadingDate: draft.loadingDate ? new Date(draft.loadingDate) : new Date(),
+    vatType: draft.vatType.length > 0 ? draft.vatType : ["НДС"],
+    loadingDate: draft.loadingDate ? new Date(draft.loadingDate) : null,
+    advance: null,
     customProperties: draft.customProperties.filter(
       (p) => p.name.trim() && p.value.trim()
     ),
@@ -294,27 +287,6 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 onOpenChange={(v) => setOpenFilter(v ? "cargoType" : null)}
                 hideLabel
               />
-            </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
-
-            <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-cargo-form">
-                Тип загрузки груза
-              </label>
-              <FormSelect
-                id="f-cargo-form"
-                name="cargoForm"
-                value={draft.cargoForm}
-                onChange={handleFieldChange}
-                required
-              >
-                <option value="">Выберите тип загрузки</option>
-                {CARGO_FORMS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </FormSelect>
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
@@ -361,6 +333,38 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 </FormSelect>
               </div>
             </div>
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <ToggleField
+              label="Указать тип загрузки груза"
+              checked={draft.showCargoForm}
+              onChange={(checked) =>
+                setDraft((prev) => ({
+                  ...prev,
+                  showCargoForm: checked,
+                  cargoForm: checked ? prev.cargoForm : "",
+                }))
+              }
+            >
+              <div className={FIELD_ROW}>
+                <label className={FIELD_LABEL_INLINE} htmlFor="f-cargo-form">
+                  Тип загрузки груза
+                </label>
+                <FormSelect
+                  id="f-cargo-form"
+                  name="cargoForm"
+                  value={draft.cargoForm}
+                  onChange={handleFieldChange}
+                >
+                  <option value="">Выберите тип загрузки</option>
+                  {CARGO_FORMS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </FormSelect>
+              </div>
+            </ToggleField>
           </div>
         </section>
 
@@ -406,8 +410,8 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
               <DistrictRegionSelectorPopover
                 label="Регион погрузки"
                 selectedRegions={draft.loadingRegions}
-                onToggleRegion={(region) => toggleArrayItem("loadingRegions", region)}
-                onToggleDistrict={(district) => toggleDistrict("loadingRegions", district)}
+                onToggleRegion={(region) => selectSingleRegion("loadingRegions", region)}
+                onToggleDistrict={() => {}}
                 onReset={() =>
                   setDraft((prev) => ({ ...prev, loadingRegions: [] }))
                 }
@@ -415,6 +419,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 open={openFilter === "loadingRegions"}
                 onOpenChange={(v) => setOpenFilter(v ? "loadingRegions" : null)}
                 hideLabel
+                single
               />
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
@@ -424,8 +429,8 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
               <DistrictRegionSelectorPopover
                 label="Регион выгрузки"
                 selectedRegions={draft.unloadingRegions}
-                onToggleRegion={(region) => toggleArrayItem("unloadingRegions", region)}
-                onToggleDistrict={(district) => toggleDistrict("unloadingRegions", district)}
+                onToggleRegion={(region) => selectSingleRegion("unloadingRegions", region)}
+                onToggleDistrict={() => {}}
                 onReset={() =>
                   setDraft((prev) => ({ ...prev, unloadingRegions: [] }))
                 }
@@ -433,13 +438,14 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 open={openFilter === "unloadingRegions"}
                 onOpenChange={(v) => setOpenFilter(v ? "unloadingRegions" : null)}
                 hideLabel
+                single
               />
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-distance">
-                Расстояние
+                Расстояние км
               </label>
               <FormInput
                 id="f-distance"
@@ -463,23 +469,18 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-body-type">
-                Тип кузова
-              </label>
-              <FormSelect
-                id="f-body-type"
-                name="bodyType"
-                value={draft.bodyType}
-                onChange={handleFieldChange}
-                required
-              >
-                <option value="">Выберите тип кузова</option>
-                {BODY_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </FormSelect>
+              <span className={FIELD_LABEL_INLINE}>Тип кузова *</span>
+              <MultiSelectDropdown
+                label="Тип кузова"
+                options={BODY_TYPES}
+                selected={draft.bodyType}
+                onToggle={(item) => toggleArrayItem("bodyType", item)}
+                placeholder="Выберите тип кузова"
+                panelWidthClass="w-full sm:w-[420px]"
+                open={openFilter === "bodyType"}
+                onOpenChange={(v) => setOpenFilter(v ? "bodyType" : null)}
+                hideLabel
+              />
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
@@ -513,44 +514,25 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-loading-date">
-                Дата погрузки
-              </label>
-              <FormInput
-                id="f-loading-date"
-                type="date"
-                name="loadingDate"
-                value={draft.loadingDate}
-                onChange={handleFieldChange}
-                required
+              <span className={FIELD_LABEL_INLINE}>Условия НДС *</span>
+              <MultiSelectDropdown
+                label="Условия НДС"
+                options={LOAD_VAT_TYPES}
+                selected={draft.vatType}
+                onToggle={(item) => toggleArrayItem("vatType", item)}
+                placeholder="Выберите условие"
+                panelWidthClass="w-full sm:w-[320px]"
+                columns={1}
+                open={openFilter === "vatType"}
+                onOpenChange={(v) => setOpenFilter(v ? "vatType" : null)}
+                hideLabel
               />
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-vat">
-                Условия НДС
-              </label>
-              <FormSelect
-                id="f-vat"
-                name="vatType"
-                value={draft.vatType}
-                onChange={handleFieldChange}
-                required
-              >
-                <option value="">Выберите условие</option>
-                {LOAD_VAT_TYPES.map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </FormSelect>
-            </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
-
-            <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-rate">
-                Ставка за км
+                Ставка за км *
               </label>
               <FormInput
                 id="f-rate"
@@ -562,26 +544,65 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 inputMode="numeric"
                 min="0"
                 autoComplete="off"
+                required
               />
             </div>
             <div className="w-full h-1 border-b border-bg-subtle" />
 
-            <div className={FIELD_ROW}>
-              <label className={FIELD_LABEL_INLINE} htmlFor="f-trip-rate">
-                Ставка за рейс
-              </label>
-              <FormInput
-                id="f-trip-rate"
-                type="number"
-                name="rate"
-                value={draft.rate}
-                onChange={handleFieldChange}
-                placeholder="₽ за рейс"
-                inputMode="numeric"
-                min="0"
-                autoComplete="off"
-              />
-            </div>
+            <ToggleField
+              label="Указать дату погрузки"
+              checked={draft.showLoadingDate}
+              onChange={(checked) =>
+                setDraft((prev) => ({
+                  ...prev,
+                  showLoadingDate: checked,
+                  loadingDate: checked ? prev.loadingDate : "",
+                }))
+              }
+            >
+              <div className={FIELD_ROW}>
+                <label className={FIELD_LABEL_INLINE} htmlFor="f-loading-date">
+                  Дата погрузки
+                </label>
+                <FormInput
+                  id="f-loading-date"
+                  type="date"
+                  name="loadingDate"
+                  value={draft.loadingDate}
+                  onChange={handleFieldChange}
+                />
+              </div>
+            </ToggleField>
+            <div className="w-full h-1 border-b border-bg-subtle" />
+
+            <ToggleField
+              label="Указать ставку за рейс"
+              checked={draft.showTripRate}
+              onChange={(checked) =>
+                setDraft((prev) => ({
+                  ...prev,
+                  showTripRate: checked,
+                  rate: checked ? prev.rate : "",
+                }))
+              }
+            >
+              <div className={FIELD_ROW}>
+                <label className={FIELD_LABEL_INLINE} htmlFor="f-trip-rate">
+                  Ставка за рейс
+                </label>
+                <FormInput
+                  id="f-trip-rate"
+                  type="number"
+                  name="rate"
+                  value={draft.rate}
+                  onChange={handleFieldChange}
+                  placeholder="₽ за рейс"
+                  inputMode="numeric"
+                  min="0"
+                  autoComplete="off"
+                />
+              </div>
+            </ToggleField>
           </div>
         </section>
 
@@ -591,9 +612,6 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
           <div className={formGridClass}>
             <div className={FIELD_ROW_TOP}>
-              {/*<label className={FIELD_LABEL_INLINE} htmlFor="f-note">
-                Комментарий
-              </label>*/}
               <FormTextarea
                 id="f-note"
                 name="additionalInfo"
@@ -718,7 +736,6 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 onChange={handleFieldChange}
                 placeholder="ООО «Компания»"
                 autoComplete="organization"
-                required
               />
             </div>
           </div>
