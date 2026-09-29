@@ -21,6 +21,7 @@ import {
 } from "@/entities/transport/model";
 import { TransportDetailButton } from "@/widgets/transport-detail";
 import { TransportsMap } from "@/widgets/transports-map";
+import { useMapOverlaySelection } from "@/features/map/useMapOverlaySelection";
 import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
 import { MultiSelectDropdown } from "@/shared/ui/MultiSelectDropdown";
 import { DescriptiveMultiSelect } from "@/shared/ui/DescriptiveMultiSelect";
@@ -35,8 +36,13 @@ export function TransportSearchView() {
   const [applied, setApplied] = useState<TransportFilters>({});
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<TransportSort>(DEFAULT_TRANSPORT_SORT);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
+  const {
+    selectedId,
+    clusterFilter,
+    selectItem,
+    selectCluster,
+    clear: clearMapSelection,
+  } = useMapOverlaySelection();
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [filtersCollapsed, setFiltersCollapsed] = useState(false);
@@ -74,16 +80,14 @@ export function TransportSearchView() {
     setHasSearched(true);
     setPage(1);
     setApplied(values);
-    setSelectedId(null);
-    setClusterFilter(null);
+    clearMapSelection();
   }
 
   function handleReset() {
     setValues({});
     setApplied({});
     setPage(1);
-    setSelectedId(null);
-    setClusterFilter(null);
+    clearMapSelection();
   }
 
   function handleResetOneFilter() {
@@ -173,7 +177,7 @@ export function TransportSearchView() {
               {selectedId ? (
                 <button
                   type="button"
-                  onClick={() => setSelectedId(null)}
+                  onClick={clearMapSelection}
                   className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
                   Сбросить выбор.
@@ -181,7 +185,7 @@ export function TransportSearchView() {
               ) : clusterFilter ? (
                 <button
                   type="button"
-                  onClick={() => setClusterFilter(null)}
+                  onClick={clearMapSelection}
                   className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
                 >
                   Сбросить фильтр..
@@ -273,8 +277,8 @@ export function TransportSearchView() {
         <TransportsMap
           mapItems={result?.mapItems ?? []}
           className="h-full w-full"
-          onSelect={(item) => setSelectedId(item.id)}
-          onClusterChange={(ids) => setClusterFilter(ids.length > 0 ? ids : null)}
+          onSelect={(item) => selectItem(item.id)}
+          onClusterChange={selectCluster}
           activeClusterFilter={clusterFilter}
         />
       </div>

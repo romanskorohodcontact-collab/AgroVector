@@ -3,12 +3,19 @@
 import { useEffect } from "react";
 import type { Transport } from "@/entities/transport/model";
 import { getAvailabilityDisplay } from "@/entities/transport/model";
+import truck3 from "@/entities/transport/ui/truck3.jpg";
 import { LoadDetailMap } from "@/widgets/loads-map";
 
 interface TransportDetailWindowProps {
   transport: Transport;
   onClose: () => void;
 }
+
+const AVAILABILITY_COLORS: Record<string, { bg: string; text: string }> = {
+  "Свободен": { bg: "bg-success-soft", text: "text-accent" },
+  "Занят": { bg: "bg-warning-soft", text: "text-warning" },
+};
+
 
 export function TransportDetailWindow({
   transport,
@@ -43,6 +50,21 @@ export function TransportDetailWindow({
       ? `${transport.minTripRate.toLocaleString("ru-RU")} ₽`
       : "—";
 
+  const createdAt = transport.createdAt
+    ? new Date(transport.createdAt as unknown as string)
+    : null;
+  const createdAtLabel =
+    createdAt && !Number.isNaN(createdAt.getTime())
+      ? createdAt.toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      : "—";
+
+  const colors = AVAILABILITY_COLORS[availability.type] ?? AVAILABILITY_COLORS["Свободен"];
+
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 max-[900px]:items-start max-[900px]:p-4 max-[560px]:p-3">
       <div
@@ -59,92 +81,105 @@ export function TransportDetailWindow({
           />
         </div>
 
-        <div className="min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
-          <div className="flex items-start justify-between gap-5">
-            <div className="min-w-0">
-              <h2 className="text-[20px] font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
-                {transport.transportType}
-              </h2>
-              <p className="mt-1 text-sm text-text-secondary leading-[1.43] tracking-[-0.14px]">
-                {transport.bodyType}
-              </p>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {transport.cargoTypes.map((cargo) => (
-                  <span
-                    key={cargo}
-                    className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-                  >
-                    {cargo}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="w-[120px] h-[120px] shrink-0 aspect-square bg-bg-subtle rounded-[16px] flex items-center justify-center overflow-hidden">
-              <img
-                src="/photoTr1.png"
-                alt=""
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 mt-5">
-            <span className="text-xs text-text-muted whitespace-nowrap">
-              Доступность
-            </span>
-            <span className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs font-medium text-accent whitespace-nowrap">
-              {availability.type}
-              {availability.date ? ` до ${availability.date}` : ""}
-            </span>
-          </div>
-
-          <div className="mt-2">
-            <DtcRow label="Тоннаж / объём" value={`${capacity} · ${volume}`} />
-            <DtcRow label="Регионы" value={transport.workDistricts.join(", ")} />
-            <DtcRow label="НДС" value={transport.vatType} />
-            <DtcRow label="Минимальная ставка" value={rate} accent />
-            <DtcRow
-              label="Способ погрузки"
-              value={transport.loadingType?.join(", ") || "—"}
+        <div className="relative min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
+          <div className="absolute -top-5 right-0 w-1/2 aspect-square overflow-hidden z-0 max-[900px]:top-0">
+            <img
+              src={truck3.src}
+              alt=""
+              className="h-full w-full object-cover object-left"
             />
-            <DtcRow
-              label="Способ выгрузки"
-              value={transport.unloadingType?.join(", ") || "—"}
+          </div>
+
+          <div className="relative z-10 min-w-0">
+            {/*Бэйдж Доступность*/}
+            <div className={`${colors.bg} px-4 py-1 rounded-full text-[12px] flex gap-2 w-fit`}>
+              <p className={`${colors.text} tracking-[-0.7px] font-medium`}>
+                {availability.type}
+              </p>
+              {availability.date ? (
+                <p className={`font-normal leading-[1.43] ${colors.text} tracking-[-0.14px]`}>
+                  до {availability.date}
+                </p>
+              ) : null}
+            </div>
+
+            <h2 className="mt-15 text-[20px] font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
+              {transport.transportType}
+            </h2>
+            <p className="mt-1 text-sm text-text-secondary leading-[1.43] tracking-[-0.14px]">
+              {transport.bodyType}
+            </p>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {transport.cargoTypes.map((cargo) => (
+                <span
+                  key={cargo}
+                  className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                >
+                  {cargo}
+                </span>
+              ))}
+            </div>
+          </div>
+
+
+
+          <div className="relative z-10 mt-10">
+            <div className="border-b border-border" />
+            <DtcRow label="Тоннаж / объём" value={`${capacity} · ${volume}`} />
+            <DtcRow label="Минимальная ставка" value={rate} accent />
+            <DtcRow label="Минимальная ставка за рейс" value={tripRate} />
+            <DtcRow label="НДС" value={transport.vatType} />
+            {/*<DtcRow label="Дата размещения" value={createdAtLabel} />*/}
+
+            <div className="border-b border-border" />
+
+
+            <DtcRow label="Округа работы" value={transport.workDistricts.join(", ")}
+              block
+              small
             />
             <DtcRow
               label="Субъекты округов"
               value={transport.workRegions?.join(", ") || "—"}
               small
+              block
             />
-            <DtcRow label="Минимальная ставка за рейс" value={tripRate} />
+            <DtcRow
+              label="Способ погрузки"
+              value={transport.loadingType?.join(", ") || "—"}
+              block
+              small
+            />
+            <DtcRow
+              label="Способ выгрузки"
+              value={transport.unloadingType?.join(", ") || "—"}
+              block
+              small
+            />
+            <div className="border-b border-border" />
+
             <DtcRow
               label="Дополнительная информация"
               value={transport.additionalInfo || "—"}
               block
             />
-          </div>
-
-          <div className="flex items-center justify-between gap-4 flex-wrap mt-5 pt-4 border-t border-divider">
-            <div className="flex items-center gap-2">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-4 h-4 flex-none text-text-muted"
-              >
-                <path d="M6.6 10.8c1.5 2.7 3.9 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1.2.2 2.4.7 3.5.1.3.1.7-.3 1z" />
-              </svg>
-              <span className="text-sm text-text-secondary tracking-[-0.14px]">
-                {transport.contactName} ·{" "}
+            {/*Контакты*/}
+            <div className="flex justify-between items-start gap-4 mt-2">
+              <span className="text-xs text-text-muted whitespace-nowrap">
+                Контакты
+              </span>
+              <span className="flex flex-col items-end text-sm text-text-secondary tracking-[-0.14px]">
+                <span>{transport.contactName}</span>
                 <a
-                  href={`tel:${transport.contactPhone}`}
                   className="text-base font-medium text-text-primary tracking-[-0.16px] tabular-nums no-underline transition-colors duration-150 hover:text-accent"
                 >
                   {transport.contactPhone}
                 </a>
               </span>
             </div>
-
           </div>
+
+
         </div>
       </div>
     </div>
@@ -163,8 +198,8 @@ function DtcRow({ label, value, accent = false, small = false, block = false }: 
   return (
     <div
       className={
-        "flex items-baseline justify-between gap-4 py-[11px] border-b border-divider last:border-b-0 " +
-        (block ? "flex-col items-start gap-1" : "")
+        "flex items-baseline justify-between py-2 " +
+        (block ? "flex-col items-start gap-1" : "gap-4")
       }
     >
       <span className="text-xs text-text-muted whitespace-nowrap">{label}</span>

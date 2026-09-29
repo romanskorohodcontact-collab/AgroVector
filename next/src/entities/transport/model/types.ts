@@ -55,4 +55,5 @@ export interface Transport {
   additionalInfo: string;
   contactName: string;
   contactPhone: string;
+  createdAt: Date;
 }

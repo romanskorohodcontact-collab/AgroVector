@@ -191,6 +191,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     additionalInfo: draft.additionalInfo,
     contactName: draft.contactName || "Контактное лицо",
     contactPhone: draft.contactPhone || "+7 (___) ___-__-__",
+    createdAt: new Date(),
   };
 
   const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(

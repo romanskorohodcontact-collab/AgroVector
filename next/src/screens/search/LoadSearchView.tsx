@@ -14,6 +14,7 @@ import {
   type SortDirection,
 } from "@/entities/load/model";
 import { LoadsMap } from "@/widgets/loads-map";
+import { useMapOverlaySelection } from "@/features/map/useMapOverlaySelection";
 import { AutocompleteField } from "@/shared/ui/AutocompleteField";
 import { FIELD_LABEL, FormInputIcon, FormSelect } from "@/shared/ui/FormInput";
 import { Pagination } from "./ui/Pagination";
@@ -39,8 +40,13 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
   const [suggestions, setSuggestions] =
     useState<LoadSuggestions>(EMPTY_SUGGESTIONS);
   const [sort, setSort] = useState<LoadSort>(DEFAULT_LOAD_SORT);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [clusterFilter, setClusterFilter] = useState<string[] | null>(null);
+  const {
+    selectedId,
+    clusterFilter,
+    selectItem,
+    selectCluster,
+    clear: clearMapSelection,
+  } = useMapOverlaySelection();
   const [hasSearched, setHasSearched] = useState(false);
   const [filtersCollapsed, setFiltersCollapsed] = useState(false);
 
@@ -82,24 +88,21 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     setHasSearched(true);
     setPage(1);
     setApplied(values);
-    setSelectedId(null);
-    setClusterFilter(null);
+    clearMapSelection();
   }
 
   function handleReset() {
     setValues({});
     setApplied({});
     setPage(1);
-    setSelectedId(null);
-    setClusterFilter(null);
+    clearMapSelection();
   }
 
   function handleCompanyChange(value: string) {
     setValues((current) => ({ ...current, company: value }));
     setApplied((current) => ({ ...current, company: value }));
     setPage(1);
-    setSelectedId(null);
-    setClusterFilter(null);
+    clearMapSelection();
   }
 
   function setField(key: keyof SearchFiltersValues, value: string) {
@@ -149,7 +152,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
               {selectedId ? (
                 <button
                   type="button"
-                  onClick={() => setSelectedId(null)}
+                  onClick={clearMapSelection}
                   className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Сбросить выбор
@@ -157,7 +160,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
               ) : clusterFilter ? (
                 <button
                   type="button"
-                  onClick={() => setClusterFilter(null)}
+                  onClick={clearMapSelection}
                   className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Сбросить фильтр
@@ -245,9 +248,9 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
         <LoadsMap
           mapItems={result?.mapItems ?? []}
           className="h-full w-full"
-          onSelect={(item) => setSelectedId(item.id)}
+          onSelect={(item) => selectItem(item.id)}
           showHoverCard
-          onClusterChange={(ids) => setClusterFilter(ids.length > 0 ? ids : null)}
+          onClusterChange={selectCluster}
           activeClusterFilter={clusterFilter}
         />
       </div>

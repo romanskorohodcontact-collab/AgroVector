@@ -44,6 +44,7 @@ export interface CreateTransportData {
 
 interface TransportRecord extends CreateTransportData {
   _id: Types.ObjectId;
+  createdAt: Date;
 }
 
 export async function getTransportById(id: string): Promise<Transport | null> {
@@ -230,5 +231,6 @@ function toTransport(doc: TransportRecord): Transport {
     additionalInfo: doc.additionalInfo ?? "",
     contactName: doc.contactName,
     contactPhone: doc.contactPhone,
+    createdAt: doc.createdAt,
   };
 }
