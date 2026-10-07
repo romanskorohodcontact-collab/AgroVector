@@ -96,7 +96,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               </strong>*/}
               <div className="flex flex-col">
                 <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
-                  {load.loadingRegion}
+                  {load.loadingRegion?.join(", ")}
                 </span>
                 <span
                   className="text-xs text-text-muted whitespace-nowrap"
@@ -118,7 +118,7 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               </strong>*/}
               <div className="flex flex-col">
                 <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
-                  {load.unloadingRegion}
+                  {load.unloadingRegion?.join(", ")}
                 </span>
                 <span
                   className="text-xs text-text-muted whitespace-nowrap"
@@ -146,7 +146,11 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               label="Ставка за рейс"
               value={`${load.rate.toLocaleString("ru-RU")} ₽`}
             />
+            {/*<<<<<<< HEAD
             <DtcRow label="НДС" value={load.vatType} />
+=======*/}
+            <DtcRow label="НДС" value={load.vatType.join(", ") || "—"} />
+            {/*>>>>>>> feature/debug*/}
 
             <div className="border-b border-border" />
 
@@ -167,8 +171,17 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               label="Тип груза"
               value={load.cargoTypes?.join(", ") || "—"}
             />
+            {/*<<<<<<< HEAD
             <DtcRow label="Тип кузова" value={load.bodyType || "—"} />
             <DtcRow label="Компания" value={load.companyName} />
+=======*/}
+            <DtcRow
+              label="Тип загрузки груза"
+              value={load.cargoForm || "—"}
+            />
+            <DtcRow label="Тип кузова" value={load.bodyType.join(", ") || "—"} />
+            <DtcRow label="Компания" value={load.companyName || "—"} />
+            {/*>>>>>>> feature/debug*/}
             <DtcRow
               label="Дата погрузки"
               value={loadingDateLabel}

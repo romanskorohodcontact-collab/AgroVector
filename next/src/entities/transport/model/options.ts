@@ -63,6 +63,7 @@ export const LOADING_TYPES = [
   "Боковая загрузка",
   "Задняя загрузка",
   "Нижняя загрузка",
+  "КУН.",
   "Кран",
   "Манипулятор",
   "Погрузчик",
@@ -87,7 +88,7 @@ export const UNLOADING_TYPES = [
 
 export const VAT_TYPES = ["НДС", "Без НДС", "Не указывать", "Наличка", "Договорные"] as const;
 
-export const LOAD_VAT_TYPES = ["НДС", "Без НДС", "Не указывать", "Наличка"] as const;
+export const LOAD_VAT_TYPES = ["НДС", "Без НДС", "Уточнить", "Наличка"] as const;
 
 export const AVAILABILITY_TYPES = [
   "Свободен",

@@ -76,7 +76,7 @@ export interface Load {
   rate: number;
   ratePerKm: number;
   tonnage: Tonnage;
-  bodyType: string;
+  bodyType: string[];
   cargo: string;
   cargoForm: string;
   cargoTypes: string[];
@@ -90,7 +90,8 @@ export interface Load {
   unloadingRegion: string[] | null;
   loadingType: string[] | null;
   unloadingType: string[] | null;
-  vatType: string;
-  loadingDate: Date;
+  vatType: string[];
+  loadingDate: Date | null;
+  advance: string | null;
   customProperties: LoadCustomProperty[];
 }

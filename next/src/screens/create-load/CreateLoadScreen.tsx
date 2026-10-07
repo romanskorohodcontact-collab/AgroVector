@@ -7,6 +7,7 @@ interface CreateLoadScreenProps {
   user: User;
 }
 
+
 export function CreateLoadScreen({ user }: CreateLoadScreenProps) {
   return (
     <main className="bg-bg-subtle">

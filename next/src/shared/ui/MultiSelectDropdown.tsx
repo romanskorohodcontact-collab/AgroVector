@@ -59,20 +59,20 @@ export function MultiSelectDropdown({
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
-        <div className="flex items-center gap-2 w-full min-w-0">
+        <div className="flex justify-between items-center gap-2 w-full min-w-0">
           {selected.length > 0 ? (
-            <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis">
+            <div className="overflow-hidden whitespace-nowrap text-ellipsis">
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-bg-surface text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg -bg-surface text-xs text-text-primary tracking-[-0.16px] whitespace-nowrap"
                 >
                   {item}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-icon-subtle">
+            <span className="truncate text-icon-subtle">
               {placeholder}
             </span>
           )}
@@ -85,9 +85,8 @@ export function MultiSelectDropdown({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${
-              open ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${open ? "rotate-180" : ""
+              }`}
           >
             <path d="m4 6 4 4 4-4" />
           </svg>
@@ -102,30 +101,30 @@ export function MultiSelectDropdown({
             aria-hidden="true"
           />
           <FilterPopover
-          label={label}
-          onReset={onReset}
-          hasValue={selected.length > 0}
-          panelWidthClass={panelWidthClass}
-        >
-          <div className={`bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto px-4 py-2 grid ${columns === 1 ? "grid-cols-1" : "grid-cols-2"} gap-1 max-[640px]:grid-cols-1`}>
-            {options.map((item) => (
-              <label
-                key={item}
-                className="flex items-center gap-2 py-1 cursor-pointer hover:bg-bg-subtle rounded px-2 -mx-2 transition-colors duration-150"
-              >
-                <input
-                  type="checkbox"
-                  checked={selected.includes(item)}
-                  onChange={() => onToggle(item)}
-                  className="w-3.5 h-3.5 accent-accent cursor-pointer"
-                />
-                <span className="text-[13px] text-text-secondary tracking-[-0.13px]">
-                  {item}
-                </span>
-              </label>
-            ))}
-          </div>
-        </FilterPopover>
+            label={label}
+            onReset={onReset}
+            hasValue={selected.length > 0}
+            panelWidthClass={panelWidthClass}
+          >
+            <div className={`bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto px-4 py-2 grid ${columns === 1 ? "grid-cols-1" : "grid-cols-2"} gap-1 max-[640px]:grid-cols-1`}>
+              {options.map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-2 py-1 cursor-pointer hover:bg-bg-subtle rounded px-2 -mx-2 transition-colors duration-150"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(item)}
+                    onChange={() => onToggle(item)}
+                    className="w-3.5 h-3.5 accent-accent cursor-pointer"
+                  />
+                  <span className="text-[13px] text-text-secondary tracking-[-0.13px]">
+                    {item}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </FilterPopover>
         </>
       )}
     </div>

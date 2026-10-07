@@ -82,33 +82,36 @@ export function TransportDetailWindow({
         </div>
 
         <div className="relative min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
-          <div className="absolute -top-5 right-0 w-1/2 aspect-square overflow-hidden z-0 max-[900px]:top-0">
-            <img
-              src={truck3.src}
-              alt=""
-              className="h-full w-full object-cover object-left"
-            />
-          </div>
+
+
 
           <div className="relative z-10 min-w-0">
             {/*Бэйдж Доступность*/}
-            <div className={`${colors.bg} px-4 py-1 rounded-full text-[12px] flex gap-2 w-fit`}>
-              <p className={`${colors.text} tracking-[-0.7px] font-medium`}>
-                {availability.type}
-              </p>
-              {availability.date ? (
-                <p className={`font-normal leading-[1.43] ${colors.text} tracking-[-0.14px]`}>
-                  до {availability.date}
+
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="mt- 15 text-[20px] font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
+                  {transport.transportType}
+                </h2>
+                <p className="mt-1 text-sm text-text-secondary leading-[1.43] tracking-[-0.14px]">
+                  {transport.bodyType}
                 </p>
-              ) : null}
+              </div>
+
+              <div className={`${colors.bg} px-4 py-1 rounded-full text-[12px] flex gap-2 w-fit`}>
+                <p className={`${colors.text} tracking-[-0.7px] font-medium`}>
+                  {availability.type}
+                </p>
+                {availability.date ? (
+                  <p className={`font-normal leading-[1.43] ${colors.text} tracking-[-0.14px]`}>
+                    до {availability.date}
+                  </p>
+                ) : null}
+              </div>
             </div>
 
-            <h2 className="mt-15 text-[20px] font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
-              {transport.transportType}
-            </h2>
-            <p className="mt-1 text-sm text-text-secondary leading-[1.43] tracking-[-0.14px]">
-              {transport.bodyType}
-            </p>
+
+
             <div className="flex flex-wrap gap-2 mt-3">
               {transport.cargoTypes.map((cargo) => (
                 <span
@@ -119,6 +122,7 @@ export function TransportDetailWindow({
                 </span>
               ))}
             </div>
+
           </div>
 
 
@@ -180,9 +184,9 @@ export function TransportDetailWindow({
           </div>
 
 
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 }
 
