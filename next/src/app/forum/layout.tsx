@@ -8,9 +8,7 @@ export default function ForumLayout({
 }) {
   return (
     <div className="min-h-screen bg-bg-subtle flex flex-col">
-      <div className="bg-bg-surface">
-        <Header activePath="/forum" />
-      </div>
+      <Header activePath="/forum" />
       <div className="w-full px-4 py-10 max-w-[1152px] mx-auto flex-1">
         <ForumBreadcrumbs />
         <div className="bg-bg-surface border border-border rounded-[24px] p-10 max-md:p-5">

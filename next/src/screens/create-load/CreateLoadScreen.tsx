@@ -11,9 +11,7 @@ interface CreateLoadScreenProps {
 export function CreateLoadScreen({ user }: CreateLoadScreenProps) {
   return (
     <main className="bg-bg-subtle">
-      <div className="bg-bg-surface">
-        <Header />
-      </div>
+      <Header />
 
       <div className="container-app pt-4 pb-4 max-[640px]:pt-6 max-[640px]:pb-5">
         <nav aria-label="Навигация" className="flex items-center gap-2 text-sm">

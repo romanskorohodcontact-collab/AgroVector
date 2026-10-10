@@ -19,6 +19,7 @@ import { AutocompleteField } from "@/shared/ui/AutocompleteField";
 import { FIELD_LABEL, FormInputIcon, FormSelect } from "@/shared/ui/FormInput";
 import { Pagination } from "./ui/Pagination";
 import { ChevronDown } from "lucide-react";
+import { InputField } from "@/shared/ui/InputField";
 
 const PAGE_SIZE = 5;
 
@@ -117,7 +118,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
       <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-divider-strong max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className="px-6 py-3 border-b border-divider-strong min-h-0"
+          className="px-6 py-6 border-b border-divider-strong min-h-0"
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -307,7 +308,7 @@ function FilterForm({
     >
 
       {/*Форма с фитрами*/}
-      <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
+      {/*<div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
         <AutocompleteField
           label="Город отправки"
           value={values.from ?? ""}
@@ -353,14 +354,26 @@ function FilterForm({
           id="f-rate"
           placeholder="от 150₽/км"
         />
+      </div>*/}
+      <div className="flex flex-col gap-5">
+        <div className="flex gap-1">
+          <InputField label="Погрузка" className="rounded-r-[8px]" />
+          <InputField label="Погрузка" className="rounded-lg" />
+          <InputField label="Погрузка" className="rounded-l-[8px]" />
+        </div>
+        <div className="flex gap-1">
+          <InputField label="Погрузка" className="rounded-r-[8px]" />
+          <InputField label="Погрузка" className="rounded-lg" />
+          <InputField label="Погрузка" className="rounded-l-[8px]" />
+        </div>
       </div>
       {/*Блок сокращенного отображения*/}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-1">
         <button
           type="button"
           onClick={handleToggleFilters}
           aria-expanded={!filtersCollapsed}
-          className="flex gap-2 h-[38px] px-4 items-center justify-center rounded-pill bg-bg-input text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-border"
+          className="flex gap-2 px-6 h-[43px] items-center justify-center rounded-pill border border-border text-[16px] text-text-primary font-medium tracking-[-0.14px] whitespace-nowrap cursor-pointer"
         >
           <span>{filtersCollapsed ? "Открыть панель" : "Скрыть панель"}</span>
           <ChevronDown
@@ -371,14 +384,14 @@ function FilterForm({
         <button
           type="button"
           onClick={handleReset}
-          className="h-9 px-4 gap-2 inline-flex items-center justify-center rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
+          className="px-6 h-[43px] gap-2 inline-flex items-center justify-center rounded-l-pill rounded-tr-lg rounded-br-lg bg-input-bg text-[16px] font-medium text-text-primary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
         >
           Сбросить фильтры
         </button>
         <button
           type="submit"
           disabled={!searchEnabled}
-          className={`h-9 px-4 gap-1.5 inline-flex items-center justify-center rounded-pill text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
+          className={`px-6 h-[43px] gap-1.5 inline-flex items-center justify-center rounded-tl-lg rounded-bl-lg rounded-r-pill text-[16px] font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
             ? "bg-accent cursor-pointer hover:bg-accent/90"
             : "bg-accent/50 cursor-not-allowed"
             }`}

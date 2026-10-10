@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-    /* Typography --font-inter --font-manrope --font-onest*/
-    /*--font-ui: var(--font-inter);*/
-    /*--font-ui: var(--font-manrope);*/
-    --font-ui: var(--font-onest);
+    /* Typography */
+    --font-ui: var(--font-jost);
 
     /* Текст */
     --color-text-dark: #181818;
@@ -50,6 +48,14 @@
     --color-outline-hover: #0d0d0d33;
     --color-disabled: #0d0d0d33;
     --color-grid-line: rgba(13, 13, 13, 0.05);
+
+    /* Шапка */
+    --color-header-from: #32b567;
+    --color-header-to: #1a7641;
+
+    /* Поле ввода InputField */
+    --color-input-bg: #f2f4f7;
+    --color-input-label: #727179;
 
     --radius-pill: 9999px;
 }

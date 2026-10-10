@@ -46,7 +46,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden max-[960px]:h-auto max-[960px]:overflow-visible">
-      <Header fullWidth />
+      <Header fullWidth activePath={`/search?type=${type}`} />
       <SearchScreen mode={mode} initialValues={initialValues} />
     </div>
   );

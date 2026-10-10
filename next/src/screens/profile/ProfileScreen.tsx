@@ -20,9 +20,7 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
 
   return (
     <main className="bg-bg-subtle">
-      <div className="bg-bg-surface">
-        <Header />
-      </div>
+      <Header activePath="/profile" />
 
       <section className="flex flex-col items-center px-6 pt-14 pb-11 bg-[linear-gradient(160deg,var(--color-success-soft)_0%,var(--color-bg-surface)_50%)] max-[640px]:px-4 max-[640px]:pt-10 max-[640px]:pb-8">
         <div

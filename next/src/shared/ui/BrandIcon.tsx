@@ -1,11 +1,17 @@
-export function BrandIcon() {
+interface BrandIconProps {
+  className?: string;
+}
+
+export function BrandIcon({
+  className = "h-6 w-6 text-accent",
+}: BrandIconProps) {
   return (
     <svg
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      className="h-6 w-6 text-accent"
+      className={className}
     >
       <rect x="3" y="9" width="16" height="16" rx="4" fill="currentColor"></rect>
       <path

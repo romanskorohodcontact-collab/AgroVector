@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const BTN_ACCENT =
-  "inline-flex items-center justify-center h-9 px-4 gap-1.5 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent/90 cursor-pointer";
+  "inline-flex items-center justify-center gap-1.5 rounded-[30px] bg-bg-surface px-6 py-3 text-[16px] font-medium leading-none text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover cursor-pointer";
 
 interface CreateRequestOption {
   label: string;
@@ -39,7 +39,7 @@ export function CreateRequestButton() {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        Выложить заявку
+        Разместить заявку
         <svg
           width="16"
           height="16"
