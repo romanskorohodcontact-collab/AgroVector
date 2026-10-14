@@ -1,3 +1,7 @@
+### Дизайн проекта
+https://www.figma.com/design/WMbhpvgzfhwaeSUVPD2wim/%D0%90%D0%B3%D1%80%D0%BE%D0%92%D0%B5%D0%BA%D1%82%D0%BE%D1%80?node-id=0-1
+
+
 # AgroRunok
 
 Веб-платформа заявок на перевозку грузов и поиска транспорта.
