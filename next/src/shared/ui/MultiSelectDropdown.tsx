@@ -44,13 +44,13 @@ export function MultiSelectDropdown({
         setInternalOpen(value);
       }
     },
-    [isControlled, onOpenChange]
+    [isControlled, onOpenChange],
   );
 
   usePopoverDismiss(open, () => setOpen(false));
 
   return (
-    <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
+    <div className={`flex w-full min-w-0 flex-col gap-0 ${open ? "relative z-50" : "relative"}`}>
       {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
       <button
         type="button"
@@ -59,22 +59,20 @@ export function MultiSelectDropdown({
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
-        <div className="flex justify-between items-center gap-2 w-full min-w-0">
+        <div className="flex w-full min-w-0 items-center justify-between gap-2">
           {selected.length > 0 ? (
-            <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+            <div className="overflow-hidden text-ellipsis whitespace-nowrap">
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg -bg-surface text-xs text-text-primary tracking-[-0.16px] whitespace-nowrap"
+                  className="bg -bg-surface mr-0 inline-flex items-center rounded-pill px-2 py-0.5 text-xs tracking-[-0.16px] whitespace-nowrap text-text-primary"
                 >
                   {item}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="truncate text-icon-subtle">
-              {placeholder}
-            </span>
+            <span className="truncate text-icon-subtle">{placeholder}</span>
           )}
           <svg
             width="16"
@@ -85,8 +83,9 @@ export function MultiSelectDropdown({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${open ? "rotate-180" : ""
-              }`}
+            className={`h-4 w-4 shrink-0 text-icon transition-transform duration-150 ${
+              open ? "rotate-180" : ""
+            }`}
           >
             <path d="m4 6 4 4 4-4" />
           </svg>
@@ -106,21 +105,21 @@ export function MultiSelectDropdown({
             hasValue={selected.length > 0}
             panelWidthClass={panelWidthClass}
           >
-            <div className={`bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto px-4 py-2 grid ${columns === 1 ? "grid-cols-1" : "grid-cols-2"} gap-1 max-[640px]:grid-cols-1`}>
+            <div
+              className={`grid max-h-[320px] overflow-y-auto rounded-2xl bg-bg-surface px-4 py-2 ${columns === 1 ? "grid-cols-1" : "grid-cols-2"} gap-1 max-[640px]:grid-cols-1`}
+            >
               {options.map((item) => (
                 <label
                   key={item}
-                  className="flex items-center gap-2 py-1 cursor-pointer hover:bg-bg-subtle rounded px-2 -mx-2 transition-colors duration-150"
+                  className="-mx-2 flex cursor-pointer items-center gap-2 rounded px-2 py-1 transition-colors duration-150 hover:bg-bg-subtle"
                 >
                   <input
                     type="checkbox"
                     checked={selected.includes(item)}
                     onChange={() => onToggle(item)}
-                    className="w-3.5 h-3.5 accent-accent cursor-pointer"
+                    className="h-3.5 w-3.5 cursor-pointer accent-accent"
                   />
-                  <span className="text-[13px] text-text-secondary tracking-[-0.13px]">
-                    {item}
-                  </span>
+                  <span className="text-[13px] tracking-[-0.13px] text-text-secondary">{item}</span>
                 </label>
               ))}
             </div>

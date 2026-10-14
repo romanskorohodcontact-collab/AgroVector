@@ -17,7 +17,7 @@ export function ForumBackButton() {
     <button
       type="button"
       onClick={handleBack}
-      className="inline-flex items-center justify-center h-12 px-[21px] gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-base font-medium text-text-secondary tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
+      className="inline-flex h-12 items-center justify-center gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface px-[21px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-secondary transition-colors duration-150 hover:border-outline-hover hover:text-text-primary"
     >
       <svg
         width="18"

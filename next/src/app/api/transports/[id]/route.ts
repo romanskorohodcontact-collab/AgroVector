@@ -25,10 +25,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
   try {
     const transport = await updateTransport(raw, id, currentUser.id);
     if (!transport) {
-      return NextResponse.json(
-        { error: "Заявка не найдена или недоступна" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Заявка не найдена или недоступна" }, { status: 404 });
     }
     return NextResponse.json(transport);
   } catch (error) {
@@ -45,10 +42,7 @@ export async function DELETE(_request: Request, { params }: RouteContext) {
   const { id } = await params;
   const deleted = await deleteTransport(id, currentUser.id);
   if (!deleted) {
-    return NextResponse.json(
-      { error: "Заявка не найдена или недоступна" },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: "Заявка не найдена или недоступна" }, { status: 404 });
   }
   return NextResponse.json({ ok: true });
 }

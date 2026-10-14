@@ -1,8 +1,4 @@
-export type ForumSectionSlug =
-  | "discussion"
-  | "platform-issues"
-  | "proposals"
-  | "support";
+export type ForumSectionSlug = "discussion" | "platform-issues" | "proposals" | "support";
 
 export interface ForumAuthor {
   id?: string;

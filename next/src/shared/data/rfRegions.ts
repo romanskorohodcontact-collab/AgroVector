@@ -108,15 +108,11 @@ export const WORK_DISTRICTS_REGIONS: Readonly<Record<string, readonly string[]>>
 
 export const WORK_DISTRICTS = Object.keys(WORK_DISTRICTS_REGIONS);
 
-export const WORK_REGIONS: readonly string[] = Object.values(
-  WORK_DISTRICTS_REGIONS
-).flat();
+export const WORK_REGIONS: readonly string[] = Object.values(WORK_DISTRICTS_REGIONS).flat();
 
 export function deriveDistrictsFromRegions(regions: string[]): string[] {
   const districts = new Set<string>();
-  for (const [district, districtRegions] of Object.entries(
-    WORK_DISTRICTS_REGIONS
-  )) {
+  for (const [district, districtRegions] of Object.entries(WORK_DISTRICTS_REGIONS)) {
     if (districtRegions.some((r) => regions.includes(r))) {
       districts.add(district);
     }

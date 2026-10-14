@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-  DEFAULT_LOAD_SORT,
-  type LoadFilters,
-  type LoadSort,
-} from "@/entities/load/model";
+import { DEFAULT_LOAD_SORT, type LoadFilters, type LoadSort } from "@/entities/load/model";
 import { getCurrentUser } from "@/server/modules/auth";
 import { createLoad, getLoads, searchLoads } from "@/server/modules/loads";
 
@@ -22,27 +18,18 @@ export async function GET(request: Request) {
       const loads = await getLoads(ids);
       return NextResponse.json(loads);
     } catch {
-      return NextResponse.json(
-        { error: "Не удалось получить заявки" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Не удалось получить заявки" }, { status: 500 });
     }
   }
   const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
-  const limit = Math.min(
-    50,
-    Math.max(1, parseInt(params.get("limit") ?? "5", 10) || 5)
-  );
+  const limit = Math.min(50, Math.max(1, parseInt(params.get("limit") ?? "5", 10) || 5));
   const filters = parseFilters(params);
   const sort = parseSort(params);
   try {
     const result = await searchLoads(filters, page, limit, sort);
     return NextResponse.json(result);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить заявки" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить заявки" }, { status: 500 });
   }
 }
 
@@ -68,12 +55,7 @@ function parseSort(params: URLSearchParams): LoadSort {
   const colon = raw.indexOf(":");
   const field = colon === -1 ? raw : raw.slice(0, colon);
   const dir = colon === -1 ? "desc" : raw.slice(colon + 1);
-  if (
-    field === "rate" ||
-    field === "km" ||
-    field === "tons" ||
-    field === "ratePerKm"
-  ) {
+  if (field === "rate" || field === "km" || field === "tons" || field === "ratePerKm") {
     return { field, dir: dir === "asc" ? "asc" : "desc" };
   }
   return DEFAULT_LOAD_SORT;

@@ -49,7 +49,7 @@ export function useAnchoredPopover({
         setInternalOpen(value);
       }
     },
-    [isControlled, onOpenChange]
+    [isControlled, onOpenChange],
   );
 
   const close = useCallback(() => setOpen(false), [setOpen]);
@@ -66,8 +66,7 @@ export function useAnchoredPopover({
     if (pendingRef.current) return;
     pendingRef.current = true;
     try {
-      const panelHeight =
-        measuredHeightRef.current ?? panelMaxHeight + POPOVER_PANEL_CHROME;
+      const panelHeight = measuredHeightRef.current ?? panelMaxHeight + POPOVER_PANEL_CHROME;
       const anchor = anchorRef.current;
       const resolved = resolvePopoverPlacement(anchor, panelHeight);
 
@@ -76,14 +75,10 @@ export function useAnchoredPopover({
 
       if (alignAnchorTop && anchor) {
         const rect = anchor.getBoundingClientRect();
-        const maxScroll =
-          document.documentElement.scrollHeight - window.innerHeight;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         scrollTarget = Math.max(
           0,
-          Math.min(
-            window.scrollY + rect.top - POPOVER_VIEWPORT_MARGIN,
-            maxScroll
-          )
+          Math.min(window.scrollY + rect.top - POPOVER_VIEWPORT_MARGIN, maxScroll),
         );
         nextPlacement = "bottom";
       }
@@ -91,10 +86,7 @@ export function useAnchoredPopover({
       setPlacement(nextPlacement);
 
       if (scrollTarget !== null) {
-        const shouldOpen = await scrollPopoverIntoView(
-          scrollTarget,
-          () => mountedRef.current
-        );
+        const shouldOpen = await scrollPopoverIntoView(scrollTarget, () => mountedRef.current);
         if (!shouldOpen) return;
       }
 

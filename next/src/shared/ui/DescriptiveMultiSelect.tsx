@@ -44,13 +44,13 @@ export function DescriptiveMultiSelect({
         setInternalOpen(value);
       }
     },
-    [isControlled, onOpenChange]
+    [isControlled, onOpenChange],
   );
 
   usePopoverDismiss(open, () => setOpen(false));
 
   return (
-    <div className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}>
+    <div className={`flex w-full min-w-0 flex-col gap-0 ${open ? "relative z-50" : "relative"}`}>
       {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
       <button
         type="button"
@@ -59,24 +59,20 @@ export function DescriptiveMultiSelect({
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
-
-        <div className="flex items-center gap-2 w-full min-w-0">
-
+        <div className="flex w-full min-w-0 items-center gap-2">
           {selected.length > 0 ? (
-            <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap text-ellipsis">
+            <div className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
               {selected.map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center mr-0 px-2 py-0.5 rounded-pill bg-bg-surface text-xs text-text-secondary tracking-[-0.16px] whitespace-nowrap"
+                  className="mr-0 inline-flex items-center rounded-pill bg-bg-surface px-2 py-0.5 text-xs tracking-[-0.16px] whitespace-nowrap text-text-secondary"
                 >
                   {item}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-icon-subtle">
-              {placeholder}
-            </span>
+            <span className="min-w-0 flex-1 truncate text-icon-subtle">{placeholder}</span>
           )}
           <svg
             width="16"
@@ -87,7 +83,7 @@ export function DescriptiveMultiSelect({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${
+            className={`h-4 w-4 shrink-0 text-icon transition-transform duration-150 ${
               open ? "rotate-180" : ""
             }`}
           >
@@ -104,37 +100,37 @@ export function DescriptiveMultiSelect({
             aria-hidden="true"
           />
           <FilterPopover
-          label={label}
-          onReset={onReset}
-          hasValue={selected.length > 0}
-          panelWidthClass={panelWidthClass}
-        >
-          <div className="bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto py-2">
-            {options.map((item) => (
-              <label
-                key={item}
-                className="flex items-start gap-3 px-4 py-2.5 cursor-pointer transition-colors duration-150 hover:bg-bg-subtle"
-              >
-                <input
-                  type="checkbox"
-                  checked={selected.includes(item)}
-                  onChange={() => onToggle(item)}
-                  className="w-3.5 h-3.5 mt-0.5 accent-accent cursor-pointer shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <span className="block text-[14px] font-medium text-text-primary tracking-[-0.14px]">
-                    {item}
-                  </span>
-                  {descriptions[item] ? (
-                    <span className="block mt-0.5 text-[12px] leading-[1.4] text-text-muted tracking-[-0.12px]">
-                      {descriptions[item]}
+            label={label}
+            onReset={onReset}
+            hasValue={selected.length > 0}
+            panelWidthClass={panelWidthClass}
+          >
+            <div className="max-h-[320px] overflow-y-auto rounded-2xl bg-bg-surface py-2">
+              {options.map((item) => (
+                <label
+                  key={item}
+                  className="flex cursor-pointer items-start gap-3 px-4 py-2.5 transition-colors duration-150 hover:bg-bg-subtle"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(item)}
+                    onChange={() => onToggle(item)}
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 cursor-pointer accent-accent"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <span className="block text-[14px] font-medium tracking-[-0.14px] text-text-primary">
+                      {item}
                     </span>
-                  ) : null}
-                </div>
-              </label>
-            ))}
-          </div>
-        </FilterPopover>
+                    {descriptions[item] ? (
+                      <span className="mt-0.5 block text-[12px] leading-[1.4] tracking-[-0.12px] text-text-muted">
+                        {descriptions[item]}
+                      </span>
+                    ) : null}
+                  </div>
+                </label>
+              ))}
+            </div>
+          </FilterPopover>
         </>
       )}
     </div>

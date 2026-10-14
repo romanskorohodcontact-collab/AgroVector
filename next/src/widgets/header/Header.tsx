@@ -29,9 +29,9 @@ export async function Header({ activePath, fullWidth = false }: HeaderProps) {
         <div className="flex items-center gap-12 max-md:flex-col max-md:items-start max-md:gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[28px] font-semibold leading-none tracking-[-0.28px] text-text-inverse max-md:text-xl"
+            className="inline-flex items-center gap-2 text-[28px] leading-none font-semibold tracking-[-0.28px] text-text-inverse max-md:text-xl"
           >
-            <BrandIcon className="h-7 w-7 text-text-inverse max-md:h-6 max-md:w-6" />
+            {/*<BrandIcon className="h-7 w-7 text-text-inverse max-md:h-6 max-md:w-6" />*/}
             АгроВектор
           </Link>
           <nav
@@ -42,9 +42,7 @@ export async function Header({ activePath, fullWidth = false }: HeaderProps) {
               <Link
                 key={item.label}
                 href={item.href}
-                className={
-                  activePath === item.href ? NAV_LINK_ACTIVE : NAV_LINK
-                }
+                className={activePath === item.href ? NAV_LINK_ACTIVE : NAV_LINK}
               >
                 {item.label}
               </Link>
@@ -55,9 +53,7 @@ export async function Header({ activePath, fullWidth = false }: HeaderProps) {
           {user ? (
             <Link
               href="/profile"
-              className={
-                activePath === "/profile" ? NAV_LINK_ACTIVE : NAV_LINK
-              }
+              className={activePath === "/profile" ? NAV_LINK_ACTIVE : NAV_LINK}
             >
               Профиль
             </Link>

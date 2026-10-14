@@ -6,9 +6,6 @@ export async function GET() {
     const data = await getHomeData();
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить данные форума" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить данные форума" }, { status: 500 });
   }
 }

@@ -9,24 +9,13 @@ interface ProfileTransportCardDetailProps {
   transport: Transport;
 }
 
-export function ProfileTransportCardDetail({
-  transport,
-}: ProfileTransportCardDetailProps) {
+export function ProfileTransportCardDetail({ transport }: ProfileTransportCardDetailProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <ProfileTransportCard
-        transport={transport}
-        editable
-        onOpenDetail={() => setOpen(true)}
-      />
-      {open ? (
-        <TransportDetailWindow
-          transport={transport}
-          onClose={() => setOpen(false)}
-        />
-      ) : null}
+      <ProfileTransportCard transport={transport} editable onOpenDetail={() => setOpen(true)} />
+      {open ? <TransportDetailWindow transport={transport} onClose={() => setOpen(false)} /> : null}
     </>
   );
 }

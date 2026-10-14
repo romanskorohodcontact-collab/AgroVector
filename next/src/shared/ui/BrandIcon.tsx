@@ -2,9 +2,7 @@ interface BrandIconProps {
   className?: string;
 }
 
-export function BrandIcon({
-  className = "h-6 w-6 text-accent",
-}: BrandIconProps) {
+export function BrandIcon({ className = "h-6 w-6 text-accent" }: BrandIconProps) {
   return (
     <svg
       viewBox="0 0 32 32"

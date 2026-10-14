@@ -26,9 +26,7 @@ export async function createUser(data: {
   return doc.toObject() as unknown as UserRecord;
 }
 
-export async function findUserByPhone(
-  phone: string
-): Promise<UserRecord | null> {
+export async function findUserByPhone(phone: string): Promise<UserRecord | null> {
   await connectDb();
   const doc = await UserModel.findOne({ phone }).lean();
   return doc as unknown as UserRecord | null;
@@ -42,13 +40,9 @@ export async function findUserById(id: string): Promise<UserRecord | null> {
 
 export async function updateUserProfile(
   id: string,
-  data: UserProfileFields
+  data: UserProfileFields,
 ): Promise<UserRecord | null> {
   await connectDb();
-  const doc = await UserModel.findByIdAndUpdate(
-    id,
-    { $set: data },
-    { new: true }
-  ).lean();
+  const doc = await UserModel.findByIdAndUpdate(id, { $set: data }, { new: true }).lean();
   return doc as unknown as UserRecord | null;
 }

@@ -33,19 +33,13 @@ export function ForumSectionResults({
   const isStale = deferredQuery !== query;
   const trimmed = deferredQuery.trim();
 
-  const filtered = useMemo(
-    () => filterThreads(threads, deferredQuery),
-    [threads, deferredQuery]
-  );
+  const filtered = useMemo(() => filterThreads(threads, deferredQuery), [threads, deferredQuery]);
 
-  const pageCount = Math.max(
-    1,
-    Math.ceil(filtered.length / FORUM_SEARCH_PAGE_LIMIT)
-  );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / FORUM_SEARCH_PAGE_LIMIT));
   const safePage = Math.min(Math.max(1, page), pageCount);
   const pageThreads = filtered.slice(
     (safePage - 1) * FORUM_SEARCH_PAGE_LIMIT,
-    safePage * FORUM_SEARCH_PAGE_LIMIT
+    safePage * FORUM_SEARCH_PAGE_LIMIT,
   );
 
   const hasThreads = threads.length > 0;
@@ -56,11 +50,7 @@ export function ForumSectionResults({
     if (text) params.set("q", text);
     if (nextPage > 1) params.set("page", String(nextPage));
     const search = params.toString();
-    window.history.replaceState(
-      null,
-      "",
-      `/forum/${sectionSlug}${search ? `?${search}` : ""}`
-    );
+    window.history.replaceState(null, "", `/forum/${sectionSlug}${search ? `?${search}` : ""}`);
   }
 
   function handleQueryChange(next: string) {
@@ -76,7 +66,7 @@ export function ForumSectionResults({
 
   return (
     <>
-      <div className="flex items-center gap-3 mt-6 max-md:flex-col max-md:items-stretch">
+      <div className="mt-6 flex items-center gap-3 max-md:flex-col max-md:items-stretch">
         <ForumSearchBox
           value={query}
           onValueChange={handleQueryChange}
@@ -86,26 +76,21 @@ export function ForumSectionResults({
         />
         <Link
           href="/forum/new"
-          className="inline-flex items-center justify-center h-9 px-4 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap max-md:w-full"
+          className="inline-flex h-9 items-center justify-center rounded-pill bg-accent px-4 text-sm font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse max-md:w-full"
         >
           Создать тему
         </Link>
         {hasThreads && (
           <span className="ml-auto text-sm leading-[1.43] tracking-[-0.14px] text-text-muted max-md:ml-0">
-            {trimmed ? "Найдено" : "Всего"}: {filtered.length}{" "}
-            {formatThreadsLabel(filtered.length)}
+            {trimmed ? "Найдено" : "Всего"}: {filtered.length} {formatThreadsLabel(filtered.length)}
           </span>
         )}
       </div>
 
-      <div
-        className={`transition-opacity duration-150 ${
-          isStale ? "opacity-60" : ""
-        }`}
-      >
+      <div className={`transition-opacity duration-150 ${isStale ? "opacity-60" : ""}`}>
         {!hasThreads && (
-          <div className="flex flex-col items-center gap-3 py-16 px-6 text-center mt-6">
-            <span className="flex items-center justify-center w-14 h-14 rounded-full bg-bg-subtle text-text-muted">
+          <div className="mt-6 flex flex-col items-center gap-3 px-6 py-16 text-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-bg-subtle text-text-muted">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -113,23 +98,23 @@ export function ForumSectionResults({
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="w-[26px] h-[26px]"
+                className="h-[26px] w-[26px]"
               >
                 <path d="M21 12a8 8 0 0 1-8 8H4l2-2a8 8 0 1 1 15-6Z" />
                 <path d="M8.5 12h.01M12 12h.01M15.5 12h.01" />
               </svg>
             </span>
-            <h2 className="text-[18px] font-semibold leading-[1.33] tracking-[-0.18px] text-text-primary">
+            <h2 className="text-[18px] leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
               В разделе пока нет тем
             </h2>
-            <p className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary max-w-[360px]">
-              Создайте первую тему, чтобы начать обсуждение. Вопросы
-              обрабатываются в порядке очереди.
+            <p className="max-w-[360px] text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
+              Создайте первую тему, чтобы начать обсуждение. Вопросы обрабатываются в порядке
+              очереди.
             </p>
             <div className="mt-2">
               <Link
                 href="/forum/new"
-                className="inline-flex items-center justify-center h-9 px-4 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap"
+                className="inline-flex h-9 items-center justify-center rounded-pill bg-accent px-4 text-sm font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse"
               >
                 Создать тему
               </Link>
@@ -138,7 +123,7 @@ export function ForumSectionResults({
         )}
 
         {hasThreads && filtered.length === 0 && (
-          <p className="w-full mt-7 text-sm tracking-[-0.14px] text-text-muted">
+          <p className="mt-7 w-full text-sm tracking-[-0.14px] text-text-muted">
             По запросу «{query.trim()}» ничего не найдено.
           </p>
         )}
@@ -152,11 +137,7 @@ export function ForumSectionResults({
             </div>
 
             {pageCount > 1 && (
-              <Pager
-                page={safePage}
-                pageCount={pageCount}
-                onSelect={handlePageChange}
-              />
+              <Pager page={safePage} pageCount={pageCount} onSelect={handlePageChange} />
             )}
           </>
         )}

@@ -8,11 +8,7 @@ interface ForumSearchScreenProps {
   page: number;
 }
 
-export async function ForumSearchScreen({
-  query,
-  type,
-  page,
-}: ForumSearchScreenProps) {
+export async function ForumSearchScreen({ query, type, page }: ForumSearchScreenProps) {
   const index = await getSearchIndex();
 
   return (

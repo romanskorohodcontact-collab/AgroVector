@@ -30,19 +30,17 @@ export function DistrictRegionSelectorPopover({
   onOpenChange,
   single = false,
 }: DistrictRegionSelectorPopoverProps) {
-  const { open, setOpen, toggle, anchorRef, panelRef, placement } =
-    useAnchoredPopover({
-      panelMaxHeight: 370,
-      open: controlledOpen,
-      onOpenChange,
-    });
+  const { open, setOpen, toggle, anchorRef, panelRef, placement } = useAnchoredPopover({
+    panelMaxHeight: 370,
+    open: controlledOpen,
+    onOpenChange,
+  });
 
   return (
     <div
       ref={anchorRef}
-      className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}
+      className={`flex w-full min-w-0 flex-col gap-0 ${open ? "relative z-50" : "relative"}`}
     >
-
       {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
 
       <button
@@ -52,22 +50,20 @@ export function DistrictRegionSelectorPopover({
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
-
-        <div className="flex justify-between items-center gap-2 w-full min-w-0">
-
+        <div className="flex w-full min-w-0 items-center justify-between gap-2">
           {selectedRegions.length > 0 ? (
-            <div className="overflow-hidden whitespace-nowrap text-ellipsis">
+            <div className="overflow-hidden text-ellipsis whitespace-nowrap">
               {selectedRegions.map((region) => (
                 <span
                   key={region}
-                  className="inline-flex items-center mr-1.5 px-2 py-0.5 rounded-pill bg- bg-surface text-xs text-text-primary tracking-[-0.16px] whitespace-nowrap"
+                  className="bg- bg-surface mr-1.5 inline-flex items-center rounded-pill px-2 py-0.5 text-xs tracking-[-0.16px] whitespace-nowrap text-text-primary"
                 >
                   {region}
                 </span>
               ))}
             </div>
           ) : (
-            <span className="flex-1 min-w-0 truncate text-left text-icon-subtle">
+            <span className="min-w-0 flex-1 truncate text-left text-icon-subtle">
               {single ? "Выберите регион" : "Выберите регионы"}
             </span>
           )}
@@ -80,8 +76,9 @@ export function DistrictRegionSelectorPopover({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${open ? "rotate-180" : ""
-              }`}
+            className={`h-4 w-4 shrink-0 text-icon transition-transform duration-150 ${
+              open ? "rotate-180" : ""
+            }`}
           >
             <path d="m4 6 4 4 4-4" />
           </svg>

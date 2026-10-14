@@ -18,9 +18,7 @@ export async function createSession(data: {
   await SessionModel.create(data);
 }
 
-export async function findSessionByToken(
-  token: string
-): Promise<SessionRecord | null> {
+export async function findSessionByToken(token: string): Promise<SessionRecord | null> {
   await connectDb();
   const doc = await SessionModel.findOne({ token }).lean();
   return doc as unknown as SessionRecord | null;

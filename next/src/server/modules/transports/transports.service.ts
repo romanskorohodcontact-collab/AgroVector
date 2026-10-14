@@ -30,7 +30,7 @@ export function searchTransports(
   filters: TransportFilters,
   page: number,
   limit: number,
-  sort?: TransportSort
+  sort?: TransportSort,
 ): Promise<TransportSearchResult> {
   return repositorySearchTransports(filters, page, limit, sort);
 }
@@ -50,7 +50,7 @@ export function getOwnTransport(id: string, userId: string): Promise<Transport |
 export function updateTransport(
   input: unknown,
   id: string,
-  userId: string
+  userId: string,
 ): Promise<Transport | null> {
   const data = validateTransportInput(input);
   return repositoryUpdateOwnTransport(id, userId, data);

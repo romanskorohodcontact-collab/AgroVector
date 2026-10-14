@@ -12,11 +12,10 @@ const sessionSchema = new Schema<SessionFields>(
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     expiresAt: { type: Date, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export const SessionModel: Model<SessionFields> =
-  (models.Session as Model<SessionFields>) ||
-  model<SessionFields>("Session", sessionSchema);
+  (models.Session as Model<SessionFields>) || model<SessionFields>("Session", sessionSchema);

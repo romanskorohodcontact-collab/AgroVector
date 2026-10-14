@@ -43,9 +43,7 @@ export function AnchoredModal({
     const maxLeft = window.innerWidth - VIEWPORT_MARGIN - panelWidth;
     const left = Math.max(VIEWPORT_MARGIN, Math.min(rect.left, maxLeft));
     const top = rect.bottom + PANEL_GAP;
-    setPosition((prev) =>
-      prev && prev.top === top && prev.left === left ? prev : { top, left }
-    );
+    setPosition((prev) => (prev && prev.top === top && prev.left === left ? prev : { top, left }));
   }, [triggerRef]);
 
   useLayoutEffect(() => {
@@ -88,11 +86,7 @@ export function AnchoredModal({
 
   return (
     <div className="fixed inset-0 z-50">
-      <div
-        className="absolute inset-0 z-40 bg-bg-overlay"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 z-40 bg-bg-overlay" onClick={onClose} aria-hidden="true" />
 
       <FilterPopover
         label={title}

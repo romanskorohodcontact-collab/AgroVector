@@ -12,10 +12,7 @@ export function getAvailabilityDisplay(
   const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(type);
   const parsed = date instanceof Date ? date : date ? new Date(date) : null;
   const validDate = parsed && !Number.isNaN(parsed.getTime()) ? parsed : null;
-  const expired =
-    isDateType &&
-    validDate !== null &&
-    validDate.getTime() <= Date.now();
+  const expired = isDateType && validDate !== null && validDate.getTime() <= Date.now();
 
   const effectiveType = expired ? "Свободен" : type;
   const showDate = !expired && isDateType && validDate !== null;

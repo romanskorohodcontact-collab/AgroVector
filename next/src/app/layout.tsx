@@ -12,9 +12,7 @@ export const metadata: Metadata = {
   description: "Платформа заявок на перевозку грузов и поиска транспорта",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className={jost.variable}>
       <body suppressHydrationWarning>

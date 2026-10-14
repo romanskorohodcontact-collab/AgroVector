@@ -78,15 +78,13 @@ export async function listTransportsByUser(userId: string): Promise<Transport[]>
 export async function getTransportsByIds(ids: string[]): Promise<Transport[]> {
   await connectDb();
   const objectIds = ids.map(toObjectId);
-  const docs = (await TransportModel.find({ _id: { $in: objectIds } })
-    .lean()) as unknown as TransportRecord[];
+  const docs = (await TransportModel.find({
+    _id: { $in: objectIds },
+  }).lean()) as unknown as TransportRecord[];
   return docs.map(toTransport);
 }
 
-export async function getOwnTransport(
-  id: string,
-  userId: string
-): Promise<Transport | null> {
+export async function getOwnTransport(id: string, userId: string): Promise<Transport | null> {
   await connectDb();
   const doc = await TransportModel.findOne({
     _id: toObjectId(id),
@@ -98,21 +96,18 @@ export async function getOwnTransport(
 export async function updateOwnTransport(
   id: string,
   userId: string,
-  data: TransportInputData
+  data: TransportInputData,
 ): Promise<Transport | null> {
   await connectDb();
   const doc = await TransportModel.findOneAndUpdate(
     { _id: toObjectId(id), userId: toObjectId(userId) },
     { $set: data },
-    { new: true }
+    { new: true },
   ).lean();
   return doc ? toTransport(doc as unknown as TransportRecord) : null;
 }
 
-export async function deleteOwnTransport(
-  id: string,
-  userId: string
-): Promise<boolean> {
+export async function deleteOwnTransport(id: string, userId: string): Promise<boolean> {
   await connectDb();
   const result = await TransportModel.deleteOne({
     _id: toObjectId(id),
@@ -125,7 +120,7 @@ export async function searchTransports(
   filters: TransportFilters,
   page: number,
   limit: number,
-  sort: TransportSort = DEFAULT_TRANSPORT_SORT
+  sort: TransportSort = DEFAULT_TRANSPORT_SORT,
 ): Promise<TransportSearchResult> {
   await connectDb();
   const query = buildTransportQuery(filters);
@@ -135,12 +130,10 @@ export async function searchTransports(
   ]);
 
   const items = (itemDocs as unknown as TransportRecord[]).map(toTransport);
-  const mapItems: TransportMapItem[] = (itemDocs as unknown as TransportRecord[]).map(
-    (doc) => ({
-      id: doc._id.toString(),
-      transportLocation: doc.transportLocation,
-    })
-  );
+  const mapItems: TransportMapItem[] = (itemDocs as unknown as TransportRecord[]).map((doc) => ({
+    id: doc._id.toString(),
+    transportLocation: doc.transportLocation,
+  }));
 
   return { items, mapItems, total };
 }
@@ -183,10 +176,7 @@ const SORT_FIELDS: Record<TransportSortField, string> = {
   createdAt: "createdAt",
 };
 
-function toSortQuery(
-  field: TransportSortField,
-  dir: SortDirection
-): Record<string, 1 | -1> {
+function toSortQuery(field: TransportSortField, dir: SortDirection): Record<string, 1 | -1> {
   return { [SORT_FIELDS[field]]: dir === "asc" ? 1 : -1 };
 }
 
@@ -194,7 +184,7 @@ async function fetchSortedTransports(
   query: QueryFilter<TransportFields>,
   sort: TransportSort,
   page: number,
-  limit: number
+  limit: number,
 ): Promise<TransportRecord[]> {
   return (await TransportModel.find(query)
     .sort(toSortQuery(sort.field, sort.dir))

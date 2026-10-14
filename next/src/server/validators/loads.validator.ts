@@ -18,7 +18,10 @@ export function validateLoadInput(raw: unknown): LoadInputData {
   const loadingRegion = singleStringArray(raw.loadingRegion, "Регион погрузки");
   const unloadingRegion = singleStringArray(raw.unloadingRegion, "Регион выгрузки");
   const loadingDistrict = requiredStringArray(raw.loadingDistrict, "Федеральные округа погрузки");
-  const unloadingDistrict = requiredStringArray(raw.unloadingDistrict, "Федеральные округа выгрузки");
+  const unloadingDistrict = requiredStringArray(
+    raw.unloadingDistrict,
+    "Федеральные округа выгрузки",
+  );
   const vatType = requiredStringArray(raw.vatType, "Условия НДС");
   const loadingDate = optionalDate(raw.loadingDate, "Дата погрузки");
   const distance = positiveNumber(raw.distance, "Расстояние");
@@ -179,9 +182,7 @@ function optionalDate(value: unknown, field: string): Date | null {
   return date;
 }
 
-function optionalCustomProperties(
-  value: unknown
-): { name: string; value: string }[] {
+function optionalCustomProperties(value: unknown): { name: string; value: string }[] {
   if (!Array.isArray(value)) {
     return [];
   }
@@ -189,10 +190,8 @@ function optionalCustomProperties(
     if (!isRecord(item)) {
       return [];
     }
-    const name =
-      typeof item.name === "string" ? item.name.trim().slice(0, 200) : "";
-    const propValue =
-      typeof item.value === "string" ? item.value.trim().slice(0, 1000) : "";
+    const name = typeof item.name === "string" ? item.name.trim().slice(0, 200) : "";
+    const propValue = typeof item.value === "string" ? item.value.trim().slice(0, 1000) : "";
     return name && propValue ? [{ name, value: propValue }] : [];
   });
 }

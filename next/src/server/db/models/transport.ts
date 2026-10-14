@@ -54,7 +54,7 @@ const transportSchema = new Schema<TransportFields>(
     contactName: { type: String, required: true },
     contactPhone: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 transportSchema.index({ userId: 1, createdAt: -1 });

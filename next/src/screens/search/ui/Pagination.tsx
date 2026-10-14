@@ -8,14 +8,9 @@ interface PaginationProps {
 const BTN_SM_OUTLINE =
   "inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover disabled:opacity-50 disabled:cursor-not-allowed";
 
-export function Pagination({
-  page,
-  totalPages,
-  total,
-  onPageChange,
-}: PaginationProps) {
+export function Pagination({ page, totalPages, total, onPageChange }: PaginationProps) {
   return (
-    <div className="flex items-center justify-between gap-3 mt-3">
+    <div className="mt-3 flex items-center justify-between gap-3">
       <button
         type="button"
         onClick={() => onPageChange(Math.max(1, page - 1))}
@@ -24,7 +19,7 @@ export function Pagination({
       >
         Назад
       </button>
-      <span className="text-sm text-text-secondary tracking-[-0.14px]">
+      <span className="text-sm tracking-[-0.14px] text-text-secondary">
         Страница {page} из {totalPages} · Всего: {total}
       </span>
       <button

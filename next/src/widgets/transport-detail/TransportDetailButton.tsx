@@ -14,16 +14,8 @@ export function TransportDetailButton({ transport }: TransportDetailButtonProps)
 
   return (
     <>
-      <TransportCard
-        transport={transport}
-        onOpenDetail={() => setOpen(true)}
-      />
-      {open ? (
-        <TransportDetailWindow
-          transport={transport}
-          onClose={() => setOpen(false)}
-        />
-      ) : null}
+      <TransportCard transport={transport} onOpenDetail={() => setOpen(true)} />
+      {open ? <TransportDetailWindow transport={transport} onClose={() => setOpen(false)} /> : null}
     </>
   );
 }

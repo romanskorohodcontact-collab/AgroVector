@@ -22,69 +22,67 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
     <main className="bg-bg-subtle">
       <Header activePath="/profile" />
 
-      <section className="flex flex-col items-center px-6 pt-14 pb-11 bg-[linear-gradient(160deg,var(--color-success-soft)_0%,var(--color-bg-surface)_50%)] max-[640px]:px-4 max-[640px]:pt-10 max-[640px]:pb-8">
+      <section className="flex flex-col items-center bg-[linear-gradient(160deg,var(--color-success-soft)_0%,var(--color-bg-surface)_50%)] px-6 pt-14 pb-11 max-[640px]:px-4 max-[640px]:pt-10 max-[640px]:pb-8">
         <div
           aria-hidden="true"
-          className="flex items-center justify-center w-[120px] h-[120px] rounded-full bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[48px] font-medium text-text-inverse tracking-[-1px] mb-6 shadow-[0_4px_20px] shadow-accent/20 max-[640px]:w-24 max-[640px]:h-24 max-[640px]:text-[38px] max-[640px]:mb-5"
+          className="mb-6 flex h-[120px] w-[120px] items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[48px] font-medium tracking-[-1px] text-text-inverse shadow-[0_4px_20px] shadow-accent/20 max-[640px]:mb-5 max-[640px]:h-24 max-[640px]:w-24 max-[640px]:text-[38px]"
         >
           {getInitials(user.name)}
         </div>
-        <div className="w-full max-w-[720px] min-w-0 flex flex-col items-center">
-          <h1 className="w-full text-center text-2xl font-medium text-text-primary tracking-[-0.48px] mb-1.5 max-[640px]:text-xl max-[640px]:tracking-[-0.4px] truncate [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)] [mask-image:linear-gradient(to_right,black_88%,transparent_100%)]">
+        <div className="flex w-full max-w-[720px] min-w-0 flex-col items-center">
+          <h1 className="mb-1.5 w-full truncate [mask-image:linear-gradient(to_right,black_88%,transparent_100%)] text-center text-2xl font-medium tracking-[-0.48px] text-text-primary [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)] max-[640px]:text-xl max-[640px]:tracking-[-0.4px]">
             {user.name || "—"}
           </h1>
-          <p className="w-full text-center text-base text-text-secondary tracking-[-0.16px] mb-4 truncate [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)] [mask-image:linear-gradient(to_right,black_88%,transparent_100%)]">
+          <p className="mb-4 w-full truncate [mask-image:linear-gradient(to_right,black_88%,transparent_100%)] text-center text-base tracking-[-0.16px] text-text-secondary [-webkit-mask-image:linear-gradient(to_right,black_88%,transparent_100%)]">
             {user.companyName || "—"}
           </p>
         </div>
-        <span className="inline-flex items-center h-6 px-3 rounded-pill bg-bg-subtle text-[13px] font-medium text-accent tracking-[-0.13px]">
-          <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-accent mr-2" />
+        <span className="inline-flex h-6 items-center rounded-pill bg-bg-subtle px-3 text-[13px] font-medium tracking-[-0.13px] text-accent">
+          <span aria-hidden="true" className="mr-2 h-1.5 w-1.5 rounded-full bg-accent" />
           Онлайн
         </span>
       </section>
 
-      <div className="max-w-[1100px] mx-auto px-6 pt-8 pb-14 grid grid-cols-[1fr_2fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pt-6 max-[640px]:pb-10">
-        <section className="min-w-0 self-start sticky top-0 max-[960px]:static">
-          <div className="border border-border rounded-[20px] bg-bg-surface overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
+      <div className="mx-auto grid max-w-[1100px] grid-cols-[1fr_2fr] items-start gap-6 px-6 pt-8 pb-14 max-[960px]:grid-cols-1 max-[640px]:px-4 max-[640px]:pt-6 max-[640px]:pb-10">
+        <section className="sticky top-0 min-w-0 self-start max-[960px]:static">
+          <div className="overflow-hidden rounded-[20px] border border-border bg-bg-surface">
+            <div className="flex items-center justify-between border-b border-border px-6 py-[18px] max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="phone" label="Телефон" value={user.phone} />
             </div>
 
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
+            <div className="flex items-center justify-between border-b border-border px-6 py-[18px] max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="mail" label="Почта" value={user.email || "—"} />
             </div>
 
-            <div className="flex justify-between items-center px-6 py-[18px] border-b border-border max-[640px]:px-4 max-[640px]:py-3.5">
+            <div className="flex items-center justify-between border-b border-border px-6 py-[18px] max-[640px]:px-4 max-[640px]:py-3.5">
               <ContactRowLabel icon="building" label="Компания" value={user.companyName || "—"} />
             </div>
 
-            <div className="px-6 py-4 border-t border-border flex flex-col gap-3 max-[640px]:px-4">
+            <div className="flex flex-col gap-3 border-t border-border px-6 py-4 max-[640px]:px-4">
               <Link
                 href="/profile/edit"
-                className="inline-flex items-center justify-center gap-1.5 h-9 w-full px-4 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent/90"
+                className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-pill bg-accent px-4 text-sm font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent/90"
               >
                 <EditIcon />
                 Редактировать профиль
               </Link>
-              <LogoutButton className="inline-flex items-center justify-center gap-1.5 h-9 w-full px-4 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover" />
+              <LogoutButton className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-pill border-[0.8px] border-outline bg-bg-surface px-4 text-sm tracking-[-0.14px] whitespace-nowrap text-text-secondary transition-colors duration-150 hover:border-outline-hover hover:text-text-primary" />
             </div>
           </div>
         </section>
 
         <section className="min-w-0">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-lg font-semibold leading-[1.33] text-text-primary tracking-[-0.18px]">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-lg leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
               Мои заявки на груз
             </h2>
-            <span className="text-sm text-text-muted tracking-[-0.14px]">
+            <span className="text-sm tracking-[-0.14px] text-text-muted">
               {myLoads.length} {pluralLoads(myLoads.length)}
             </span>
           </div>
 
           {myLoads.length === 0 ? (
-            <p className="text-sm text-text-muted tracking-[-0.14px]">
-              Заявок пока нет
-            </p>
+            <p className="text-sm tracking-[-0.14px] text-text-muted">Заявок пока нет</p>
           ) : (
             <div className="grid grid-cols-2 gap-3 max-[960px]:grid-cols-1">
               {myLoads.map((load) => (
@@ -93,26 +91,21 @@ export async function ProfileScreen({ user }: ProfileScreenProps) {
             </div>
           )}
 
-          <div className="flex justify-between items-center mb-5 mt-10">
-            <h2 className="text-lg font-semibold leading-[1.33] text-text-primary tracking-[-0.18px]">
+          <div className="mt-10 mb-5 flex items-center justify-between">
+            <h2 className="text-lg leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
               Мои заявки на транспорт
             </h2>
-            <span className="text-sm text-text-muted tracking-[-0.14px]">
+            <span className="text-sm tracking-[-0.14px] text-text-muted">
               {myTransports.length} {pluralLoads(myTransports.length)}
             </span>
           </div>
 
           {myTransports.length === 0 ? (
-            <p className="text-sm text-text-muted tracking-[-0.14px]">
-              Заявок пока нет
-            </p>
+            <p className="text-sm tracking-[-0.14px] text-text-muted">Заявок пока нет</p>
           ) : (
             <div className="grid grid-cols-2 gap-3 max-[960px]:grid-cols-1">
               {myTransports.map((transport) => (
-                <ProfileTransportCardDetail
-                  key={transport.id}
-                  transport={transport}
-                />
+                <ProfileTransportCardDetail key={transport.id} transport={transport} />
               ))}
             </div>
           )}
@@ -128,8 +121,7 @@ function pluralLoads(count: number): string {
   const mod10 = count % 10;
   const mod100 = count % 100;
   if (mod10 === 1 && mod100 !== 11) return "заявка";
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
-    return "заявки";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "заявки";
   return "заявок";
 }
 
@@ -143,21 +135,19 @@ interface ContactRowLabelProps {
 
 function ContactRowLabel({ icon, label, value }: ContactRowLabelProps) {
   return (
-    <div className="flex items-center gap-3.5 min-w-0">
-      <div className="flex items-center justify-center w-[38px] h-[38px] rounded-[10px] bg-bg-subtle text-text-muted shrink-0 max-[640px]:w-[34px] max-[640px]:h-[34px]">
+    <div className="flex min-w-0 items-center gap-3.5">
+      <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px] bg-bg-subtle text-text-muted max-[640px]:h-[34px] max-[640px]:w-[34px]">
         <ContactIcon name={icon} />
       </div>
       <div className="min-w-0">
-        <div className="text-[13px] text-text-muted tracking-[-0.13px] mb-0.5">
-          {label}
-        </div>
+        <div className="mb-0.5 text-[13px] tracking-[-0.13px] text-text-muted">{label}</div>
         <div className="relative min-w-0">
-          <div className="text-base font-medium text-text-primary tracking-[-0.16px] max-[640px]:text-[15px] truncate">
+          <div className="truncate text-base font-medium tracking-[-0.16px] text-text-primary max-[640px]:text-[15px]">
             {value}
           </div>
           <div
             aria-hidden="true"
-            className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-bg-surface to-transparent pointer-events-none"
+            className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-bg-surface to-transparent"
           />
         </div>
       </div>

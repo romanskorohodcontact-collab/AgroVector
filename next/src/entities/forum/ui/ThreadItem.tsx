@@ -30,13 +30,13 @@ export function ThreadItem({
   return (
     <Link
       href={href}
-      className="flex items-center justify-between gap-6 py-4 px-2 border-b border-divider hover:bg-bg-subtle"
+      className="flex items-center justify-between gap-6 border-b border-divider px-2 py-4 hover:bg-bg-subtle"
     >
-      <div className="flex flex-col gap-1.5 min-w-0">
-        <div className="flex items-center gap-2.5 flex-wrap">
+      <div className="flex min-w-0 flex-col gap-1.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           {mark && (
             <span
-              className={`inline-flex items-center h-5 px-2 rounded-pill text-[12px] leading-none tracking-[-0.16px] whitespace-nowrap ${
+              className={`inline-flex h-5 items-center rounded-pill px-2 text-[12px] leading-none tracking-[-0.16px] whitespace-nowrap ${
                 mark.variant === "accent"
                   ? "bg-accent/10 text-accent"
                   : "bg-bg-subtle text-text-muted"
@@ -45,13 +45,13 @@ export function ThreadItem({
               {mark.label}
             </span>
           )}
-          <h3 className="text-base font-medium leading-[1.38] tracking-[-0.16px] text-text-primary">
+          <h3 className="text-base leading-[1.38] font-medium tracking-[-0.16px] text-text-primary">
             {title}
           </h3>
         </div>
         {author && (
           <p className="text-sm leading-[1.43] tracking-[-0.14px] text-text-muted">
-            <b className="text-text-primary font-medium">{author}</b>
+            <b className="font-medium text-text-primary">{author}</b>
             {date ? <> · {date}</> : null}
           </p>
         )}
@@ -64,7 +64,7 @@ export function ThreadItem({
         )}
       </div>
       {(answers !== undefined || views !== undefined) && (
-        <div className="flex items-center gap-5 flex-none max-md:flex-row">
+        <div className="flex flex-none items-center gap-5 max-md:flex-row">
           {answers !== undefined && (
             <div className="flex flex-col items-end gap-0.5 text-[12px] tracking-[-0.12px] text-text-muted">
               <b className="text-base font-medium tracking-[-0.16px] text-text-primary tabular-nums">

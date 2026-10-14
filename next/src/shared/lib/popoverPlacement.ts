@@ -15,7 +15,7 @@ let activeRequest: symbol | null = null;
 
 export function resolvePopoverPlacement(
   anchor: HTMLElement | null,
-  panelHeight: number
+  panelHeight: number,
 ): PopoverPlacementResult {
   if (!anchor) return { placement: "bottom", scrollTarget: null };
 
@@ -97,7 +97,7 @@ function waitForScrollEnd(target: number): Promise<void> {
 
 export async function scrollPopoverIntoView(
   target: number,
-  isActive: () => boolean
+  isActive: () => boolean,
 ): Promise<boolean> {
   if (Math.abs(window.scrollY - target) < 1) return isActive();
 

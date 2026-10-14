@@ -10,7 +10,7 @@ AgroRunok/
 ├── docker-compose.yml     # Next.js + MongoDB
 ├── .env
 ├── .env.example
-├── README.md
+└── README.md
 ```
 
 ## Технологический стек

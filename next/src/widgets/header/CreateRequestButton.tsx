@@ -49,7 +49,7 @@ export function CreateRequestButton() {
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`w-4 h-4 shrink-0 transition-transform duration-150 ${
+          className={`h-4 w-4 shrink-0 transition-transform duration-150 ${
             open ? "rotate-180" : ""
           }`}
           aria-hidden="true"
@@ -58,13 +58,13 @@ export function CreateRequestButton() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-56 rounded-2xl border border-border bg-bg-surface shadow-lg p-1.5">
+        <div className="absolute top-[calc(100%+8px)] right-0 z-50 w-56 rounded-2xl border border-border bg-bg-surface p-1.5 shadow-lg">
           {OPTIONS.map((option) => (
             <Link
               key={option.href}
               href={option.href}
               onClick={() => setOpen(false)}
-              className="block w-full rounded-xl px-3 py-2.5 text-sm text-text-primary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-subtle"
+              className="block w-full rounded-xl px-3 py-2.5 text-sm tracking-[-0.14px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-subtle"
             >
               {option.label}
             </Link>

@@ -21,7 +21,14 @@ import { MapPicker } from "@/features/map";
 import type { GeoPoint } from "@/entities/load/model";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
 import { DescriptiveMultiSelect } from "@/shared/ui/DescriptiveMultiSelect";
-import { FormInput, FormSelect, FormTextarea, FIELD_LABEL_INLINE, FIELD_ROW, FIELD_ROW_TOP } from "@/shared/ui/FormInput";
+import {
+  FormInput,
+  FormSelect,
+  FormTextarea,
+  FIELD_LABEL_INLINE,
+  FIELD_ROW,
+  FIELD_ROW_TOP,
+} from "@/shared/ui/FormInput";
 import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
 import { ToggleField } from "@/shared/ui/ToggleField";
 import { deriveDistrictsFromRegions, WORK_DISTRICTS_REGIONS } from "@/shared/data/rfRegions";
@@ -90,9 +97,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
     const form = new FormData(event.currentTarget);
     const availabilityType = form.get("availabilityType") as string;
-    const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(
-      availabilityType,
-    );
+    const isDateType = (AVAILABILITY_DATE_TYPES as readonly string[]).includes(availabilityType);
     const date =
       isDateType && form.get("availabilityDate")
         ? new Date(form.get("availabilityDate") as string)
@@ -101,25 +106,16 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     mutation.mutate({
       transportType: form.get("transportType"),
       bodyType: form.get("bodyType"),
-      loadCapacityTons: form.get("loadCapacityTons")
-        ? Number(form.get("loadCapacityTons"))
-        : null,
-      bodyVolumeM3: form.get("bodyVolumeM3")
-        ? Number(form.get("bodyVolumeM3"))
-        : null,
+      loadCapacityTons: form.get("loadCapacityTons") ? Number(form.get("loadCapacityTons")) : null,
+      bodyVolumeM3: form.get("bodyVolumeM3") ? Number(form.get("bodyVolumeM3")) : null,
       cargoTypes: draft.cargoTypes,
       loadingType: draft.loadingType.length > 0 ? draft.loadingType : null,
-      unloadingType:
-        draft.unloadingType.length > 0 ? draft.unloadingType : null,
+      unloadingType: draft.unloadingType.length > 0 ? draft.unloadingType : null,
       workRegions: draft.workRegions.length > 0 ? draft.workRegions : null,
       workDistricts: deriveDistrictsFromRegions(draft.workRegions),
-      minRatePerKm: form.get("minRatePerKm")
-        ? Number(form.get("minRatePerKm"))
-        : null,
+      minRatePerKm: form.get("minRatePerKm") ? Number(form.get("minRatePerKm")) : null,
       minTripRate:
-        draft.showTripRate && form.get("minTripRate")
-          ? Number(form.get("minTripRate"))
-          : null,
+        draft.showTripRate && form.get("minTripRate") ? Number(form.get("minTripRate")) : null,
       vatType: form.get("vatType"),
       availability: { type: availabilityType, date },
       transportLocation: location,
@@ -132,7 +128,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
   const error = formError ?? (mutation.isError ? mutation.error.message : null);
 
   function handleFieldChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) {
     const { name, value } = event.target;
     setDraft((prev) => ({ ...prev, [name]: value }));
@@ -140,13 +136,11 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
   function toggleArrayItem(
     key: "cargoTypes" | "loadingType" | "unloadingType" | "workRegions",
-    item: string
+    item: string,
   ) {
     setDraft((prev) => {
       const arr = prev[key];
-      const next = arr.includes(item)
-        ? arr.filter((x) => x !== item)
-        : [...arr, item];
+      const next = arr.includes(item) ? arr.filter((x) => x !== item) : [...arr, item];
       return { ...prev, [key]: next };
     });
   }
@@ -155,9 +149,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     const districtRegions = WORK_DISTRICTS_REGIONS[district];
     if (!districtRegions) return;
     setDraft((prev) => {
-      const allSelected = districtRegions.every((r) =>
-        prev.workRegions.includes(r)
-      );
+      const allSelected = districtRegions.every((r) => prev.workRegions.includes(r));
       const next = allSelected
         ? prev.workRegions.filter((r) => !districtRegions.includes(r))
         : [...new Set([...prev.workRegions, ...districtRegions])];
@@ -169,29 +161,21 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
     id: "—",
     transportType: draft.transportType || "Тип транспорта",
     bodyType: draft.bodyType || "Тип кузова",
-    loadCapacityTons: draft.loadCapacityTons
-      ? Number(draft.loadCapacityTons)
-      : null,
+    loadCapacityTons: draft.loadCapacityTons ? Number(draft.loadCapacityTons) : null,
     bodyVolumeM3: draft.bodyVolumeM3 ? Number(draft.bodyVolumeM3) : null,
-    cargoTypes:
-      draft.cargoTypes.length > 0 ? draft.cargoTypes : ["Типы грузов"],
+    cargoTypes: draft.cargoTypes.length > 0 ? draft.cargoTypes : ["Типы грузов"],
     loadingType: draft.loadingType.length > 0 ? draft.loadingType : null,
-    unloadingType:
-      draft.unloadingType.length > 0 ? draft.unloadingType : null,
+    unloadingType: draft.unloadingType.length > 0 ? draft.unloadingType : null,
     workRegions: draft.workRegions.length > 0 ? draft.workRegions : null,
     workDistricts: deriveDistrictsFromRegions(draft.workRegions),
     minRatePerKm: draft.minRatePerKm ? Number(draft.minRatePerKm) : null,
-    minTripRate:
-      draft.showTripRate && draft.minTripRate
-        ? Number(draft.minTripRate)
-        : null,
+    minTripRate: draft.showTripRate && draft.minTripRate ? Number(draft.minTripRate) : null,
     vatType: draft.vatType || "НДС",
     availability: {
       type: draft.availabilityType || "Свободен",
       date:
-        (AVAILABILITY_DATE_TYPES as readonly string[]).includes(
-          draft.availabilityType,
-        ) && draft.availabilityDate
+        (AVAILABILITY_DATE_TYPES as readonly string[]).includes(draft.availabilityType) &&
+        draft.availabilityDate
           ? new Date(draft.availabilityDate)
           : null,
     },
@@ -207,14 +191,14 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
   );
 
   return (
-    <div className="container-app pb-14 grid grid-cols-[60fr_40fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:pb-10">
+    <div className="container-app grid grid-cols-[60fr_40fr] items-start gap-6 pb-14 max-[960px]:grid-cols-1 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-border rounded-[20px] bg-bg-surface p-6 flex flex-col gap-8 max-[640px]:p-4"
+        className="flex flex-col gap-8 rounded-[20px] border border-border bg-bg-surface p-6 max-[640px]:p-4"
       >
         <section>
           <h2 className={sectionTitleClass}>Транспорт</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -236,7 +220,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-body-type">
@@ -257,7 +241,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-capacity">
@@ -275,7 +259,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 autoComplete="off"
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-volume">
@@ -298,7 +282,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Грузы и погрузка</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -316,7 +300,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={`${FIELD_ROW} items-start`}>
               <span className={FIELD_LABEL_INLINE}>Способы загрузки</span>
@@ -328,7 +312,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={`${FIELD_ROW} items-start`}>
               <span className={FIELD_LABEL_INLINE}>Способы выгрузки</span>
@@ -345,7 +329,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Работа и ставка</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -364,7 +348,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 autoComplete="off"
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <ToggleField
               label="Указать мин. ставку за рейс"
@@ -394,7 +378,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 />
               </div>
             </ToggleField>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-vat">
@@ -415,7 +399,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 ))}
               </FormSelect>
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-availability">
@@ -437,7 +421,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
             </div>
             {isDateType ? (
               <>
-                <div className="w-full h-1 border-b border-bg-subtle" />
+                <div className="h-1 w-full border-b border-bg-subtle" />
                 <div className={FIELD_ROW}>
                   <label className={FIELD_LABEL_INLINE} htmlFor="f-busy-until">
                     Работает до
@@ -453,7 +437,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 </div>
               </>
             ) : null}
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <span className={FIELD_LABEL_INLINE}>Регионы работы</span>
@@ -462,9 +446,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 selectedRegions={draft.workRegions}
                 onToggleRegion={(region) => toggleArrayItem("workRegions", region)}
                 onToggleDistrict={toggleDistrict}
-                onReset={() =>
-                  setDraft((prev) => ({ ...prev, workRegions: [] }))
-                }
+                onReset={() => setDraft((prev) => ({ ...prev, workRegions: [] }))}
                 panelWidthClass="w-full sm:w-[420px]"
                 open={openFilter === "workRegions"}
                 onOpenChange={(v) => setOpenFilter(v ? "workRegions" : null)}
@@ -476,7 +458,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Доп. информация</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW_TOP}>
@@ -494,7 +476,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Контакты</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -512,7 +494,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-phone">
@@ -533,16 +515,14 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
         </section>
 
         {error ? (
-          <p className="text-sm text-danger text-center tracking-[-0.14px]">
-            {error}
-          </p>
+          <p className="text-center text-sm tracking-[-0.14px] text-danger">{error}</p>
         ) : null}
 
         <div className="flex gap-3 pt-6 max-[640px]:flex-col">
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex h-12 flex-1 items-center justify-center gap-1.5 rounded-pill bg-accent px-[21px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             <PlusIcon />
             {mutation.isPending ? "Публикация…" : "Опубликовать заявку"}
@@ -550,7 +530,7 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
           <Link
             href="/profile"
             role="button"
-            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
+            className="inline-flex h-12 flex-1 items-center justify-center rounded-pill bg-bg-subtle px-[21px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover"
           >
             Отмена
           </Link>
@@ -558,18 +538,16 @@ export function CreateTransportForm({ user }: CreateTransportFormProps) {
       </form>
 
       <aside className="sticky top-3 self-start max-[960px]:static">
-
-        <div className="rounded-[20px] border border-border overflow-hidden">
+        <div className="overflow-hidden rounded-[20px] border border-border">
           <MapPicker
             className="h-[320px] w-full max-[960px]:h-60"
             initialLocation={null}
             onSelect={setLocation}
           />
-
         </div>
 
         <div className="mt-4" aria-label="Предпросмотр заявки">
-          <h3 className="text-lg font-medium leading-[1.33] text-text-primary tracking-[-0.18px] mb-3">
+          <h3 className="mb-3 text-lg leading-[1.33] font-medium tracking-[-0.18px] text-text-primary">
             Предпросмотр заявки
           </h3>
           <TransportDetailButton transport={previewTransport} />

@@ -20,11 +20,7 @@ export function SearchScreen({ mode, initialValues }: SearchScreenProps) {
 
   return (
     <>
-      {mode === "load" ? (
-        <LoadSearchView initialValues={initialValues} />
-      ) : (
-        <TransportSearchView />
-      )}
+      {mode === "load" ? <LoadSearchView initialValues={initialValues} /> : <TransportSearchView />}
     </>
   );
 }

@@ -15,15 +15,14 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
   const loadingDateLabel =
     loadingDate && !Number.isNaN(loadingDate.getTime())
       ? loadingDate.toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
       : "—";
 
   return (
-    <article className="flex flex-col gap-3 bg-bg-surface border border-border rounded-[24px] px-5 pb-4 pt-3 max-w-[620px]">
-
+    <article className="flex max-w-[620px] flex-col gap-3 rounded-[24px] border border-border bg-bg-surface px-5 pt-3 pb-4">
       {/*<div className="flex items-center justify-between gap-3">
         <span className="text-xs text-text-muted whitespace-nowrap leading-[1.5]">
           № {load.id}
@@ -38,32 +37,25 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
       </div>*/}
 
       {/*Откуда куда*/}
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
+          <span className="mt-1 overflow-hidden text-sm leading-[1.4] font-medium tracking-[-0.14px] text-ellipsis whitespace-nowrap text-text-primary tabular-nums">
             {load.loadingRegion}
           </span>
-          <span
-            className="text-xs text-text-muted whitespace-nowrap"
-          > {load.loadingPlace}</span>
+          <span className="text-xs whitespace-nowrap text-text-muted"> {load.loadingPlace}</span>
         </div>
         <span>→</span>
         <div className="flex flex-col">
-          <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
+          <span className="mt-1 overflow-hidden text-sm leading-[1.4] font-medium tracking-[-0.14px] text-ellipsis whitespace-nowrap text-text-primary tabular-nums">
             {load.unloadingRegion}
           </span>
-          <span
-            className="text-xs text-text-muted whitespace-nowrap"
-          >
-            {load.unloadingPlace}</span>
+          <span className="text-xs whitespace-nowrap text-text-muted">{load.unloadingPlace}</span>
         </div>
       </div>
 
       {/*Пэйджи*/}
-      <div className="flex gap-2 mt-2">
-        <span
-          className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-        >
+      <div className="mt-2 flex gap-2">
+        <span className="inline-flex h-5 items-center rounded-pill bg-bg-subtle px-2.5 text-xs leading-none tracking-[-0.16px] whitespace-nowrap text-text-secondary">
           {load.cargo}
         </span>
         {/*<span
@@ -71,9 +63,7 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
         >
           {load.vatType}
         </span>*/}
-        <span
-          className="inline-flex items-center h-5 px-2.5 rounded-pill bg-bg-subtle text-xs leading-none text-text-secondary tracking-[-0.16px] whitespace-nowrap"
-        >
+        <span className="inline-flex h-5 items-center rounded-pill bg-bg-subtle px-2.5 text-xs leading-none tracking-[-0.16px] whitespace-nowrap text-text-secondary">
           {loadingDateLabel}
         </span>
       </div>
@@ -111,17 +101,16 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
 
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline justify-between text-[14px] tracking-[-0.14px]">
-          <span className="text-text-muted flex-none">Тоннаж</span>
-          <span className="text-text-primary font-medium text-right tabular-nums">
-            {load.tonnage.tonnageWeight} {" "} {load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}
+          <span className="flex-none text-text-muted">Тоннаж</span>
+          <span className="text-right font-medium text-text-primary tabular-nums">
+            {load.tonnage.tonnageWeight} {load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}
           </span>
         </div>
         <div className="flex items-baseline justify-between text-[14px] tracking-[-0.14px]">
-          <span className="text-text-muted flex-none">Расстояние</span>
-          <span className="text-text-primary font-medium text-right tabular-nums">
-            {load.distance.toLocaleString("ru-RU")} {" "} км
+          <span className="flex-none text-text-muted">Расстояние</span>
+          <span className="text-right font-medium text-text-primary tabular-nums">
+            {load.distance.toLocaleString("ru-RU")} км
           </span>
-
         </div>
         {/*<div className="flex items-baseline justify-between text-[14px] tracking-[-0.14px]">
           <span className="text-text-muted flex-none">Мин. ставка</span>
@@ -130,31 +119,26 @@ export function ProfileLoadCard({ load, editable = false }: ProfileLoadCardProps
           </span>
         </div>*/}
         <div className="flex items-baseline justify-between text-[14px] tracking-[-0.14px]">
-          <span className="text-text-muted flex-none">Мин. ставка</span>
-          <span className="text-accent font-medium text-right tabular-nums">
-            {load.ratePerKm.toFixed(2)} {" "} ₽/км
+          <span className="flex-none text-text-muted">Мин. ставка</span>
+          <span className="text-right font-medium text-accent tabular-nums">
+            {load.ratePerKm.toFixed(2)} ₽/км
           </span>
         </div>
       </div>
       <div className="border-b border-border" />
 
-
       {/*Контакты + Подробнее*/}
-      <footer className="flex items-end justify-between flex-wrap max-md:flex-col max-md:items-stretch">
-        <div className="flex text-sm justify-between w-full items-baseline gap-0 max-md:justify-between">
-          <span className="text-text-secondary tabular-nums">
-            {load.customerName}
-          </span>
-          <a className="font-medium text-text-primary tabular-nums">
-            {load.customerPhone}
-          </a>
+      <footer className="flex flex-wrap items-end justify-between max-md:flex-col max-md:items-stretch">
+        <div className="flex w-full items-baseline justify-between gap-0 text-sm max-md:justify-between">
+          <span className="text-text-secondary tabular-nums">{load.customerName}</span>
+          <a className="font-medium text-text-primary tabular-nums">{load.customerPhone}</a>
         </div>
 
-        <div className="flex items-center w-full gap-2 max-md:w-full mt-5">
+        <div className="mt-5 flex w-full items-center gap-2 max-md:w-full">
           {editable ? (
             <Link
               href={`/loads/${load.id}/edit`}
-              className="inline-flex items-center justify-center rounded-pill bg-bg-subtle px-4 h-9 gap-1.5 text-sm font-medium text-text-primary text-center leading-[1.43] tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover max-md:flex-1"
+              className="inline-flex h-9 items-center justify-center gap-1.5 rounded-pill bg-bg-subtle px-4 text-center text-sm leading-[1.43] font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover max-md:flex-1"
             >
               {/*<EditIcon />*/}
               Редактировать

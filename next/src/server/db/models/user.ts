@@ -16,7 +16,7 @@ const userSchema = new Schema<UserFields>(
     companyName: { type: String },
     name: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const UserModel: Model<UserFields> =

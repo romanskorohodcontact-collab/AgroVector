@@ -27,21 +27,19 @@ export function FilterPopover({
     <div
       ref={panelRef}
       style={panelStyle}
-      className={`absolute left-0 z-50 bg-white rounded-2xl p-1 border border-border ${placement === "top"
-          ? "bottom-[calc(100%+8px)]"
-          : "top-[calc(100%+8px)]"
-        } ${panelWidthClass ?? "min-w-[360px] max-w-[90vw]"}`}
+      className={`absolute left-0 z-50 rounded-2xl border border-border bg-white p-1 ${
+        placement === "top" ? "bottom-[calc(100%+8px)]" : "top-[calc(100%+8px)]"
+      } ${panelWidthClass ?? "max-w-[90vw] min-w-[360px]"}`}
     >
-
-      <div className="flex items-center justify-between px-4 rounded-t-2xl pt-1.5 pb-1.5">
-        <span className="text-[12px] font-medium text-text-muted tracking-[-0.12px] pt-2">
+      <div className="flex items-center justify-between rounded-t-2xl px-4 pt-1.5 pb-1.5">
+        <span className="pt-2 text-[12px] font-medium tracking-[-0.12px] text-text-muted">
           {label}
         </span>
         {onReset && hasValue && (
           <button
             type="button"
             onClick={onReset}
-            className="h-6 px-2 rounded-pill bg-accent-orange text-xs font-medium text-text-inverse tracking-[-0.12px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
+            className="h-6 cursor-pointer rounded-pill bg-accent-orange px-2 text-xs font-medium tracking-[-0.12px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-orange/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-orange"
           >
             Сбросить
           </button>

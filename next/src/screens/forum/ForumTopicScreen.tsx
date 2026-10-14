@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { after } from "next/server";
-import {
-  formatForumDate,
-  formatForumDateTime,
-} from "@/entities/forum/model";
+import { formatForumDate, formatForumDateTime } from "@/entities/forum/model";
 import { PostItem } from "@/entities/forum/ui";
 import { ReplyForm } from "@/features/reply-thread/ReplyForm";
 import { Pager } from "@/shared/ui/Pager";
@@ -17,11 +14,7 @@ interface ForumTopicScreenProps {
   page?: number;
 }
 
-export async function ForumTopicScreen({
-  section,
-  threadId,
-  page = 1,
-}: ForumTopicScreenProps) {
+export async function ForumTopicScreen({ section, threadId, page = 1 }: ForumTopicScreenProps) {
   const thread = await getThread(threadId, page);
   if (!thread || thread.section !== section) {
     notFound();
@@ -51,25 +44,23 @@ export async function ForumTopicScreen({
 
   return (
     <div className="flex flex-col">
-
       <div>
         {thread.isClosed && (
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="inline-flex items-center h-5 px-2 rounded-pill bg-bg-subtle text-[12px] leading-none tracking-[-0.16px] whitespace-nowrap text-text-muted">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="inline-flex h-5 items-center rounded-pill bg-bg-subtle px-2 text-[12px] leading-none tracking-[-0.16px] whitespace-nowrap text-text-muted">
               Закрыта
             </span>
           </div>
         )}
-        <h1 className="mt-2.5 text-[26px] font-medium leading-[1.5] tracking-[-0.52px] text-text-primary">
+        <h1 className="mt-2.5 text-[26px] leading-[1.5] font-medium tracking-[-0.52px] text-text-primary">
           {thread.title}
         </h1>
         <p className="mt-2 text-lg leading-[1.78] tracking-[-0.18px] text-text-secondary">
-          Начато{" "}
-          <b className="text-text-primary font-medium">{thread.author.name}</b> ·{" "}
+          Начато <b className="font-medium text-text-primary">{thread.author.name}</b> ·{" "}
           {formatForumDate(thread.createdAt)}
         </p>
         {thread.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="mt-3 flex flex-wrap gap-2">
             {thread.tags.map((tag) => (
               <Tag key={tag} label={tag} />
             ))}
@@ -108,7 +99,7 @@ export async function ForumTopicScreen({
       )}
 
       {thread.isClosed ? (
-        <div className="flex items-center gap-2.5 mt-6 p-3.5 px-4 rounded-2xl bg-bg-subtle">
+        <div className="mt-6 flex items-center gap-2.5 rounded-2xl bg-bg-subtle p-3.5 px-4">
           <svg
             width="16"
             height="16"

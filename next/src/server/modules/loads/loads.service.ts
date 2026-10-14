@@ -1,9 +1,4 @@
-import type {
-  Load,
-  LoadFilters,
-  LoadSearchResult,
-  LoadSort,
-} from "@/entities/load/model";
+import type { Load, LoadFilters, LoadSearchResult, LoadSort } from "@/entities/load/model";
 import {
   createLoad as repositoryCreateLoad,
   getLoadById as repositoryGetLoadById,
@@ -29,7 +24,7 @@ export function searchLoads(
   filters: LoadFilters,
   page: number,
   limit: number,
-  sort?: LoadSort
+  sort?: LoadSort,
 ): Promise<LoadSearchResult> {
   return repositorySearchLoads(filters, page, limit, sort);
 }
@@ -50,11 +45,7 @@ export function getOwnLoad(id: string, userId: string): Promise<Load | null> {
   return repositoryGetOwnLoad(id, userId);
 }
 
-export function updateLoad(
-  input: unknown,
-  id: string,
-  userId: string
-): Promise<Load | null> {
+export function updateLoad(input: unknown, id: string, userId: string): Promise<Load | null> {
   const data = validateLoadInput(input);
   return repositoryUpdateOwnLoad(id, userId, data);
 }

@@ -15,7 +15,5 @@ export default async function ForumTopicPage({ params, searchParams }: Props) {
   }
   const { page } = await searchParams;
   const pageNumber = Math.max(1, parseInt(page ?? "1", 10) || 1);
-  return (
-    <ForumTopicScreen section={section} threadId={threadId} page={pageNumber} />
-  );
+  return <ForumTopicScreen section={section} threadId={threadId} page={pageNumber} />;
 }

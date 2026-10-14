@@ -20,8 +20,7 @@ export async function POST(request: Request, { params }: RouteContext) {
     }
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Некорректные данные";
+    const message = error instanceof Error ? error.message : "Некорректные данные";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

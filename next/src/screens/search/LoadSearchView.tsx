@@ -38,8 +38,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
   const [values, setValues] = useState<SearchFiltersValues>(initialValues);
   const [applied, setApplied] = useState<SearchFiltersValues>(initialValues);
   const [page, setPage] = useState(1);
-  const [suggestions, setSuggestions] =
-    useState<LoadSuggestions>(EMPTY_SUGGESTIONS);
+  const [suggestions, setSuggestions] = useState<LoadSuggestions>(EMPTY_SUGGESTIONS);
   const [sort, setSort] = useState<LoadSort>(DEFAULT_LOAD_SORT);
   const {
     selectedId,
@@ -79,10 +78,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     if (result) setSuggestions(result.suggestions);
   }, [result]);
 
-  const isDirty = useMemo(
-    () => !areFiltersEqual(values, applied),
-    [values, applied]
-  );
+  const isDirty = useMemo(() => !areFiltersEqual(values, applied), [values, applied]);
   const searchEnabled = !hasSearched || isDirty;
 
   function handleSubmit() {
@@ -110,15 +106,13 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
     setValues((current) => ({ ...current, [key]: value }));
   }
 
-  const totalPages = result
-    ? Math.max(1, Math.ceil(result.total / PAGE_SIZE))
-    : 1;
+  const totalPages = result ? Math.max(1, Math.ceil(result.total / PAGE_SIZE)) : 1;
 
   return (
-    <main className="grid min-w-0 min-h-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
-      <div className="grid grid-rows-[auto_1fr] min-h-0 border-r border-divider-strong max-[960px]:grid-rows-none max-[960px]:border-r-0">
+    <main className="grid min-h-0 min-w-0 flex-1 grid-cols-[1fr_1fr] overflow-hidden max-[960px]:h-auto max-[960px]:flex-none max-[960px]:grid-cols-1 max-[960px]:overflow-visible">
+      <div className="grid min-h-0 grid-rows-[auto_1fr] border-r border-divider-strong max-[960px]:grid-rows-none max-[960px]:border-r-0">
         <section
-          className="px-6 py-6 border-b border-divider-strong min-h-0"
+          className="min-h-0 border-b border-divider-strong px-6 py-6"
           aria-label="Фильтр заявок"
         >
           <FilterForm
@@ -133,7 +127,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
           />
         </section>
 
-        <div className={`min-h-0 grid grid-cols-[1fr_2fr] max-[960px]:grid-cols-1`}>
+        <div className={`grid min-h-0 grid-cols-[1fr_2fr] max-[960px]:grid-cols-1`}>
           <SortPanel
             sort={sort}
             onSort={setSort}
@@ -143,9 +137,12 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
             onCompanyChange={handleCompanyChange}
           />
 
-          <section className={`p-4 min-h-0 overflow-y-auto bg-bg-subtle max-[960px]:overflow-visible max-[960px]:h-auto`} aria-label="Заявки на груз">
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+          <section
+            className={`min-h-0 overflow-y-auto bg-bg-subtle p-4 max-[960px]:h-auto max-[960px]:overflow-visible`}
+            aria-label="Заявки на груз"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
                 {clusterFilter && clusterQuery.data
                   ? `${clusterQuery.data.length} заявок в точке`
                   : "Заявки на груз"}
@@ -154,7 +151,7 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                 <button
                   type="button"
                   onClick={clearMapSelection}
-                  className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex h-9 items-center justify-center gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface px-4 text-sm tracking-[-0.14px] whitespace-nowrap text-text-secondary transition-colors duration-150 hover:border-outline-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Сбросить выбор
                 </button>
@@ -162,12 +159,12 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                 <button
                   type="button"
                   onClick={clearMapSelection}
-                  className="inline-flex items-center justify-center h-9 px-4 gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface text-sm text-text-secondary tracking-[-0.14px] whitespace-nowrap transition-colors duration-150 hover:text-text-primary hover:border-outline-hover disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex h-9 items-center justify-center gap-2 rounded-pill border-[0.8px] border-outline bg-bg-surface px-4 text-sm tracking-[-0.14px] whitespace-nowrap text-text-secondary transition-colors duration-150 hover:border-outline-hover hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Сбросить фильтр
                 </button>
               ) : result ? (
-                <span className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+                <span className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
                   {`${result.items.length} из ${result.total}`}
                 </span>
               ) : null}
@@ -175,11 +172,11 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
 
             {selectedId ? (
               selectedQuery.isPending ? (
-                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                   Загрузка…
                 </p>
               ) : selectedQuery.isError ? (
-                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                   Не удалось загрузить заявку
                 </p>
               ) : selectedQuery.data ? (
@@ -189,15 +186,15 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
               ) : null
             ) : clusterFilter ? (
               clusterQuery.isPending ? (
-                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                   Загрузка…
                 </p>
               ) : clusterQuery.isError ? (
-                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                   Не удалось загрузить заявки
                 </p>
               ) : clusterQuery.data && clusterQuery.data.length === 0 ? (
-                <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+                <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                   Заявок не найдено
                 </p>
               ) : (
@@ -208,15 +205,15 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
                 </div>
               )
             ) : query.isPending && !result ? (
-              <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+              <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                 Загрузка…
               </p>
             ) : query.isError ? (
-              <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+              <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                 Не удалось загрузить заявки
               </p>
             ) : result && result.items.length === 0 ? (
-              <p className="py-12 px-4 text-center text-sm text-text-muted tracking-[-0.14px]">
+              <p className="px-4 py-12 text-center text-sm tracking-[-0.14px] text-text-muted">
                 Заявок не найдено
               </p>
             ) : (
@@ -241,9 +238,9 @@ export function LoadSearchView({ initialValues = {} }: LoadSearchViewProps) {
 
       <div
         role="presentation"
-        className="relative flex items-center justify-center gap-2.5 min-w-0 bg-bg-subtle bg-[linear-gradient(var(--color-grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--color-grid-line)_1px,transparent_1px)] [background-size:36px_36px] max-[960px]:h-[320px]"
+        className="relative flex min-w-0 items-center justify-center gap-2.5 bg-bg-subtle bg-[linear-gradient(var(--color-grid-line)_1px,transparent_1px),linear-gradient(90deg,var(--color-grid-line)_1px,transparent_1px)] [background-size:36px_36px] max-[960px]:h-[320px]"
       >
-        <span className="absolute top-5 left-5 z-10 px-3.5 py-2 rounded-pill bg-bg-surface shadow-[0_4px_16px_rgba(24,24,24,0.08)] text-[13px] font-medium text-text-primary tracking-[-0.13px]">
+        <span className="absolute top-5 left-5 z-10 rounded-pill bg-bg-surface px-3.5 py-2 text-[13px] font-medium tracking-[-0.13px] text-text-primary shadow-[0_4px_16px_rgba(24,24,24,0.08)]">
           Заявки на карте
         </span>
         <LoadsMap
@@ -302,13 +299,9 @@ function FilterForm({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-3"
-    >
-
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       {/*Форма с фитрами*/}
-      {/*<div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
+      <div className={`grid grid-cols-3 items-end gap-3 max-[960px]:grid-cols-2 max-[560px]:grid-cols-1 ${filtersCollapsed ? "hidden" : ""}`}>
         <AutocompleteField
           label="Город отправки"
           value={values.from ?? ""}
@@ -354,52 +347,40 @@ function FilterForm({
           id="f-rate"
           placeholder="от 150₽/км"
         />
-      </div>*/}
-      <div className="flex flex-col gap-5">
-        <div className="flex gap-1">
-          <InputField label="Погрузка" className="rounded-r-[8px]" />
-          <InputField label="Погрузка" className="rounded-lg" />
-          <InputField label="Погрузка" className="rounded-l-[8px]" />
-        </div>
-        <div className="flex gap-1">
-          <InputField label="Погрузка" className="rounded-r-[8px]" />
-          <InputField label="Погрузка" className="rounded-lg" />
-          <InputField label="Погрузка" className="rounded-l-[8px]" />
-        </div>
       </div>
+
       {/*Блок сокращенного отображения*/}
       <div className="grid grid-cols-3 gap-1">
         <button
           type="button"
           onClick={handleToggleFilters}
           aria-expanded={!filtersCollapsed}
-          className="flex gap-2 px-6 h-[43px] items-center justify-center rounded-pill border border-border text-[16px] text-text-primary font-medium tracking-[-0.14px] whitespace-nowrap cursor-pointer"
+          className="flex h-[43px] cursor-pointer items-center justify-center gap-2 rounded-pill border border-border px-6 text-[16px] font-medium tracking-[-0.14px] whitespace-nowrap text-text-primary"
         >
           <span>{filtersCollapsed ? "Открыть панель" : "Скрыть панель"}</span>
           <ChevronDown
-            className={`w-4 h-4 transition-transform duration-150 ${filtersCollapsed ? "" : "rotate-180"}`}
+            className={`h-4 w-4 transition-transform duration-150 ${filtersCollapsed ? "" : "rotate-180"}`}
           />
         </button>
 
         <button
           type="button"
           onClick={handleReset}
-          className="px-6 h-[43px] gap-2 inline-flex items-center justify-center rounded-l-pill rounded-tr-lg rounded-br-lg bg-input-bg text-[16px] font-medium text-text-primary tracking-[-0.14px] whitespace-nowrap cursor-pointer transition-colors duration-150 hover:text-text-primary hover:border-outline-hover"
+          className="inline-flex h-[43px] cursor-pointer items-center justify-center gap-2 rounded-l-pill rounded-tr-lg rounded-br-lg bg-input-bg px-6 text-[16px] font-medium tracking-[-0.14px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:border-outline-hover hover:text-text-primary"
         >
           Сбросить фильтры
         </button>
         <button
           type="submit"
           disabled={!searchEnabled}
-          className={`px-6 h-[43px] gap-1.5 inline-flex items-center justify-center rounded-tl-lg rounded-bl-lg rounded-r-pill text-[16px] font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 ${searchEnabled
-            ? "bg-accent cursor-pointer hover:bg-accent/90"
-            : "bg-accent/50 cursor-not-allowed"
+          className={`inline-flex h-[43px] items-center justify-center gap-1.5 rounded-tl-lg rounded-r-pill rounded-bl-lg px-6 text-[16px] font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 ${searchEnabled
+              ? "cursor-pointer bg-accent hover:bg-accent/90"
+              : "cursor-not-allowed bg-accent/50"
             }`}
         >
           Найти
         </button>
       </div>
-
     </form>
   );
 }
@@ -451,11 +432,7 @@ interface CompanySelectProps {
 function CompanySelect({ value, onChange, options }: CompanySelectProps) {
   return (
     <div className="min-w-0">
-      <FormSelect
-        id="f-company"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      >
+      <FormSelect id="f-company" value={value} onChange={(event) => onChange(event.target.value)}>
         <option value="">Все компании</option>
         {options.map((option) => (
           <option key={option} value={option}>
@@ -506,9 +483,7 @@ function SortPanel({
   companyOptions,
   onCompanyChange,
 }: SortPanelProps) {
-  const [dirs, setDirs] = useState<Record<LoadSortField, SortDirection>>(
-    DEFAULT_DIRS
-  );
+  const [dirs, setDirs] = useState<Record<LoadSortField, SortDirection>>(DEFAULT_DIRS);
 
   function choose(field: LoadSortField, dir: SortDirection) {
     setDirs((current) => ({ ...current, [field]: dir }));
@@ -517,10 +492,10 @@ function SortPanel({
 
   return (
     <aside
-      className="px-4 py-5 min-h-0 overflow-y-auto border-r border-divider-strong max-[960px]:border-r-0 max-[960px]:border-b max-[960px]:overflow-visible"
+      className="min-h-0 overflow-y-auto border-r border-divider-strong px-4 py-5 max-[960px]:overflow-visible max-[960px]:border-r-0 max-[960px]:border-b"
       aria-label="Сортировка"
     >
-      <h2 className={`mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]`}>
+      <h2 className={`mb-4 text-sm font-semibold tracking-[-0.14px] text-text-primary`}>
         Сортировка
       </h2>
       <div className="flex flex-col gap-1">
@@ -531,35 +506,35 @@ function SortPanel({
             <div
               key={option.field}
               onClick={() =>
-                choose(
-                  option.field,
-                  option.field === "ratePerKm" ? "desc" : activeDir
-                )
+                choose(option.field, option.field === "ratePerKm" ? "desc" : activeDir)
               }
-              className={`flex items-center justify-between gap-2 ${horizontal ? "min-w-auto" : "w-full"} px-3 py-[9px] rounded-xl cursor-pointer transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
+              className={`flex items-center justify-between gap-2 ${horizontal ? "min-w-auto" : "w-full"} cursor-pointer rounded-xl px-3 py-[9px] transition-colors duration-150 ${active ? "bg-bg-subtle" : "hover:bg-bg-subtle"
                 }`}
             >
-              <span className="flex items-center gap-2 min-w-0">
-
-                {!horizontal && (<span
-                  className={`w-5 h-5 shrink-0 rounded-full border border-outline inline-flex items-center justify-center ${active ? "border-accent bg-accent" : ""}`}
-                >
-                  {active ? (
-                    <span className="w-1.5 h-1.5 rounded-full bg-bg-surface" />
-                  ) : null}
-                </span>)}
+              <span className="flex min-w-0 items-center gap-2">
+                {!horizontal && (
+                  <span
+                    className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-outline ${active ? "border-accent bg-accent" : ""}`}
+                  >
+                    {active ? <span className="h-1.5 w-1.5 rounded-full bg-bg-surface" /> : null}
+                  </span>
+                )}
 
                 {option.hint ? (
                   <span className={`${horizontal ? "flex gap-2" : ""} min-w-0`}>
                     <span className="block text-sm leading-[1.43] tracking-[-0.14px] text-text-primary">
                       {option.label}
                     </span>
-                    {!horizontal && <span className="block mt-0.5 text-xs leading-[1.4] text-text-muted tracking-[-0.14px]">
-                      {option.hint}
-                    </span>}
-                    {horizontal && <span className="block mt-0.5 text-xs leading-[1.4] text-text-muted tracking-[-0.14px]">
-                      ₽/км
-                    </span>}
+                    {!horizontal && (
+                      <span className="mt-0.5 block text-xs leading-[1.4] tracking-[-0.14px] text-text-muted">
+                        {option.hint}
+                      </span>
+                    )}
+                    {horizontal && (
+                      <span className="mt-0.5 block text-xs leading-[1.4] tracking-[-0.14px] text-text-muted">
+                        ₽/км
+                      </span>
+                    )}
                   </span>
                 ) : (
                   <span className="text-sm leading-[1.43] tracking-[-0.14px] text-text-primary">
@@ -569,7 +544,7 @@ function SortPanel({
               </span>
               {option.field !== "ratePerKm" ? (
                 <div
-                  className="flex items-center gap-1 shrink-0"
+                  className="flex shrink-0 items-center gap-1"
                   onClick={(event) => event.stopPropagation()}
                 >
                   <DirToggleButton
@@ -594,14 +569,10 @@ function SortPanel({
       </div>
 
       <div className="mt-5">
-        <h2 className="mb-4 text-sm font-semibold text-text-primary tracking-[-0.14px]">
+        <h2 className="mb-4 text-sm font-semibold tracking-[-0.14px] text-text-primary">
           Доп. фильтры
         </h2>
-        <CompanySelect
-          value={company}
-          onChange={onCompanyChange}
-          options={companyOptions}
-        />
+        <CompanySelect value={company} onChange={onCompanyChange} options={companyOptions} />
       </div>
     </aside>
   );
@@ -614,21 +585,16 @@ interface DirToggleButtonProps {
   children: ReactNode;
 }
 
-function DirToggleButton({
-  label,
-  active,
-  onClick,
-  children,
-}: DirToggleButtonProps) {
+function DirToggleButton({ label, active, onClick, children }: DirToggleButtonProps) {
   return (
     <button
       type="button"
       aria-label={label}
       aria-pressed={active}
       onClick={onClick}
-      className={`flex items-center justify-center w-6 h-6 rounded-full cursor-pointer transition-colors duration-150 ${active
-        ? "bg-accent text-text-inverse"
-        : "bg-bg-surface text-text-muted hover:text-text-primary"
+      className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-full transition-colors duration-150 ${active
+          ? "bg-accent text-text-inverse"
+          : "bg-bg-surface text-text-muted hover:text-text-primary"
         }`}
     >
       {children}
@@ -674,10 +640,7 @@ function DescIcon() {
   );
 }
 
-function areFiltersEqual(
-  a: SearchFiltersValues,
-  b: SearchFiltersValues
-): boolean {
+function areFiltersEqual(a: SearchFiltersValues, b: SearchFiltersValues): boolean {
   return (
     a.from === b.from &&
     a.to === b.to &&
@@ -692,21 +655,13 @@ function areFiltersEqual(
 async function fetchSearch(
   filters: SearchFiltersValues,
   page: number,
-  sort: LoadSort
+  sort: LoadSort,
 ): Promise<LoadSearchResult> {
   const params = new URLSearchParams();
   params.set("page", String(page));
   params.set("limit", String(PAGE_SIZE));
   params.set("sort", `${sort.field}:${sort.dir}`);
-  for (const key of [
-    "from",
-    "to",
-    "cargo",
-    "company",
-    "tonnage",
-    "rate",
-    "distance",
-  ] as const) {
+  for (const key of ["from", "to", "cargo", "company", "tonnage", "rate", "distance"] as const) {
     const value = filters[key];
     if (value) params.set(key, value);
   }

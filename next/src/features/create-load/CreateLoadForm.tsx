@@ -7,12 +7,25 @@ import { useState } from "react";
 import { LoadCard } from "@/entities/load";
 import type { GeoPoint, Load, LoadCustomProperty } from "@/entities/load/model";
 import { ANY_WAY, LOADING_TYPES_WITH_ANY, UNLOADING_TYPES_WITH_ANY } from "@/entities/load/model";
-import { CARGO_FORMS, CARGO_TYPE_DESCRIPTIONS, CARGO_TYPES, LOAD_VAT_TYPES, BODY_TYPES } from "@/entities/transport/model";
+import {
+  CARGO_FORMS,
+  CARGO_TYPE_DESCRIPTIONS,
+  CARGO_TYPES,
+  LOAD_VAT_TYPES,
+  BODY_TYPES,
+} from "@/entities/transport/model";
 import { MapPicker } from "@/features/map";
 import { ChipGroup } from "@/shared/ui/ChipGroup";
 import { MultiSelectDropdown } from "@/shared/ui/MultiSelectDropdown";
 import { DescriptiveSelectPopover } from "@/shared/ui/DescriptiveSelectPopover";
-import { FormInput, FormSelect, FormTextarea, FIELD_LABEL_INLINE, FIELD_ROW, FIELD_ROW_TOP } from "@/shared/ui/FormInput";
+import {
+  FormInput,
+  FormSelect,
+  FormTextarea,
+  FIELD_LABEL_INLINE,
+  FIELD_ROW,
+  FIELD_ROW_TOP,
+} from "@/shared/ui/FormInput";
 import { DistrictRegionSelectorPopover } from "@/shared/ui/DistrictRegionSelectorPopover";
 import { ToggleField } from "@/shared/ui/ToggleField";
 import { deriveDistrictsFromRegions } from "@/shared/data/rfRegions";
@@ -121,9 +134,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
       unloadingType: draft.unloadingTypes.length > 0 ? draft.unloadingTypes : null,
       vatType: draft.vatType,
       loadingDate: form.get("loadingDate") || null,
-      customProperties: draft.customProperties.filter(
-        (p) => p.name.trim() && p.value.trim()
-      ),
+      customProperties: draft.customProperties.filter((p) => p.name.trim() && p.value.trim()),
     });
   }
 
@@ -163,12 +174,8 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
   }
 
   function toggleArrayItem(
-    key:
-      | "bodyType"
-      | "vatType"
-      | "loadingTypes"
-      | "unloadingTypes",
-    item: string
+    key: "bodyType" | "vatType" | "loadingTypes" | "unloadingTypes",
+    item: string,
   ) {
     setDraft((prev) => {
       const arr = prev[key];
@@ -183,17 +190,12 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
           : [...withoutAny, item];
         return { ...prev, [key]: next };
       }
-      const next = arr.includes(item)
-        ? arr.filter((x) => x !== item)
-        : [...arr, item];
+      const next = arr.includes(item) ? arr.filter((x) => x !== item) : [...arr, item];
       return { ...prev, [key]: next };
     });
   }
 
-  function selectSingleRegion(
-    key: "loadingRegions" | "unloadingRegions",
-    region: string
-  ) {
+  function selectSingleRegion(key: "loadingRegions" | "unloadingRegions", region: string) {
     setDraft((prev) => ({
       ...prev,
       [key]: prev[key].includes(region) ? [] : [region],
@@ -214,15 +216,11 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     }));
   }
 
-  function updateCustomProperty(
-    index: number,
-    field: keyof LoadCustomProperty,
-    value: string
-  ) {
+  function updateCustomProperty(index: number, field: keyof LoadCustomProperty, value: string) {
     setDraft((prev) => ({
       ...prev,
       customProperties: prev.customProperties.map((p, i) =>
-        i === index ? { ...p, [field]: value } : p
+        i === index ? { ...p, [field]: value } : p,
       ),
     }));
   }
@@ -256,20 +254,18 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
     vatType: draft.vatType.length > 0 ? draft.vatType : ["НДС"],
     loadingDate: draft.loadingDate ? new Date(draft.loadingDate) : null,
     advance: null,
-    customProperties: draft.customProperties.filter(
-      (p) => p.name.trim() && p.value.trim()
-    ),
+    customProperties: draft.customProperties.filter((p) => p.name.trim() && p.value.trim()),
   };
 
   return (
-    <div className="container-app pb-14 grid grid-cols-[60fr_40fr] gap-6 items-start max-[960px]:grid-cols-1 max-[640px]:pb-10">
+    <div className="container-app grid grid-cols-[60fr_40fr] items-start gap-6 pb-14 max-[960px]:grid-cols-1 max-[640px]:pb-10">
       <form
         onSubmit={handleSubmit}
-        className="border border-border rounded-[20px] bg-bg-surface p-6 flex flex-col gap-8 max-[640px]:p-4"
+        className="flex flex-col gap-8 rounded-[20px] border border-border bg-bg-surface p-6 max-[640px]:p-4"
       >
         <section>
           <h2 className={sectionTitleClass}>Параметры груза</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -288,7 +284,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-cargo">
@@ -304,13 +300,13 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-tonnage">
                 Тоннаж
               </label>
-              <div className="flex gap-2 w-full">
+              <div className="flex w-full gap-2">
                 <FormInput
                   id="f-tonnage"
                   type="number"
@@ -333,7 +329,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 </FormSelect>
               </div>
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <ToggleField
               label="Указать тип загрузки груза"
@@ -370,7 +366,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Информация о маршруте</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -387,7 +383,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-to">
@@ -403,7 +399,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <span className={FIELD_LABEL_INLINE}>Регион погрузки</span>
@@ -412,9 +408,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 selectedRegions={draft.loadingRegions}
                 onToggleRegion={(region) => selectSingleRegion("loadingRegions", region)}
                 onToggleDistrict={() => {}}
-                onReset={() =>
-                  setDraft((prev) => ({ ...prev, loadingRegions: [] }))
-                }
+                onReset={() => setDraft((prev) => ({ ...prev, loadingRegions: [] }))}
                 panelWidthClass="w-full sm:w-[420px]"
                 open={openFilter === "loadingRegions"}
                 onOpenChange={(v) => setOpenFilter(v ? "loadingRegions" : null)}
@@ -422,7 +416,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 single
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <span className={FIELD_LABEL_INLINE}>Регион выгрузки</span>
@@ -431,9 +425,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 selectedRegions={draft.unloadingRegions}
                 onToggleRegion={(region) => selectSingleRegion("unloadingRegions", region)}
                 onToggleDistrict={() => {}}
-                onReset={() =>
-                  setDraft((prev) => ({ ...prev, unloadingRegions: [] }))
-                }
+                onReset={() => setDraft((prev) => ({ ...prev, unloadingRegions: [] }))}
                 panelWidthClass="w-full sm:w-[420px]"
                 open={openFilter === "unloadingRegions"}
                 onOpenChange={(v) => setOpenFilter(v ? "unloadingRegions" : null)}
@@ -441,7 +433,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 single
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-distance">
@@ -465,7 +457,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Требования к транспорту</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -482,10 +474,13 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={`${FIELD_ROW} items-start`}>
-              <span className={FIELD_LABEL_INLINE}>Требуемый способ <br />загрузки</span>
+              <span className={FIELD_LABEL_INLINE}>
+                Требуемый способ <br />
+                загрузки
+              </span>
               <ChipGroup
                 label="Требуемый способ загрузки"
                 options={LOADING_TYPES_WITH_ANY}
@@ -494,9 +489,12 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
             <div className={`${FIELD_ROW} items-start`}>
-              <span className={FIELD_LABEL_INLINE}>Требуемый способ <br />выгрузки</span>
+              <span className={FIELD_LABEL_INLINE}>
+                Требуемый способ <br />
+                выгрузки
+              </span>
               <ChipGroup
                 label="Требуемый способ выгрузки"
                 options={UNLOADING_TYPES_WITH_ANY}
@@ -510,7 +508,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Условия перевозки</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -528,7 +526,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 hideLabel
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-rate">
@@ -547,7 +545,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <ToggleField
               label="Указать дату погрузки"
@@ -573,7 +571,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 />
               </div>
             </ToggleField>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <ToggleField
               label="Указать ставку за рейс"
@@ -608,7 +606,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Дополнительная информация</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW_TOP}>
@@ -626,7 +624,6 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 key={index}
                 className="grid grid-cols-[1fr_200px_40px] items-center gap-x-4 gap-y-1.5 max-[640px]:grid-cols-1"
               >
-
                 <div className="min-w-0 max-[640px]:order-2">
                   <FormInput
                     id={`f-prop-name-${index}`}
@@ -634,9 +631,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                     placeholder="Название свойства"
                     autoComplete="off"
                     value={prop.name}
-                    onChange={(e) =>
-                      updateCustomProperty(index, "name", e.target.value)
-                    }
+                    onChange={(e) => updateCustomProperty(index, "name", e.target.value)}
                   />
                 </div>
                 <label
@@ -648,7 +643,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 <button
                   type="button"
                   onClick={() => removeCustomProperty(index)}
-                  className="row-span-2 self-start inline-flex items-center justify-center h-[38px] w-[40px] rounded-2xl border-[1.2px] border-outline-input bg-bg-subtle text-text-muted transition-colors duration-150 hover:text-danger max-[640px]:row-span-1 max-[640px]:order-last max-[640px]:w-full"
+                  className="row-span-2 inline-flex h-[38px] w-[40px] items-center justify-center self-start rounded-2xl border-[1.2px] border-outline-input bg-bg-subtle text-text-muted transition-colors duration-150 hover:text-danger max-[640px]:order-last max-[640px]:row-span-1 max-[640px]:w-full"
                   aria-label="Удалить свойство"
                 >
                   <CloseIcon />
@@ -660,9 +655,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                     placeholder="Значение свойства"
                     autoComplete="off"
                     value={prop.value}
-                    onChange={(e) =>
-                      updateCustomProperty(index, "value", e.target.value)
-                    }
+                    onChange={(e) => updateCustomProperty(index, "value", e.target.value)}
                   />
                 </div>
                 <label
@@ -671,14 +664,13 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 >
                   Значение свойства
                 </label>
-
               </div>
             ))}
           </div>
           <button
             type="button"
             onClick={addCustomProperty}
-            className="inline-flex items-center gap-1.5 h-11 px-4 mt-4 rounded-pill bg-bg-subtle text-sm font-medium text-text-primary tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
+            className="mt-4 inline-flex h-11 items-center gap-1.5 rounded-pill bg-bg-subtle px-4 text-sm leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover"
           >
             <PlusIcon />
             Добавить своё свойство
@@ -687,7 +679,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
 
         <section>
           <h2 className={sectionTitleClass}>Контакты для связи</h2>
-          <div className="w-full h-1 border-b border-bg-subtle mb-4" />
+          <div className="mb-4 h-1 w-full border-b border-bg-subtle" />
 
           <div className={formGridClass}>
             <div className={FIELD_ROW}>
@@ -705,7 +697,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-phone">
@@ -722,7 +714,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
                 required
               />
             </div>
-            <div className="w-full h-1 border-b border-bg-subtle" />
+            <div className="h-1 w-full border-b border-bg-subtle" />
 
             <div className={FIELD_ROW}>
               <label className={FIELD_LABEL_INLINE} htmlFor="f-company">
@@ -742,16 +734,14 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
         </section>
 
         {error ? (
-          <p className="text-sm text-danger text-center tracking-[-0.14px]">
-            {error}
-          </p>
+          <p className="text-center text-sm tracking-[-0.14px] text-danger">{error}</p>
         ) : null}
 
         <div className="flex gap-3 pt-6 max-[640px]:flex-col">
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center flex-1 gap-1.5 h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex h-12 flex-1 items-center justify-center gap-1.5 rounded-pill bg-accent px-[21px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             <PlusIcon />
             {mutation.isPending ? "Создание…" : "Создать заявку"}
@@ -759,7 +749,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
           <Link
             href="/profile"
             role="button"
-            className="inline-flex items-center justify-center flex-1 h-12 px-[21px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] leading-none whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
+            className="inline-flex h-12 flex-1 items-center justify-center rounded-pill bg-bg-subtle px-[21px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover"
           >
             Отмена
           </Link>
@@ -767,7 +757,7 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
       </form>
 
       <aside className="sticky top-3 self-start max-[960px]:static">
-        <div className="rounded-[20px] border border-border overflow-hidden">
+        <div className="overflow-hidden rounded-[20px] border border-border">
           <MapPicker
             className="h-[320px] w-full max-[960px]:h-60"
             initialLocation={null}
@@ -776,13 +766,13 @@ export function CreateLoadForm({ user }: CreateLoadFormProps) {
         </div>
 
         <div className="mt-4" aria-label="Предпросмотр заявки">
-          <h3 className="text-lg font-medium leading-[1.33] text-text-primary tracking-[-0.18px] mb-3">
+          <h3 className="mb-3 text-lg leading-[1.33] font-medium tracking-[-0.18px] text-text-primary">
             Предпросмотр заявки
           </h3>
           <LoadCard load={previewLoad} />
         </div>
       </aside>
-    </div >
+    </div>
   );
 }
 

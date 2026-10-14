@@ -6,10 +6,7 @@ export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
   const section = (params.get("section") ?? "").trim();
   const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
-  const limit = Math.min(
-    50,
-    Math.max(1, parseInt(params.get("limit") ?? "10", 10) || 10)
-  );
+  const limit = Math.min(50, Math.max(1, parseInt(params.get("limit") ?? "10", 10) || 10));
   try {
     const result = await getSectionPage(section, page, limit);
     if (!result) {
@@ -17,10 +14,7 @@ export async function GET(request: Request) {
     }
     return NextResponse.json(result);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить темы" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить темы" }, { status: 500 });
   }
 }
 
@@ -34,8 +28,7 @@ export async function POST(request: Request) {
     const thread = await createThread(raw, currentUser);
     return NextResponse.json(thread, { status: 201 });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Некорректные данные";
+    const message = error instanceof Error ? error.message : "Некорректные данные";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

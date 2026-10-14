@@ -48,24 +48,21 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto mt-8 mb-14 p-9 bg-bg-surface border border-border rounded-[20px] max-[640px]:mt-6 max-[640px]:mx-4 max-[640px]:mb-10 max-[640px]:py-6 max-[640px]:px-4">
-      <div className="flex items-center gap-4 pb-7 mb-7 border-b border-border max-[640px]:gap-3 max-[640px]:pb-5 max-[640px]:mb-5">
-        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[22px] font-medium text-text-inverse tracking-[-0.5px] shrink-0 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:text-[19px]">
+    <div className="mx-auto mt-8 mb-14 w-full max-w-[720px] rounded-[20px] border border-border bg-bg-surface p-9 max-[640px]:mx-4 max-[640px]:mt-6 max-[640px]:mb-10 max-[640px]:px-4 max-[640px]:py-6">
+      <div className="mb-7 flex items-center gap-4 border-b border-border pb-7 max-[640px]:mb-5 max-[640px]:gap-3 max-[640px]:pb-5">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--color-accent),color-mix(in_srgb,var(--color-accent)_70%,#fff))] text-[22px] font-medium tracking-[-0.5px] text-text-inverse max-[640px]:h-12 max-[640px]:w-12 max-[640px]:text-[19px]">
           {getInitials(user.name)}
         </div>
         <div>
-          <div className="text-lg font-medium text-text-primary tracking-[-0.18px]">
+          <div className="text-lg font-medium tracking-[-0.18px] text-text-primary">
             {user.name || "—"}
           </div>
-          <div className="flex items-center gap-2.5 mt-1 flex-wrap">
-            <span className="text-sm text-text-secondary tracking-[-0.14px]">
+          <div className="mt-1 flex flex-wrap items-center gap-2.5">
+            <span className="text-sm tracking-[-0.14px] text-text-secondary">
               {user.companyName || "—"}
             </span>
-            <span className="inline-flex items-center h-6 px-3 rounded-pill bg-bg-subtle text-[13px] font-medium text-accent tracking-[-0.13px] whitespace-nowrap">
-              <span
-                aria-hidden="true"
-                className="w-1.5 h-1.5 rounded-full bg-accent mr-2"
-              ></span>
+            <span className="inline-flex h-6 items-center rounded-pill bg-bg-subtle px-3 text-[13px] font-medium tracking-[-0.13px] whitespace-nowrap text-accent">
+              <span aria-hidden="true" className="mr-2 h-1.5 w-1.5 rounded-full bg-accent"></span>
               Перевозчик
             </span>
           </div>
@@ -74,7 +71,7 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-x-5 gap-y-5 max-[640px]:grid-cols-1 max-[640px]:gap-y-4">
-          <div className="flex flex-col gap-[6px] min-w-0">
+          <div className="flex min-w-0 flex-col gap-[6px]">
             <label className={fieldLabelClass} htmlFor="field-name">
               Имя
             </label>
@@ -87,7 +84,7 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
               autoComplete="name"
             />
           </div>
-          <div className="flex flex-col gap-[6px] min-w-0">
+          <div className="flex min-w-0 flex-col gap-[6px]">
             <label className={fieldLabelClass} htmlFor="field-company">
               Название компании
             </label>
@@ -100,7 +97,7 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
               autoComplete="organization"
             />
           </div>
-          <div className="flex flex-col gap-[6px] min-w-0 col-span-2 max-[640px]:col-span-1">
+          <div className="col-span-2 flex min-w-0 flex-col gap-[6px] max-[640px]:col-span-1">
             <label className={fieldLabelClass} htmlFor="field-email">
               Электронная почта
             </label>
@@ -116,24 +113,24 @@ export function EditProfileForm({ user }: EditProfileFormProps) {
         </div>
 
         {error ? (
-          <p className="text-sm text-center text-danger tracking-[-0.14px] mt-6 max-[640px]:mt-5">
+          <p className="mt-6 text-center text-sm tracking-[-0.14px] text-danger max-[640px]:mt-5">
             {error}
           </p>
         ) : null}
 
-        <div className="flex justify-end gap-3 mt-7 pt-6 border-t border-border max-[640px]:flex-col-reverse max-[640px]:gap-2.5">
+        <div className="mt-7 flex justify-end gap-3 border-t border-border pt-6 max-[640px]:flex-col-reverse max-[640px]:gap-2.5">
           <Link
             href="/profile"
             role="button"
             title="Отмена"
-            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-bg-subtle text-base font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover max-[640px]:w-full"
+            className="inline-flex h-12 min-w-[160px] items-center justify-center rounded-pill bg-bg-subtle px-[21.28px] text-base font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover max-[640px]:w-full"
           >
             Отмена
           </Link>
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="inline-flex items-center justify-center h-12 min-w-[160px] px-[21.28px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed max-[640px]:w-full"
+            className="inline-flex h-12 min-w-[160px] items-center justify-center rounded-pill bg-accent px-[21.28px] text-base font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60 max-[640px]:w-full"
           >
             {mutation.isPending ? "Сохранение…" : "Сохранить"}
           </button>

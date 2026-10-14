@@ -18,7 +18,7 @@ const forumPostSchema = new Schema<ForumPostFields>(
     authorName: { type: String, required: true },
     text: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 forumPostSchema.index({ threadId: 1, createdAt: 1 });

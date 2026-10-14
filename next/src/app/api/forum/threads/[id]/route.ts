@@ -14,9 +14,6 @@ export async function GET(_request: Request, { params }: RouteContext) {
     }
     return NextResponse.json(thread);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить тему" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить тему" }, { status: 500 });
   }
 }

@@ -12,11 +12,7 @@ export function RegisterForm() {
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: async (payload: {
-      phone: string;
-      password: string;
-      passwordConfirm: string;
-    }) => {
+    mutationFn: async (payload: { phone: string; password: string; passwordConfirm: string }) => {
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,7 +120,7 @@ export function RegisterForm() {
       <button
         type="submit"
         disabled={mutation.isPending}
-        className="mt-2 flex h-12 items-center justify-center gap-[6px] whitespace-nowrap rounded-pill bg-accent px-[21.28px] text-base font-medium leading-none tracking-[-0.16px] text-text-inverse transition-colors duration-150 hover:bg-accent-hover active:bg-accent-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:bg-disabled disabled:text-text-inverse/80"
+        className="mt-2 flex h-12 items-center justify-center gap-[6px] rounded-pill bg-accent px-[21.28px] text-base leading-none font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:bg-accent-active disabled:cursor-not-allowed disabled:bg-disabled disabled:text-text-inverse/80"
       >
         {mutation.isPending ? "Регистрация…" : "Зарегистрироваться"}
       </button>

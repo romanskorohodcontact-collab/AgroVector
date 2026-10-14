@@ -20,7 +20,7 @@ export function ChipGroup({
   return (
     <div className="flex flex-col gap-1.5">
       {hideLabel ? null : (
-        <span className="mb-1.5 block text-[13px] font-medium text-text-muted tracking-[-0.13px]">
+        <span className="mb-1.5 block text-[13px] font-medium tracking-[-0.13px] text-text-muted">
           {label}
           {required ? " *" : ""}
         </span>
@@ -33,7 +33,7 @@ export function ChipGroup({
               key={opt}
               type="button"
               onClick={() => onToggle(opt)}
-              className={`inline-flex items-center px-[10px] py-[5px] rounded-pill text-[12px] whitespace-nowrap transition-colors duration-150 ${
+              className={`inline-flex items-center rounded-pill px-[10px] py-[5px] text-[12px] whitespace-nowrap transition-colors duration-150 ${
                 active
                   ? "bg-accent text-text-inverse"
                   : "bg-bg-subtle text-text-secondary hover:bg-bg-hover"

@@ -77,8 +77,9 @@ export async function getLoadsByIds(ids: string[]): Promise<Load[]> {
     })
     .filter((value): value is Types.ObjectId => value !== null);
   if (objectIds.length === 0) return [];
-  const docs = (await LoadModel.find({ _id: { $in: objectIds } })
-    .lean()) as unknown as LoadRecord[];
+  const docs = (await LoadModel.find({
+    _id: { $in: objectIds },
+  }).lean()) as unknown as LoadRecord[];
   return docs.map(toLoad);
 }
 
@@ -104,10 +105,7 @@ export async function listLoadsByUser(userId: string): Promise<Load[]> {
   return docs.map(toLoad);
 }
 
-export async function getOwnLoad(
-  id: string,
-  userId: string
-): Promise<Load | null> {
+export async function getOwnLoad(id: string, userId: string): Promise<Load | null> {
   await connectDb();
   const doc = await LoadModel.findOne({
     _id: toObjectId(id),
@@ -119,13 +117,13 @@ export async function getOwnLoad(
 export async function updateOwnLoad(
   id: string,
   userId: string,
-  data: LoadInputData
+  data: LoadInputData,
 ): Promise<Load | null> {
   await connectDb();
   const doc = await LoadModel.findOneAndUpdate(
     { _id: toObjectId(id), userId: toObjectId(userId) },
     { $set: data },
-    { new: true }
+    { new: true },
   ).lean();
   return doc ? toLoad(doc as unknown as LoadRecord) : null;
 }
@@ -134,29 +132,22 @@ export async function searchLoads(
   filters: LoadFilters,
   page: number,
   limit: number,
-  sort: LoadSort = DEFAULT_LOAD_SORT
+  sort: LoadSort = DEFAULT_LOAD_SORT,
 ): Promise<LoadSearchResult> {
   await connectDb();
   const query = buildLoadQuery(filters);
-  const [
-    total,
-    itemDocs,
-    mapDocs,
-    loadingPlaces,
-    unloadingPlaces,
-    cargoValues,
-    companyNames,
-  ] = await Promise.all([
-    LoadModel.countDocuments(query),
-    fetchSortedItems(query, sort, page, limit),
-    LoadModel.find(query)
-      .select({ _id: 1, loadingLocation: 1, cargo: 1, unloadingPlace: 1 })
-      .lean(),
-    LoadModel.distinct("loadingPlace"),
-    LoadModel.distinct("unloadingPlace"),
-    LoadModel.distinct("cargo"),
-    LoadModel.distinct("companyName"),
-  ]);
+  const [total, itemDocs, mapDocs, loadingPlaces, unloadingPlaces, cargoValues, companyNames] =
+    await Promise.all([
+      LoadModel.countDocuments(query),
+      fetchSortedItems(query, sort, page, limit),
+      LoadModel.find(query)
+        .select({ _id: 1, loadingLocation: 1, cargo: 1, unloadingPlace: 1 })
+        .lean(),
+      LoadModel.distinct("loadingPlace"),
+      LoadModel.distinct("unloadingPlace"),
+      LoadModel.distinct("cargo"),
+      LoadModel.distinct("companyName"),
+    ]);
 
   return {
     items: (itemDocs as unknown as LoadRecord[]).map(toLoad),
@@ -173,8 +164,7 @@ export async function searchLoads(
 
 function buildLoadQuery(filters: LoadFilters): QueryFilter<LoadFields> {
   const query: QueryFilter<LoadFields> = {};
-  const text = (value?: string): string | undefined =>
-    value ? escapeRegex(value) : undefined;
+  const text = (value?: string): string | undefined => (value ? escapeRegex(value) : undefined);
   if (text(filters.loadingPlace)) {
     query.loadingPlace = { $regex: text(filters.loadingPlace), $options: "i" };
   }
@@ -244,7 +234,7 @@ const SORT_FIELDS: Record<Exclude<LoadSortField, "ratePerKm">, string> = {
 
 function toSortQuery(
   field: Exclude<LoadSortField, "ratePerKm">,
-  dir: SortDirection
+  dir: SortDirection,
 ): Record<string, 1 | -1> {
   return { [SORT_FIELDS[field]]: dir === "asc" ? 1 : -1 };
 }
@@ -253,7 +243,7 @@ async function fetchSortedItems(
   query: QueryFilter<LoadFields>,
   sort: LoadSort,
   page: number,
-  limit: number
+  limit: number,
 ): Promise<LoadRecord[]> {
   if (sort.field === "ratePerKm") {
     const pipeline = [

@@ -15,15 +15,10 @@ export interface ProfileInput {
 }
 
 export function validateRegisterInput(raw: unknown): RegisterInput {
-  const data = isRecord(raw)
-    ? raw
-    : ({} as Record<string, unknown>);
+  const data = isRecord(raw) ? raw : ({} as Record<string, unknown>);
   const phone = normalizePhone(data.phone);
   const password = requiredString(data.password, "Пароль");
-  const passwordConfirm = requiredString(
-    data.passwordConfirm,
-    "Повтор пароля"
-  );
+  const passwordConfirm = requiredString(data.passwordConfirm, "Повтор пароля");
   if (password.length < 6) {
     throw new Error("Пароль должен содержать не менее 6 символов");
   }
@@ -34,9 +29,7 @@ export function validateRegisterInput(raw: unknown): RegisterInput {
 }
 
 export function validateLoginInput(raw: unknown): LoginInput {
-  const data = isRecord(raw)
-    ? raw
-    : ({} as Record<string, unknown>);
+  const data = isRecord(raw) ? raw : ({} as Record<string, unknown>);
   return {
     phone: normalizePhone(data.phone),
     password: requiredString(data.password, "Пароль"),
@@ -79,9 +72,7 @@ function normalizePhone(value: unknown): string {
   const raw = requiredString(value, "Телефон");
   const digits = raw.replace(/[^\d]/g, "");
   if (digits.length < 11 || digits.length > 15) {
-    throw new Error(
-      "Телефон должен содержать от 11 до 15 цифр (например, +7 900 000-00-01)"
-    );
+    throw new Error("Телефон должен содержать от 11 до 15 цифр (например, +7 900 000-00-01)");
   }
   if (digits.length === 11 && digits.startsWith("8")) {
     return "7" + digits.slice(1);

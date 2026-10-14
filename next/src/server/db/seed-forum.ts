@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 import { ForumThreadModel } from "./models/forum-thread";
 import { ForumPostModel } from "./models/forum-post";
 
-const MONGODB_URI =
-  process.env.DATABASE_URL ?? "mongodb://127.0.0.1:27017/agrorunok";
+const MONGODB_URI = process.env.DATABASE_URL ?? "mongodb://127.0.0.1:27017/agrorunok";
 
 interface SeedPost {
   authorName: string;
@@ -185,10 +184,7 @@ async function seed() {
         repliesCount: seedThread.posts.length,
         lastActivityAt,
       });
-      await ForumThreadModel.updateOne(
-        { _id: thread._id },
-        { $set: { createdAt } }
-      );
+      await ForumThreadModel.updateOne({ _id: thread._id }, { $set: { createdAt } });
 
       for (const seedPost of seedThread.posts) {
         const post = await ForumPostModel.create({
@@ -199,7 +195,7 @@ async function seed() {
         });
         await ForumPostModel.updateOne(
           { _id: post._id },
-          { $set: { createdAt: new Date(seedPost.at) } }
+          { $set: { createdAt: new Date(seedPost.at) } },
         );
       }
     }

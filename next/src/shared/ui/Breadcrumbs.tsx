@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items, current }: BreadcrumbsProps) {
   return (
-    <nav className="flex items-center gap-2 flex-wrap" aria-label="Хлебные крошки">
+    <nav className="flex flex-wrap items-center gap-2" aria-label="Хлебные крошки">
       {items.map((item) => (
         <Fragment key={item.href}>
           <Link
@@ -22,10 +22,12 @@ export function Breadcrumbs({ items, current }: BreadcrumbsProps) {
           >
             {item.label}
           </Link>
-          <span className="text-sm text-text-muted" aria-hidden="true">/</span>
+          <span className="text-sm text-text-muted" aria-hidden="true">
+            /
+          </span>
         </Fragment>
       ))}
-      <span className="text-sm leading-[1.43] tracking-[-0.14px] text-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+      <span className="overflow-hidden text-sm leading-[1.43] tracking-[-0.14px] text-ellipsis whitespace-nowrap text-text-primary">
         {current}
       </span>
     </nav>

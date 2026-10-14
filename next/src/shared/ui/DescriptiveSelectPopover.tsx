@@ -31,12 +31,11 @@ export function DescriptiveSelectPopover({
   onOpenChange,
   onReset,
 }: DescriptiveSelectPopoverProps) {
-  const { open, setOpen, toggle, anchorRef, panelRef, placement } =
-    useAnchoredPopover({
-      panelMaxHeight: 320,
-      open: controlledOpen,
-      onOpenChange,
-    });
+  const { open, setOpen, toggle, anchorRef, panelRef, placement } = useAnchoredPopover({
+    panelMaxHeight: 320,
+    open: controlledOpen,
+    onOpenChange,
+  });
 
   function select(item: string) {
     onChange(item);
@@ -46,7 +45,7 @@ export function DescriptiveSelectPopover({
   return (
     <div
       ref={anchorRef}
-      className={`flex flex-col w-full min-w-0 gap-0 ${open ? "relative z-50" : "relative"}`}
+      className={`flex w-full min-w-0 flex-col gap-0 ${open ? "relative z-50" : "relative"}`}
     >
       {!hideLabel && <span className={FIELD_LABEL}>{label}</span>}
 
@@ -58,16 +57,11 @@ export function DescriptiveSelectPopover({
         aria-haspopup="dialog"
         className={FORM_FILTER_TRIGGER}
       >
-
-        <div className="flex justify-between items-center gap-2 w-full min-w-0">
+        <div className="flex w-full min-w-0 items-center justify-between gap-2">
           {value ? (
-            <span className="truncate text-text-primary">
-              {value}
-            </span>
+            <span className="truncate text-text-primary">{value}</span>
           ) : (
-            <span className="truncate text-icon-subtle">
-              {placeholder}
-            </span>
+            <span className="truncate text-icon-subtle">{placeholder}</span>
           )}
           <svg
             width="16"
@@ -78,8 +72,9 @@ export function DescriptiveSelectPopover({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`w-4 h-4 shrink-0 text-icon transition-transform duration-150 ${open ? "rotate-180" : ""
-              }`}
+            className={`h-4 w-4 shrink-0 text-icon transition-transform duration-150 ${
+              open ? "rotate-180" : ""
+            }`}
           >
             <path d="m4 6 4 4 4-4" />
           </svg>
@@ -103,7 +98,7 @@ export function DescriptiveSelectPopover({
           >
             <div
               role="radiogroup"
-              className="bg-bg-surface rounded-2xl max-h-[320px] overflow-y-auto py-2"
+              className="max-h-[320px] overflow-y-auto rounded-2xl bg-bg-surface py-2"
             >
               {options.map((item) => (
                 <button
@@ -112,14 +107,15 @@ export function DescriptiveSelectPopover({
                   role="radio"
                   aria-checked={value === item}
                   onClick={() => select(item)}
-                  className={`w-full text-left px-4 py-2.5 cursor-pointer transition-colors duration-150 hover:bg-bg-subtle ${value === item ? "bg-bg-subtle" : ""
-                    }`}
+                  className={`w-full cursor-pointer px-4 py-2.5 text-left transition-colors duration-150 hover:bg-bg-subtle ${
+                    value === item ? "bg-bg-subtle" : ""
+                  }`}
                 >
-                  <span className="block text-[14px] font-medium text-text-primary tracking-[-0.14px]">
+                  <span className="block text-[14px] font-medium tracking-[-0.14px] text-text-primary">
                     {item}
                   </span>
                   {descriptions[item] ? (
-                    <span className="block mt-0.5 text-[12px] leading-[1.4] text-text-muted tracking-[-0.12px]">
+                    <span className="mt-0.5 block text-[12px] leading-[1.4] tracking-[-0.12px] text-text-muted">
                       {descriptions[item]}
                     </span>
                   ) : null}

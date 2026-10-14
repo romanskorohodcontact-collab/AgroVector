@@ -29,7 +29,7 @@ const forumThreadSchema = new Schema<ForumThreadFields>(
     repliesCount: { type: Number, default: 0 },
     lastActivityAt: { type: Date, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 forumThreadSchema.index({ section: 1, isPinned: -1, lastActivityAt: -1 });

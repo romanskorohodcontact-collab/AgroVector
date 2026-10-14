@@ -29,31 +29,31 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
   const loadingDateLabel =
     loadingDate && !Number.isNaN(loadingDate.getTime())
       ? loadingDate.toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
       : "—";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 max-[900px]:items-start max-[900px]:p-4 max-[560px]:p-3">
       <div className="absolute inset-0 bg-bg-overlay" onClick={onClose} aria-hidden="true" />
 
-      <div className="relative w-full max-w-[1000px] h-[80vh] bg-bg-surface border border-border rounded-[24px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.2)] grid grid-cols-2 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:max-h-[80vh]">
-        <div className="min-h-0 max-[900px]:h-[220px] max-[900px]:order-first bg-bg-subtle">
+      <div className="relative grid h-[80vh] w-full max-w-[1000px] grid-cols-2 overflow-hidden rounded-[24px] border border-border bg-bg-surface shadow-[0_24px_60px_rgba(0,0,0,0.2)] max-[900px]:h-auto max-[900px]:max-h-[80vh] max-[900px]:grid-cols-1">
+        <div className="min-h-0 bg-bg-subtle max-[900px]:order-first max-[900px]:h-[220px]">
           <LoadDetailMap location={load.loadingLocation} className="h-full w-full" />
         </div>
 
-        <div className="min-h-0 overflow-y-auto overscroll-contain p-8 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
+        <div className="min-h-0 [scrollbar-width:thin] [scrollbar-color:var(--color-border)_transparent] overflow-y-auto overscroll-contain p-8 max-[900px]:overflow-visible max-[900px]:p-6 max-[560px]:px-4 max-[560px]:py-5">
           <div className="flex items-start justify-between gap-5">
             <div className="min-w-0">
               {/*<span className="block mb-1.5 text-xs text-text-muted whitespace-nowrap">
                 № {load.id}
               </span>*/}
-              <h1 className="text-[20px] font-medium leading-[1.25] text-text-primary tracking-[-0.7px]">
+              <h1 className="text-[20px] leading-[1.25] font-medium tracking-[-0.7px] text-text-primary">
                 {load.cargo}
               </h1>
-              <p className="mt-1 text-sm text-text-secondary leading-[1.43] tracking-[-0.14px]">
+              <p className="mt-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
                 Груз на перевозку
               </p>
               {/*<div className="flex flex-wrap gap-2 mt-3">
@@ -84,68 +84,54 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
             </div>*/}
           </div>
 
-
-
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 p-[14px] rounded-2xl bg-bg-subtle mt-5 max-[560px]:grid-cols-1 max-[560px]:gap-2">
-            <div className="flex flex-col h-full gap-0.5 min-w-0">
-              <span className="text-xs text-text-muted tracking-[-0.12px]">
-                Погрузка
-              </span>
+          <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-2xl bg-bg-subtle p-[14px] max-[560px]:grid-cols-1 max-[560px]:gap-2">
+            <div className="flex h-full min-w-0 flex-col gap-0.5">
+              <span className="text-xs tracking-[-0.12px] text-text-muted">Погрузка</span>
               {/*<strong className="text-base font-semibold text-text-primary tracking-[-0.16px] whitespace-nowrap overflow-hidden text-ellipsis">
                 {load.loadingPlace}
               </strong>*/}
               <div className="flex flex-col">
-                <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
+                <span className="mt-1 overflow-hidden text-sm leading-[1.4] font-medium tracking-[-0.14px] text-ellipsis whitespace-nowrap text-text-primary tabular-nums">
                   {load.loadingRegion?.join(", ")}
                 </span>
-                <span
-                  className="text-xs text-text-muted whitespace-nowrap"
-                > {load.loadingPlace}</span>
+                <span className="text-xs whitespace-nowrap text-text-muted">
+                  {" "}
+                  {load.loadingPlace}
+                </span>
               </div>
             </div>
             <span
               aria-hidden="true"
-              className="flex items-center text-text-muted max-[560px]:justify-start max-[560px]:rotate-90"
+              className="flex items-center text-text-muted max-[560px]:rotate-90 max-[560px]:justify-start"
             >
               <RouteArrowIcon />
             </span>
-            <div className="flex flex-col gap-0.5 min-w-0 h-full items-end text-right max-[560px]:items-start max-[560px]:text-left">
-              <span className="text-xs text-text-muted tracking-[-0.12px]">
-                Выгрузка
-              </span>
+            <div className="flex h-full min-w-0 flex-col items-end gap-0.5 text-right max-[560px]:items-start max-[560px]:text-left">
+              <span className="text-xs tracking-[-0.12px] text-text-muted">Выгрузка</span>
               {/*<strong className="text-base font-semibold text-text-primary tracking-[-0.16px] whitespace-nowrap overflow-hidden text-ellipsis">
                 {load.unloadingPlace}
               </strong>*/}
               <div className="flex flex-col">
-                <span className="mt-1 text-sm font-medium tracking-[-0.14px] leading-[1.4] text-text-primary whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
+                <span className="mt-1 overflow-hidden text-sm leading-[1.4] font-medium tracking-[-0.14px] text-ellipsis whitespace-nowrap text-text-primary tabular-nums">
                   {load.unloadingRegion?.join(", ")}
                 </span>
-                <span
-                  className="text-xs text-text-muted whitespace-nowrap"
-                >
-                  {load.unloadingPlace}</span>
+                <span className="text-xs whitespace-nowrap text-text-muted">
+                  {load.unloadingPlace}
+                </span>
               </div>
             </div>
           </div>
 
-
           <div className="mt-4">
             <div className="border-b border-border" />
 
-            <DtcRow label="Тоннаж" value={`${load.tonnage.tonnageWeight} ${load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}`} />
             <DtcRow
-              label="Километраж"
-              value={`${load.distance.toLocaleString("ru-RU")} км`}
+              label="Тоннаж"
+              value={`${load.tonnage.tonnageWeight} ${load.tonnage.tonnageUnit === "ton" ? "т" : "кг"}`}
             />
-            <DtcRow
-              label="Ставка за км"
-              value={`${load.ratePerKm.toFixed(2)} ₽/км`}
-              accent
-            />
-            <DtcRow
-              label="Ставка за рейс"
-              value={`${load.rate.toLocaleString("ru-RU")} ₽`}
-            />
+            <DtcRow label="Километраж" value={`${load.distance.toLocaleString("ru-RU")} км`} />
+            <DtcRow label="Ставка за км" value={`${load.ratePerKm.toFixed(2)} ₽/км`} accent />
+            <DtcRow label="Ставка за рейс" value={`${load.rate.toLocaleString("ru-RU")} ₽`} />
             {/*<<<<<<< HEAD
             <DtcRow label="НДС" value={load.vatType} />
 =======*/}
@@ -167,25 +153,16 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
 
             <div className="border-b border-border" />
 
-            <DtcRow
-              label="Тип груза"
-              value={load.cargoTypes?.join(", ") || "—"}
-            />
+            <DtcRow label="Тип груза" value={load.cargoTypes?.join(", ") || "—"} />
             {/*<<<<<<< HEAD
             <DtcRow label="Тип кузова" value={load.bodyType || "—"} />
             <DtcRow label="Компания" value={load.companyName} />
 =======*/}
-            <DtcRow
-              label="Тип загрузки груза"
-              value={load.cargoForm || "—"}
-            />
+            <DtcRow label="Тип загрузки груза" value={load.cargoForm || "—"} />
             <DtcRow label="Тип кузова" value={load.bodyType.join(", ") || "—"} />
             <DtcRow label="Компания" value={load.companyName || "—"} />
             {/*>>>>>>> feature/debug*/}
-            <DtcRow
-              label="Дата погрузки"
-              value={loadingDateLabel}
-            />
+            <DtcRow label="Дата погрузки" value={loadingDateLabel} />
 
             <div className="border-b border-border" />
             {/*<DtcRow
@@ -225,20 +202,14 @@ export function LoadDetailWindow({ load, onClose }: LoadDetailWindowProps) {
               <DtcRow key={prop.name} label={prop.name} value={prop.value} />
             ))}*/}
 
-            <DtcRow
-              label="Доп. информация"
-              value={load.additionalInfo || "—"}
-              block
-            />
-            <div className="flex justify-between items-start gap-4 mt-2">
-              <span className="text-xs text-text-muted whitespace-nowrap">
-                Контакты
-              </span>
-              <span className="flex flex-col items-end text-sm text-text-secondary tracking-[-0.14px]">
+            <DtcRow label="Доп. информация" value={load.additionalInfo || "—"} block />
+            <div className="mt-2 flex items-start justify-between gap-4">
+              <span className="text-xs whitespace-nowrap text-text-muted">Контакты</span>
+              <span className="flex flex-col items-end text-sm tracking-[-0.14px] text-text-secondary">
                 <span>{load.customerName}</span>
                 <a
                   href={`tel:${load.customerPhone}`}
-                  className="text-base font-medium text-text-primary tracking-[-0.16px] tabular-nums no-underline transition-colors duration-150 hover:text-accent"
+                  className="text-base font-medium tracking-[-0.16px] text-text-primary tabular-nums no-underline transition-colors duration-150 hover:text-accent"
                 >
                   {load.customerPhone}
                 </a>
@@ -255,7 +226,7 @@ interface DtcRowProps {
   label: string;
   value: string;
   block?: boolean;
-  accent?: boolean
+  accent?: boolean;
 }
 
 function DtcRow({ label, value, block = false, accent = false }: DtcRowProps) {
@@ -266,15 +237,18 @@ function DtcRow({ label, value, block = false, accent = false }: DtcRowProps) {
         (block ? "flex-col items-start gap-1" : "gap-4")
       }
     >
-      <span className="text-xs text-text-muted whitespace-nowrap">
-        {label}
-      </span>
+      <span className="text-xs whitespace-nowrap text-text-muted">{label}</span>
       {block ? (
-        <span className="text-sm text-text-secondary leading-[1.5] tracking-[-0.14px]">
+        <span className="text-sm leading-[1.5] tracking-[-0.14px] text-text-secondary">
           {value}
         </span>
       ) : (
-        <span className={"text-base font-medium tracking-[-0.16px] text-right tabular-nums " + (accent ? "text-accent" : "text-text-primary")}>
+        <span
+          className={
+            "text-right text-base font-medium tracking-[-0.16px] tabular-nums " +
+            (accent ? "text-accent" : "text-text-primary")
+          }
+        >
           {value}
         </span>
       )}

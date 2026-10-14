@@ -1,7 +1,4 @@
-import {
-  MAP_CLUSTER_SIZE,
-  MAP_MARKER_SHADOW_ALPHA,
-} from "@/features/map/markerIcons";
+import { MAP_CLUSTER_SIZE, MAP_MARKER_SHADOW_ALPHA } from "@/features/map/markerIcons";
 import type { YmapsApi } from "@/features/map/loadYmaps";
 
 interface ClusterLike {

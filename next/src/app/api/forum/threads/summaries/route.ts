@@ -6,9 +6,6 @@ export async function GET() {
     const summaries = await getThreadSummaries();
     return NextResponse.json(summaries);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить темы" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить темы" }, { status: 500 });
   }
 }

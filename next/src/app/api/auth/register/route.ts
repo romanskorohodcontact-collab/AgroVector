@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { registerUser } from "@/server/modules/auth";
-import {
-  SESSION_COOKIE,
-  sessionCookieOptions,
-} from "@/server/services/session";
+import { SESSION_COOKIE, sessionCookieOptions } from "@/server/services/session";
 
 export async function POST(request: Request) {
   const raw = await request.json().catch(() => null);

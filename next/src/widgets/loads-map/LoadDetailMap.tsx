@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { GeoPoint } from "@/entities/load/model";
-import {
-  loadYmaps,
-  toYandexCoords,
-  type YmapsApi,
-  type YmapsMap,
-} from "@/features/map/loadYmaps";
+import { loadYmaps, toYandexCoords, type YmapsApi, type YmapsMap } from "@/features/map/loadYmaps";
 import { LOAD_MARKER_OPTIONS } from "@/features/map/markerIcons";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
@@ -45,9 +40,7 @@ export function LoadDetailMap({ location, className }: LoadDetailMapProps) {
           controls: [],
         });
         if (point) {
-          map.geoObjects.add(
-            new ymaps.Placemark(toYandexCoords(point), LOAD_MARKER_OPTIONS)
-          );
+          map.geoObjects.add(new ymaps.Placemark(toYandexCoords(point), LOAD_MARKER_OPTIONS));
         }
         mapRef.current = map;
         setStatus("ready");

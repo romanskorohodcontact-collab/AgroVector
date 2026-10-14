@@ -73,11 +73,10 @@ const loadSchema = new Schema<LoadFields>(
       default: [],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 loadSchema.index({ userId: 1, createdAt: -1 });
 
 export const LoadModel: Model<LoadFields> =
-  (models.Load as Model<LoadFields>) ||
-  model<LoadFields>("Load", loadSchema);
+  (models.Load as Model<LoadFields>) || model<LoadFields>("Load", loadSchema);

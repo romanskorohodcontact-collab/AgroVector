@@ -8,10 +8,7 @@ interface Props {
 export default async function ForumSearchPage({ searchParams }: Props) {
   const { q, type, page } = await searchParams;
   const query = (q ?? "").trim();
-  const searchType: ForumSearchType =
-    type === "threads" || type === "sections" ? type : "all";
+  const searchType: ForumSearchType = type === "threads" || type === "sections" ? type : "all";
   const pageNumber = Math.max(1, parseInt(page ?? "1", 10) || 1);
-  return (
-    <ForumSearchScreen query={query} type={searchType} page={pageNumber} />
-  );
+  return <ForumSearchScreen query={query} type={searchType} page={pageNumber} />;
 }

@@ -8,27 +8,27 @@ interface LoadsListProps {
 
 export function LoadsList({ loads }: LoadsListProps) {
   return (
-    <section className="py-[88px] bg-bg-subtle max-md:py-16">
+    <section className="bg-bg-subtle py-[88px] max-md:py-16">
       <div className="container-app">
-        <div className="flex items-end justify-between gap-6 mb-8 max-md:flex-col max-md:items-start">
+        <div className="mb-8 flex items-end justify-between gap-6 max-md:flex-col max-md:items-start">
           <div className="max-w-[560px]">
-            <h2 className="text-[18px] font-semibold leading-[1.33] tracking-[-0.18px] text-text-primary">
+            <h2 className="text-[18px] leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
               Заявки на перевозку грузов
             </h2>
-            <p className="mt-1 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+            <p className="mt-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
               Актуальные предложения от грузоотправителей
             </p>
           </div>
           <Link
             href="/search?type=load"
-            className="shrink-0 pb-1 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px] hover:text-text-primary"
+            className="shrink-0 pb-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary hover:text-text-primary"
           >
             Все заявки
           </Link>
         </div>
 
         {loads.length === 0 ? (
-          <p className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+          <p className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
             Заявок пока нет
           </p>
         ) : (

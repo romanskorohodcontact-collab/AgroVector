@@ -15,7 +15,5 @@ export default async function ForumSectionPage({ params, searchParams }: Props) 
   const { q, page } = await searchParams;
   const query = (q ?? "").trim();
   const pageNumber = Math.max(1, parseInt(page ?? "1", 10) || 1);
-  return (
-    <ForumSectionScreen section={section} query={query} page={pageNumber} />
-  );
+  return <ForumSectionScreen section={section} query={query} page={pageNumber} />;
 }

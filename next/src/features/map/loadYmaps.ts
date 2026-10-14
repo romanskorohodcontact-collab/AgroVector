@@ -49,10 +49,7 @@ export interface YmapsClusterer {
     isShown: boolean;
     isClustered: boolean;
   };
-  createCluster?: (
-    center?: unknown,
-    geoObjects?: YmapsPlacemark[]
-  ) => YmapsCluster;
+  createCluster?: (center?: unknown, geoObjects?: YmapsPlacemark[]) => YmapsCluster;
 }
 
 export interface YmapsMap {
@@ -72,22 +69,19 @@ export interface YmapsMap {
 }
 
 export interface YmapsTemplateLayoutFactory {
-  createClass: (
-    name: string,
-    proto: Record<string, unknown>
-  ) => unknown;
+  createClass: (name: string, proto: Record<string, unknown>) => unknown;
 }
 
 export interface YmapsApi {
   ready: (callback: () => void) => void;
   Map: new (
     element: HTMLElement,
-    state: { center: [number, number]; zoom: number; controls?: unknown[] }
+    state: { center: [number, number]; zoom: number; controls?: unknown[] },
   ) => YmapsMap;
   Placemark: new (
     coordinates: [number, number],
     options?: Record<string, unknown> | YmapsPlacemarkOptions,
-    properties?: Record<string, string>
+    properties?: Record<string, string>,
   ) => YmapsPlacemark;
   Clusterer: new (options?: Record<string, unknown>) => YmapsClusterer;
   templateLayoutFactory: YmapsTemplateLayoutFactory;
@@ -116,11 +110,8 @@ export function loadYmaps(): Promise<YmapsApi> {
         if (api) resolve(api);
         else reject(new Error("Yandex Maps API не загрузилась"));
       };
-      const existingScript = document.querySelector<HTMLScriptElement>(
-        `script[src="${url}"]`
-      );
-      const script: HTMLScriptElement =
-        existingScript ?? document.createElement("script");
+      const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${url}"]`);
+      const script: HTMLScriptElement = existingScript ?? document.createElement("script");
       script.onload = finish;
       script.onerror = () => reject(new Error("script load error"));
       if (!existingScript) {

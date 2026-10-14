@@ -3,26 +3,19 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent, type KeyboardEvent } from "react";
-import {
-  FORUM_SECTIONS,
-  type ForumSectionSlug,
-  type ForumThread,
-} from "@/entities/forum/model";
+import { FORUM_SECTIONS, type ForumSectionSlug, type ForumThread } from "@/entities/forum/model";
 
 interface CreateThreadFormProps {
   initialSection?: ForumSectionSlug;
 }
 
-const FIELD_LABEL =
-  "block mb-1.5 text-[12px] font-medium tracking-[-0.12px] text-text-muted";
+const FIELD_LABEL = "block mb-1.5 text-[12px] font-medium tracking-[-0.12px] text-text-muted";
 const INPUT =
   "h-[58px] border border-outline-input rounded-pill px-4 w-full outline-none text-base leading-[1.5] tracking-[-0.16px] text-text-primary placeholder:text-text-muted bg-bg-surface focus:border-accent";
 
 export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
   const router = useRouter();
-  const [section, setSection] = useState<ForumSectionSlug>(
-    initialSection ?? "discussion"
-  );
+  const [section, setSection] = useState<ForumSectionSlug>(initialSection ?? "discussion");
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -91,10 +84,8 @@ export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
           <select
             id="f-topic-section"
             value={section}
-            onChange={(event) =>
-              setSection(event.target.value as ForumSectionSlug)
-            }
-            className="h-[58px] w-full appearance-none border border-outline-input rounded-pill px-4 pr-10 bg-bg-surface text-base leading-[1.5] tracking-[-0.16px] text-text-secondary outline-none focus:border-accent cursor-pointer"
+            onChange={(event) => setSection(event.target.value as ForumSectionSlug)}
+            className="h-[58px] w-full cursor-pointer appearance-none rounded-pill border border-outline-input bg-bg-surface px-4 pr-10 text-base leading-[1.5] tracking-[-0.16px] text-text-secondary outline-none focus:border-accent"
           >
             {FORUM_SECTIONS.map((item) => (
               <option key={item.slug} value={item.slug}>
@@ -111,7 +102,7 @@ export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-text-muted"
+            className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           >
             <path d="m7 10 5 5 5-5" />
@@ -146,24 +137,22 @@ export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
           rows={5}
           maxLength={5000}
           placeholder="Подробно опишите вопрос или предложение..."
-          className="w-full border border-outline-input rounded-2xl px-4 py-3.5 resize-none outline-none text-base leading-[1.5] tracking-[-0.16px] text-text-primary placeholder:text-text-muted bg-bg-surface focus:border-accent"
+          className="w-full resize-none rounded-2xl border border-outline-input bg-bg-surface px-4 py-3.5 text-base leading-[1.5] tracking-[-0.16px] text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
         />
       </div>
 
       <div className="mb-5">
         <span className={FIELD_LABEL}>Теги</span>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1.5 h-7 px-3 rounded-pill bg-bg-subtle text-[13px] tracking-[-0.13px] text-text-secondary whitespace-nowrap"
+              className="inline-flex h-7 items-center gap-1.5 rounded-pill bg-bg-subtle px-3 text-[13px] tracking-[-0.13px] whitespace-nowrap text-text-secondary"
             >
               {tag}
               <button
                 type="button"
-                onClick={() =>
-                  setTags((prev) => prev.filter((item) => item !== tag))
-                }
+                onClick={() => setTags((prev) => prev.filter((item) => item !== tag))}
                 className="flex cursor-pointer text-text-muted hover:text-text-primary"
                 aria-label={`Удалить тег ${tag}`}
               >
@@ -173,7 +162,7 @@ export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  className="w-3 h-3"
+                  className="h-3 w-3"
                 >
                   <path d="M6 6l12 12M18 6 6 18" />
                 </svg>
@@ -188,29 +177,25 @@ export function CreateThreadForm({ initialSection }: CreateThreadFormProps) {
             onBlur={addTag}
             placeholder="Добавить тег"
             disabled={tags.length >= 5}
-            className="inline-flex h-7 w-[130px] px-3 rounded-pill bg-bg-surface border-[1.2px] border-dashed border-outline text-[13px] tracking-[-0.13px] text-text-primary placeholder:text-text-muted outline-none focus:border-accent disabled:opacity-60"
+            className="inline-flex h-7 w-[130px] rounded-pill border-[1.2px] border-dashed border-outline bg-bg-surface px-3 text-[13px] tracking-[-0.13px] text-text-primary outline-none placeholder:text-text-muted focus:border-accent disabled:opacity-60"
           />
         </div>
       </div>
 
-      {formError && (
-        <p className="mb-4 text-sm tracking-[-0.14px] text-danger">
-          {formError}
-        </p>
-      )}
+      {formError && <p className="mb-4 text-sm tracking-[-0.14px] text-danger">{formError}</p>}
 
-      <div className="flex items-center gap-3 mt-7">
+      <div className="mt-7 flex items-center gap-3">
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="inline-flex items-center justify-center h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
+          className="inline-flex h-12 items-center justify-center rounded-pill bg-accent px-[21px] text-base font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           {mutation.isPending ? "Публикация..." : "Создать тему"}
         </button>
         <button
           type="button"
           onClick={() => router.push("/forum")}
-          className="inline-flex items-center justify-center h-9 px-4 rounded-pill bg-bg-subtle text-sm font-medium text-text-primary tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-bg-hover"
+          className="inline-flex h-9 items-center justify-center rounded-pill bg-bg-subtle px-4 text-sm font-medium tracking-[-0.16px] whitespace-nowrap text-text-primary transition-colors duration-150 hover:bg-bg-hover"
         >
           Отмена
         </button>

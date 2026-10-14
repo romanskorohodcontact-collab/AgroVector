@@ -46,7 +46,7 @@ export function ReplyForm({ threadId }: ReplyFormProps) {
   return (
     <form className="mt-6" onSubmit={handleSubmit}>
       <label
-        className="block mb-1.5 text-[12px] font-medium tracking-[-0.12px] text-text-muted"
+        className="mb-1.5 block text-[12px] font-medium tracking-[-0.12px] text-text-muted"
         htmlFor="forum-reply"
       >
         Написать ответ
@@ -58,18 +58,14 @@ export function ReplyForm({ threadId }: ReplyFormProps) {
         rows={3}
         maxLength={5000}
         placeholder="Текст ответа..."
-        className="w-full border border-outline-input rounded-2xl px-4 py-3.5 resize-none outline-none text-base leading-[1.5] tracking-[-0.16px] text-text-primary placeholder:text-text-muted focus:border-accent"
+        className="w-full resize-none rounded-2xl border border-outline-input px-4 py-3.5 text-base leading-[1.5] tracking-[-0.16px] text-text-primary outline-none placeholder:text-text-muted focus:border-accent"
       />
-      {formError && (
-        <p className="mt-2 text-sm tracking-[-0.14px] text-danger">
-          {formError}
-        </p>
-      )}
-      <div className="flex items-center gap-3 mt-3">
+      {formError && <p className="mt-2 text-sm tracking-[-0.14px] text-danger">{formError}</p>}
+      <div className="mt-3 flex items-center gap-3">
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="inline-flex items-center justify-center h-9 px-4 rounded-pill bg-accent text-sm font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap transition-colors duration-150 hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed"
+          className="inline-flex h-9 items-center justify-center rounded-pill bg-accent px-4 text-sm font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse transition-colors duration-150 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           {mutation.isPending ? "Отправка..." : "Ответить"}
         </button>

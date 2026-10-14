@@ -30,29 +30,27 @@ const FOOTER_LABELS: string[][] = [
   ["О нас", "Контакты", "Поддержка"],
 ];
 
-
-
 export function Footer() {
   return (
-    <footer className="bg-bg-subtle border-t border-border py-16 pb-10 max-md:py-12 max-md:pb-8">
+    <footer className="border-t border-border bg-bg-subtle py-16 pb-10 max-md:py-12 max-md:pb-8">
       <div className="container-app">
         <div className="grid grid-cols-[2fr_repeat(4,1fr)] gap-12 max-lg:grid-cols-2 max-lg:gap-10 max-md:grid-cols-1 max-md:gap-8">
           <div>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-lg font-semibold leading-[1.3] tracking-[-0.18px] text-text-primary"
+              className="inline-flex items-center gap-2 text-lg leading-[1.3] font-semibold tracking-[-0.18px] text-text-primary"
             >
               <FooterBrandIcon />
               AgroRunok
             </Link>
-            <p className="mt-4 max-w-[260px] text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+            <p className="mt-4 max-w-[260px] text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
               Площадка для поиска перевозок и транспорта для аграрного рынка.
             </p>
           </div>
 
           {FOOTER_COLUMNS.map((column, index) => (
             <nav key={column.title} aria-label={column.aria}>
-              <h3 className="mb-5 text-sm font-semibold leading-[1.43] text-text-primary tracking-[-0.14px]">
+              <h3 className="mb-5 text-sm leading-[1.43] font-semibold tracking-[-0.14px] text-text-primary">
                 {column.title}
               </h3>
               <ul className="flex flex-col gap-4">
@@ -63,12 +61,15 @@ export function Footer() {
                       {href === "#" ? (
                         <a
                           href={href}
-                          className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px] hover:text-text-primary"
+                          className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary hover:text-text-primary"
                         >
                           {label}
                         </a>
                       ) : (
-                        <Link href={href} className="text-sm leading-[1.43] text-text-secondary tracking-[-0.14px] hover:text-text-primary">
+                        <Link
+                          href={href}
+                          className="text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary hover:text-text-primary"
+                        >
                           {label}
                         </Link>
                       )}
@@ -80,7 +81,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="flex justify-between gap-4 flex-wrap mt-12 pt-6 border-t border-border">
+        <div className="mt-12 flex flex-wrap justify-between gap-4 border-t border-border pt-6">
           <span className="text-xs leading-[1.5] whitespace-nowrap text-text-muted">
             © 2026 AgroRunok.
           </span>

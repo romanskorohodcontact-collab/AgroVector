@@ -5,11 +5,7 @@ import {
   type TransportSort,
 } from "@/entities/transport/model";
 import { getCurrentUser } from "@/server/modules/auth";
-import {
-  createTransport,
-  getTransportsByIds,
-  searchTransports,
-} from "@/server/modules/transports";
+import { createTransport, getTransportsByIds, searchTransports } from "@/server/modules/transports";
 
 const MAX_IDS = 100;
 
@@ -26,27 +22,18 @@ export async function GET(request: Request) {
       const transports = await getTransportsByIds(ids);
       return NextResponse.json(transports);
     } catch {
-      return NextResponse.json(
-        { error: "Не удалось получить заявки" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Не удалось получить заявки" }, { status: 500 });
     }
   }
   const page = Math.max(1, parseInt(params.get("page") ?? "1", 10) || 1);
-  const limit = Math.min(
-    50,
-    Math.max(1, parseInt(params.get("limit") ?? "10", 10) || 10)
-  );
+  const limit = Math.min(50, Math.max(1, parseInt(params.get("limit") ?? "10", 10) || 10));
   const filters = parseFilters(params);
   const sort = parseSort(params);
   try {
     const result = await searchTransports(filters, page, limit, sort);
     return NextResponse.json(result);
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить заявки" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить заявки" }, { status: 500 });
   }
 }
 

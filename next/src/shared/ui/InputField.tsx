@@ -13,11 +13,7 @@ const LABEL =
 export function InputField({ label, className, ...props }: InputFieldProps) {
   return (
     <label className="relative block w-full">
-      <input
-        {...props}
-        placeholder=" "
-        className={className ? `${INPUT} ${className}` : INPUT}
-      />
+      <input {...props} placeholder=" " className={className ? `${INPUT} ${className}` : INPUT} />
       <span className={LABEL}>{label}</span>
     </label>
   );

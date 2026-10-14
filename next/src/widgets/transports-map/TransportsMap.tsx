@@ -13,10 +13,7 @@ import {
   type YmapsPlacemark,
 } from "@/features/map/loadYmaps";
 import { createClusterLayout } from "@/features/map/clusterLayout";
-import {
-  TRANSPORT_MARKER_FILL,
-  TRANSPORT_MARKER_OPTIONS,
-} from "@/features/map/markerIcons";
+import { TRANSPORT_MARKER_FILL, TRANSPORT_MARKER_OPTIONS } from "@/features/map/markerIcons";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
 const MAP_ZOOM = 5;
@@ -48,9 +45,7 @@ export function TransportsMap({
   onSelectRef.current = onSelect;
   const onClusterChangeRef = useRef(onClusterChange);
   onClusterChangeRef.current = onClusterChange;
-  const placemarkItemsRef = useRef<Map<YmapsPlacemark, TransportMapItem>>(
-    new Map()
-  );
+  const placemarkItemsRef = useRef<Map<YmapsPlacemark, TransportMapItem>>(new Map());
   const activeClusterFilterRef = useRef<string[] | null>(null);
   activeClusterFilterRef.current = activeClusterFilter ?? null;
   const outsiderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -85,8 +80,7 @@ export function TransportsMap({
             onClusterChangeRef.current?.([]);
             return;
           }
-        } catch {
-        }
+        } catch {}
       }
     }
 
@@ -104,10 +98,7 @@ export function TransportsMap({
       for (const item of mapItemsRef.current) {
         if (!item.transportLocation) continue;
         const coords = toYandexCoords(item.transportLocation);
-        const placemark = new ymapsRef.current!.Placemark(
-          coords,
-          TRANSPORT_MARKER_OPTIONS
-        );
+        const placemark = new ymapsRef.current!.Placemark(coords, TRANSPORT_MARKER_OPTIONS);
         placemarkItemsRef.current.set(placemark, item);
         if (onSelectRef.current) {
           placemark.events.add("click", () => onSelectRef.current?.(item));
@@ -152,19 +143,12 @@ export function TransportsMap({
         const prototypeCreateCluster = (
           ymaps.Clusterer as unknown as {
             prototype: {
-              createCluster: (
-                center?: unknown,
-                geoObjects?: YmapsPlacemark[]
-              ) => YmapsCluster;
+              createCluster: (center?: unknown, geoObjects?: YmapsPlacemark[]) => YmapsCluster;
             };
           }
         ).prototype.createCluster;
         clusterer.createCluster = function (center, geoObjects) {
-          const cluster = prototypeCreateCluster.call(
-            this,
-            center,
-            geoObjects
-          );
+          const cluster = prototypeCreateCluster.call(this, center, geoObjects);
           cluster.events.add("click", () => {
             const members = cluster.getGeoObjects();
             const ids: string[] = [];
@@ -174,9 +158,7 @@ export function TransportsMap({
                 if (member === placemark) {
                   ids.push(item.id);
                   if (item.transportLocation) {
-                    coordKeys.add(
-                      `${item.transportLocation.lat},${item.transportLocation.lng}`
-                    );
+                    coordKeys.add(`${item.transportLocation.lat},${item.transportLocation.lng}`);
                   }
                   break;
                 }

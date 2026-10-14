@@ -25,10 +25,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
   try {
     const load = await updateLoad(raw, id, currentUser.id);
     if (!load) {
-      return NextResponse.json(
-        { error: "Заявка не найдена или недоступна" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Заявка не найдена или недоступна" }, { status: 404 });
     }
     return NextResponse.json(load);
   } catch (error) {

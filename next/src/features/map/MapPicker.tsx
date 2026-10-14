@@ -92,13 +92,11 @@ export function MapPicker({ initialLocation, onSelect, className }: MapPickerPro
   return (
     <div>
       <div ref={containerRef} className={className ?? "h-64 w-full border border-border"} />
-      {status === "loading" ? (
-        <p className="mt-2">Загрузка карты…</p>
-      ) : null}
+      {status === "loading" ? <p className="mt-2">Загрузка карты…</p> : null}
       {status === "error" ? (
         <p className="mt-2">
-          Не удалось загрузить карту. Проверьте NEXT_PUBLIC_YANDEX_MAPS_API_KEY:
-          ключ должен быть создан для «JavaScript API» (v2.1).
+          Не удалось загрузить карту. Проверьте NEXT_PUBLIC_YANDEX_MAPS_API_KEY: ключ должен быть
+          создан для «JavaScript API» (v2.1).
         </p>
       ) : null}
       {selected ? (

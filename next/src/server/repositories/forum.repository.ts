@@ -8,14 +8,8 @@ import {
   type ForumThreadSummary,
 } from "@/entities/forum/model";
 import { connectDb } from "@/server/db/connection";
-import {
-  ForumThreadModel,
-  type ForumThreadFields,
-} from "@/server/db/models/forum-thread";
-import {
-  ForumPostModel,
-  type ForumPostFields,
-} from "@/server/db/models/forum-post";
+import { ForumThreadModel, type ForumThreadFields } from "@/server/db/models/forum-thread";
+import { ForumPostModel, type ForumPostFields } from "@/server/db/models/forum-post";
 
 export interface CreateThreadData {
   section: ForumSectionSlug;
@@ -84,12 +78,10 @@ export async function listLatestThreads(limit: number): Promise<ForumThread[]> {
 export async function listAllThreads(
   filter: { section?: ForumSectionSlug } = {},
   page?: number,
-  limit?: number
+  limit?: number,
 ): Promise<{ items: ForumThread[]; total: number }> {
   await connectDb();
-  const query: QueryFilter<ForumThreadFields> = filter.section
-    ? { section: filter.section }
-    : {};
+  const query: QueryFilter<ForumThreadFields> = filter.section ? { section: filter.section } : {};
   const isPaginated = page !== undefined && limit !== undefined;
   const [total, docs] = await Promise.all([
     ForumThreadModel.countDocuments(query),
@@ -110,10 +102,7 @@ export async function listThreadSummaries(): Promise<ForumThreadSummary[]> {
   const docs = (await ForumThreadModel.find()
     .select({ title: 1, section: 1, tags: 1 })
     .sort({ lastActivityAt: -1 })
-    .lean()) as unknown as Pick<
-    ThreadRecord,
-    "_id" | "title" | "section" | "tags"
-  >[];
+    .lean()) as unknown as Pick<ThreadRecord, "_id" | "title" | "section" | "tags">[];
   return docs.map((doc) => ({
     id: doc._id.toString(),
     title: doc.title,
@@ -133,7 +122,7 @@ export async function getThreadById(id: string): Promise<ForumThread | null> {
 export async function listPostsByThread(
   threadId: string,
   page: number,
-  limit: number
+  limit: number,
 ): Promise<{ items: ForumPost[]; total: number }> {
   const objectId = toObjectId(threadId);
   if (!objectId) return { items: [], total: 0 };
@@ -157,15 +146,11 @@ export async function getThreadBody(id: string): Promise<string | null> {
   const objectId = toObjectId(id);
   if (!objectId) return null;
   await connectDb();
-  const doc = await ForumThreadModel.findById(objectId)
-    .select({ body: 1 })
-    .lean();
+  const doc = await ForumThreadModel.findById(objectId).select({ body: 1 }).lean();
   return doc ? (doc.body as string) : null;
 }
 
-export async function createThread(
-  data: CreateThreadData
-): Promise<ForumThread> {
+export async function createThread(data: CreateThreadData): Promise<ForumThread> {
   await connectDb();
   const now = new Date();
   const doc = await ForumThreadModel.create({
@@ -196,7 +181,7 @@ export async function createPost(data: CreatePostData): Promise<ForumPost> {
   });
   await ForumThreadModel.updateOne(
     { _id: threadId },
-    { $inc: { repliesCount: 1 }, $set: { lastActivityAt: new Date() } }
+    { $inc: { repliesCount: 1 }, $set: { lastActivityAt: new Date() } },
   );
   return toPost(doc.toObject() as unknown as PostRecord);
 }
@@ -212,16 +197,13 @@ export async function incrementThreadViews(id: string): Promise<void> {
   const objectId = toObjectId(id);
   if (!objectId) return;
   await connectDb();
-  await ForumThreadModel.updateOne(
-    { _id: objectId },
-    { $inc: { viewsCount: 1 } }
-  );
+  await ForumThreadModel.updateOne({ _id: objectId }, { $inc: { viewsCount: 1 } });
 }
 
 export async function searchThreads(
   query: string,
   page: number,
-  limit: number
+  limit: number,
 ): Promise<{ items: ForumThread[]; total: number }> {
   await connectDb();
   if (!query) return { items: [], total: 0 };

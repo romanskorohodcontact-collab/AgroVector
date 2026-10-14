@@ -11,9 +11,6 @@ export async function GET() {
     const items = await listMyTransports(currentUser.id);
     return NextResponse.json({ items });
   } catch {
-    return NextResponse.json(
-      { error: "Не удалось получить заявки" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Не удалось получить заявки" }, { status: 500 });
   }
 }

@@ -43,21 +43,19 @@ export function SearchPanel() {
 
   function toggleTransportType(item: string) {
     setTransportTypes((prev) =>
-      prev.includes(item) ? prev.filter((x) => x !== item) : [...prev, item]
+      prev.includes(item) ? prev.filter((x) => x !== item) : [...prev, item],
     );
   }
 
   function toggleCargoType(item: string) {
     setCargoTypes((prev) =>
-      prev.includes(item) ? prev.filter((x) => x !== item) : [...prev, item]
+      prev.includes(item) ? prev.filter((x) => x !== item) : [...prev, item],
     );
   }
 
   function toggleRegion(region: string) {
     setWorkRegions((prev) =>
-      prev.includes(region)
-        ? prev.filter((x) => x !== region)
-        : [...prev, region]
+      prev.includes(region) ? prev.filter((x) => x !== region) : [...prev, region],
     );
   }
 
@@ -95,19 +93,16 @@ export function SearchPanel() {
   }
 
   return (
-    <section
-      className="relative z-10 -mt-16 max-md:-mt-14"
-      aria-label="Поиск заявок"
-    >
+    <section className="relative z-10 -mt-16 max-md:-mt-14" aria-label="Поиск заявок">
       <div className="container-app">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 p-6 rounded-[24px] bg-bg-subtle"
+          className="flex flex-col gap-4 rounded-[24px] bg-bg-subtle p-6"
         >
           <SearchModeToggle mode={mode} onChange={setMode} />
 
           {mode === "load" ? (
-            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 items-end max-lg:grid-cols-2 max-md:grid-cols-1">
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-3 max-lg:grid-cols-2 max-md:grid-cols-1">
               <SearchField
                 id="home-from"
                 label="Погрузка"
@@ -138,7 +133,7 @@ export function SearchPanel() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] gap-3 items-end max-lg:grid-cols-2 max-md:grid-cols-1">
+            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-3 max-lg:grid-cols-2 max-md:grid-cols-1">
               <MultiSelectDropdown
                 label="Тип транспорта"
                 options={TRANSPORT_TYPES}
@@ -179,19 +174,12 @@ interface SearchFieldProps {
   options: string[];
 }
 
-function SearchField({
-  id,
-  label,
-  placeholder,
-  value,
-  onChange,
-  options,
-}: SearchFieldProps) {
+function SearchField({ id, label, placeholder, value, onChange, options }: SearchFieldProps) {
   return (
     <div className="min-w-0">
       <label
         htmlFor={id}
-        className="block mb-1.5 text-xs font-medium text-text-muted tracking-[-0.12px]"
+        className="mb-1.5 block text-xs font-medium tracking-[-0.12px] text-text-muted"
       >
         {label}
       </label>

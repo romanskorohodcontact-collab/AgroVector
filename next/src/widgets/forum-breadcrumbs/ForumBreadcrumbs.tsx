@@ -21,10 +21,7 @@ export function ForumBreadcrumbs() {
   const section = segments[1];
   const threadId = segments[2];
   const isThreadPage =
-    segments[0] === "forum" &&
-    !!section &&
-    isForumSectionSlug(section) &&
-    !!threadId;
+    segments[0] === "forum" && !!section && isForumSectionSlug(section) && !!threadId;
 
   const summariesQuery = useQuery<ForumThreadSummary[]>({
     queryKey: ["forum-thread-summaries"],

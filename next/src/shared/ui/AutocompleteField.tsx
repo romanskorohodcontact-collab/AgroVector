@@ -20,15 +20,13 @@ export function AutocompleteField({
   options,
   id,
   placeholder,
-  hideLabel = false
+  hideLabel = false,
 }: AutocompleteFieldProps) {
   const [open, setOpen] = useState(false);
   const trimmed = value.trim().toLowerCase();
   const matches =
     open && trimmed
-      ? options
-          .filter((option) => option.toLowerCase().includes(trimmed))
-          .slice(0, 8)
+      ? options.filter((option) => option.toLowerCase().includes(trimmed)).slice(0, 8)
       : [];
 
   return (
@@ -51,7 +49,7 @@ export function AutocompleteField({
         />
         {matches.length > 0 ? (
           <ul
-            className="absolute top-[calc(100%+4px)] left-0 right-0 z-10 m-0 list-none max-h-[200px] overflow-auto rounded-xl border border-border bg-bg-surface py-1 shadow-lg"
+            className="absolute top-[calc(100%+4px)] right-0 left-0 z-10 m-0 max-h-[200px] list-none overflow-auto rounded-xl border border-border bg-bg-surface py-1 shadow-lg"
             onMouseDown={(event) => event.preventDefault()}
           >
             {matches.map((option) => (
@@ -61,7 +59,7 @@ export function AutocompleteField({
                   onChange(option);
                   setOpen(false);
                 }}
-                className="px-3 py-2 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px] cursor-pointer hover:bg-bg-subtle hover:text-text-primary"
+                className="cursor-pointer px-3 py-2 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary hover:bg-bg-subtle hover:text-text-primary"
               >
                 {option}
               </li>

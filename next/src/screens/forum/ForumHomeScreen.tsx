@@ -70,32 +70,29 @@ export async function ForumHomeScreen() {
 
   return (
     <div className="flex flex-col items-center">
-
       {/* Hero */}
-      <div className="text-center pt-6">
-        <span className="text-[14px] tracking-[0.08em] uppercase text-text-muted">
-          Сообщество!
-        </span>
-        <h1 className="mt-3 text-[64px] font-medium tracking-[-4.62px] text-text-primary whitespace-normal max-md:text-[40px] max-md:tracking-[-2px]">
+      <div className="pt-6 text-center">
+        <span className="text-[14px] tracking-[0.08em] text-text-muted uppercase">Сообщество!</span>
+        <h1 className="mt-3 text-[64px] font-medium tracking-[-4.62px] whitespace-normal text-text-primary max-md:text-[40px] max-md:tracking-[-2px]">
           Форум
         </h1>
-        <p className="max-w-[640px] mx-auto mt-5 text-lg leading-[1.78] tracking-[-0.18px] text-text-secondary">
-          Обсуждения перевозок, обмен опытом и помощь по платформе AgroRunok.
-          Задавайте вопросы, делитесь кейсами и предлагайте идеи развития.
+        <p className="mx-auto mt-5 max-w-[640px] text-lg leading-[1.78] tracking-[-0.18px] text-text-secondary">
+          Обсуждения перевозок, обмен опытом и помощь по платформе AgroRunok. Задавайте вопросы,
+          делитесь кейсами и предлагайте идеи развития.
         </p>
 
         {/* Toolbar */}
-        <div className="flex items-center gap-3 max-w-[640px] mx-auto mt-7 max-md:flex-col max-md:items-stretch">
+        <div className="mx-auto mt-7 flex max-w-[640px] items-center gap-3 max-md:flex-col max-md:items-stretch">
           <ForumSearchBox
             withSuggestions
             submitLabel="Найти"
             height="lg"
             panelWidthClass="w-[640px] max-w-[calc(100vw-32px)]"
-            className="flex-1 min-w-0"
+            className="min-w-0 flex-1"
           />
           <Link
             href="/forum/new"
-            className="inline-flex items-center justify-center h-12 px-[21px] rounded-pill bg-accent text-base font-medium text-text-inverse tracking-[-0.16px] whitespace-nowrap max-md:w-full"
+            className="inline-flex h-12 items-center justify-center rounded-pill bg-accent px-[21px] text-base font-medium tracking-[-0.16px] whitespace-nowrap text-text-inverse max-md:w-full"
           >
             Создать тему
           </Link>
@@ -103,17 +100,17 @@ export async function ForumHomeScreen() {
       </div>
 
       {/* Section cards */}
-      <div className="grid grid-cols-2 gap-4 mt-9 w-full max-lg:grid-cols-1">
+      <div className="mt-9 grid w-full grid-cols-2 gap-4 max-lg:grid-cols-1">
         {sections.map((section) => (
           <Link
             key={section.slug}
             href={`/forum/${section.slug}`}
-            className="flex flex-col gap-2 p-6 rounded-[24px] bg-bg-subtle hover:bg-[#F1F1F1]"
+            className="flex flex-col gap-2 rounded-[24px] bg-bg-subtle p-6 hover:bg-[#F1F1F1]"
           >
             {/*<span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-bg-surface text-accent">
               {ICONS[section.slug]}
             </span>*/}
-            <span className="text-[20px] font-medium leading-[1.25] tracking-[-0.7px] text-text-primary">
+            <span className="text-[20px] leading-[1.25] font-medium tracking-[-0.7px] text-text-primary">
               {section.title}
             </span>
             <span className="text-[14px] leading-[1.43] tracking-[-0.14px] text-text-secondary">
@@ -128,9 +125,9 @@ export async function ForumHomeScreen() {
       </div>
 
       {/* Latest threads */}
-      <div className="flex items-end justify-between gap-4 mt-10 w-full">
+      <div className="mt-10 flex w-full items-end justify-between gap-4">
         <div>
-          <h2 className="text-[18px] font-semibold leading-[1.33] tracking-[-0.18px] text-text-primary">
+          <h2 className="text-[18px] leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
             Последние темы
           </h2>
           <p className="mt-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
@@ -146,13 +143,13 @@ export async function ForumHomeScreen() {
       </div>
 
       {latestThreads.length > 0 ? (
-        <div className="mt-4 border-t border-divider w-full">
+        <div className="mt-4 w-full border-t border-divider">
           {latestThreads.map((thread) => (
             <ThreadItem key={thread.id} {...toThreadItemProps(thread)} />
           ))}
         </div>
       ) : (
-        <p className="mt-4 text-sm tracking-[-0.14px] text-text-muted w-full">
+        <p className="mt-4 w-full text-sm tracking-[-0.14px] text-text-muted">
           Пока нет ни одной темы. Создайте первую.
         </p>
       )}

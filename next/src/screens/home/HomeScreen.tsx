@@ -75,16 +75,17 @@ function Hero() {
   return (
     <section className="bg-[linear-gradient(rgba(20,20,20,0.55),rgba(20,20,20,0.75)),url('/photo1.jpg')] bg-cover bg-center py-[128px] text-center max-md:py-20">
       <div className="container-app">
-        <span className="block mb-4 text-sm leading-[1.43] tracking-[-0.14px] text-text-inverse/90">
+        <span className="mb-4 block text-sm leading-[1.43] tracking-[-0.14px] text-text-inverse/90">
           Аграрная логистика
         </span>
-        <h1 className="text-[64px] font-medium leading-[1.04] tracking-[-4.62px] text-text-inverse max-lg:text-[60px] max-lg:tracking-[-3.2px] max-md:text-[44px] max-md:tracking-[-2.4px]">
+        <h1 className="text-[64px] leading-[1.04] font-medium tracking-[-4.62px] text-text-inverse max-lg:text-[60px] max-lg:tracking-[-3.2px] max-md:text-[44px] max-md:tracking-[-2.4px]">
           Грузы и транспорт для аграрного рынка
         </h1>
-        <p className="mt-7 mx-auto max-w-[680px] text-lg leading-[1.78] tracking-[-0.18px] text-text-inverse/85">
-          Публикуйте заявки на груз или транспорт и находите подходящие предложения от заказчиков и перевозчиков.
+        <p className="mx-auto mt-7 max-w-[680px] text-lg leading-[1.78] tracking-[-0.18px] text-text-inverse/85">
+          Публикуйте заявки на груз или транспорт и находите подходящие предложения от заказчиков и
+          перевозчиков.
         </p>
-        <div className="flex items-center justify-center gap-3 mt-8">
+        <div className="mt-8 flex items-center justify-center gap-3">
           <Link href="/loads/create" className={BTN_MD_FILL}>
             Разместить груз
           </Link>
@@ -99,15 +100,15 @@ function Hero() {
 
 function Stats() {
   return (
-    <section className="py-[88px] bg-bg-subtle max-md:py-16">
+    <section className="bg-bg-subtle py-[88px] max-md:py-16">
       <div className="container-app">
         <div className="grid grid-cols-4 gap-8 max-lg:grid-cols-2 max-lg:gap-10 max-md:grid-cols-1">
           {STATS.map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-center text-[48px] font-medium leading-[1.04] tracking-[-2.16px] text-text-primary max-md:text-[40px]">
+              <p className="text-center text-[48px] leading-[1.04] font-medium tracking-[-2.16px] text-text-primary max-md:text-[40px]">
                 {stat.value}
               </p>
-              <p className="mt-2 text-center text-base text-text-secondary tracking-[-0.16px]">
+              <p className="mt-2 text-center text-base tracking-[-0.16px] text-text-secondary">
                 {stat.label}
               </p>
             </div>
@@ -122,12 +123,12 @@ function HowItWorks() {
   return (
     <section className="py-[88px] max-md:py-16">
       <div className="container-app">
-        <div className="flex items-end justify-between gap-6 mb-8 max-md:flex-col max-md:items-start">
+        <div className="mb-8 flex items-end justify-between gap-6 max-md:flex-col max-md:items-start">
           <div className="max-w-[560px]">
-            <h2 className="text-[18px] font-semibold leading-[1.33] tracking-[-0.18px] text-text-primary">
+            <h2 className="text-[18px] leading-[1.33] font-semibold tracking-[-0.18px] text-text-primary">
               Процесс
             </h2>
-            <p className="mt-1 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+            <p className="mt-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
               Как это работает
             </p>
           </div>
@@ -137,17 +138,17 @@ function HowItWorks() {
           {STEPS.map((step) => (
             <article
               key={step.number}
-              className="flex flex-col bg-bg-surface border border-border rounded-[24px] p-6"
+              className="flex flex-col rounded-[24px] border border-border bg-bg-surface p-6"
             >
-              <div className="flex items-center justify-center w-full h-[184px] mb-3 rounded-[24px] bg-bg-subtle text-text-muted">
+              <div className="mb-3 flex h-[184px] w-full items-center justify-center rounded-[24px] bg-bg-subtle text-text-muted">
                 <span className="text-[40px] font-medium tracking-[-1.6px] text-text-primary">
                   {step.number}
                 </span>
               </div>
-              <h3 className="text-[20px] font-medium leading-[1.25] tracking-[-0.7px] text-text-primary">
+              <h3 className="text-[20px] leading-[1.25] font-medium tracking-[-0.7px] text-text-primary">
                 {step.title}
               </h3>
-              <p className="mt-1 text-sm leading-[1.43] text-text-secondary tracking-[-0.14px]">
+              <p className="mt-1 text-sm leading-[1.43] tracking-[-0.14px] text-text-secondary">
                 {step.text}
               </p>
               <div className="mt-6">
@@ -165,16 +166,15 @@ function HowItWorks() {
 
 function Cta() {
   return (
-    <section className="py-[120px] text-center bg-[linear-gradient(rgba(20,20,20,0.55),rgba(20,20,20,0.75)),url('/photo2.jpg')] bg-cover bg-center max-md:py-20">
+    <section className="bg-[linear-gradient(rgba(20,20,20,0.55),rgba(20,20,20,0.75)),url('/photo2.jpg')] bg-cover bg-center py-[120px] text-center max-md:py-20">
       <div className="container-app">
-        <h2 className="mx-auto max-w-[640px] text-[26px] font-medium leading-[1.5] tracking-[-0.52px] text-text-inverse">
+        <h2 className="mx-auto max-w-[640px] text-[26px] leading-[1.5] font-medium tracking-[-0.52px] text-text-inverse">
           Готовы начать?
         </h2>
-        <p className="mx-auto mt-3 max-w-[560px] text-base leading-[1.75] text-text-inverse/85 tracking-[-0.16px]">
-          Разместите первую заявку за пару минут и найдите перевозчика для вашего
-          груза.
+        <p className="mx-auto mt-3 max-w-[560px] text-base leading-[1.75] tracking-[-0.16px] text-text-inverse/85">
+          Разместите первую заявку за пару минут и найдите перевозчика для вашего груза.
         </p>
-        <div className="flex justify-center mt-8">
+        <div className="mt-8 flex justify-center">
           <Link href="/loads/create" className={BTN_MD_FILL}>
             Выложить заявку
           </Link>

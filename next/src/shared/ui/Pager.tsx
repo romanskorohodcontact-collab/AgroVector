@@ -35,18 +35,16 @@ export function Pager({ page, pageCount, hrefFor, onSelect }: PagerProps) {
   }
 
   return (
-    <div className="flex items-center gap-2 mt-6">
+    <div className="mt-6 flex items-center gap-2">
       {page > 1 && control(page - 1, "Назад")}
       {pageNumbers(page, pageCount).map((item, index) =>
         item === "..." ? (
-          <span key={`e-${index}`} className="text-text-muted text-sm">
+          <span key={`e-${index}`} className="text-sm text-text-muted">
             …
           </span>
         ) : (
-          <span key={item}>
-            {control(item, String(item), item === page)}
-          </span>
-        )
+          <span key={item}>{control(item, String(item), item === page)}</span>
+        ),
       )}
       {page < pageCount && control(page + 1, "Вперёд")}
     </div>
@@ -58,9 +56,7 @@ function pageNumbers(current: number, total: number): (number | "...")[] {
     return Array.from({ length: total }, (_, i) => i + 1);
   }
   const pages = new Set<number>([1, total, current, current - 1, current + 1]);
-  const sorted = [...pages]
-    .filter((p) => p >= 1 && p <= total)
-    .sort((a, b) => a - b);
+  const sorted = [...pages].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
   const result: (number | "...")[] = [];
   let prev = 0;
   for (const p of sorted) {

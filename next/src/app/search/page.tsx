@@ -4,15 +4,7 @@ import type { SearchFiltersValues } from "@/entities/load/model";
 import type { SearchMode } from "@/shared/ui/SearchModeToggle";
 import { Header } from "@/widgets/header";
 
-const FORM_KEYS = [
-  "from",
-  "to",
-  "cargo",
-  "tonnage",
-  "rate",
-  "distance",
-  "company",
-] as const;
+const FORM_KEYS = ["from", "to", "cargo", "tonnage", "rate", "distance", "company"] as const;
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

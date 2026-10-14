@@ -29,10 +29,7 @@ import {
   searchThreads as repositorySearchThreads,
   type SectionStats,
 } from "@/server/repositories/forum.repository";
-import {
-  validatePostInput,
-  validateThreadInput,
-} from "@/server/validators/forum.validator";
+import { validatePostInput, validateThreadInput } from "@/server/validators/forum.validator";
 
 const HOME_LATEST_LIMIT = 4;
 const SECTION_PAGE_LIMIT = 10;
@@ -53,7 +50,7 @@ export async function getHomeData(): Promise<ForumHomeData> {
 export async function getSectionPage(
   section: string,
   page = 1,
-  limit = SECTION_PAGE_LIMIT
+  limit = SECTION_PAGE_LIMIT,
 ): Promise<ForumSectionPage | null> {
   if (!isForumSectionSlug(section)) return null;
   const safePage = Math.max(1, Math.floor(page));
@@ -73,7 +70,7 @@ export async function getSectionPage(
 }
 
 export async function getSectionIndex(
-  section: string
+  section: string,
 ): Promise<{ section: ForumSection; threads: ForumThread[] } | null> {
   if (!isForumSectionSlug(section)) return null;
   const [stats, { items }] = await Promise.all([
@@ -90,7 +87,7 @@ export async function getSectionIndex(
 export async function getThread(
   id: string,
   page = 1,
-  limit = POST_PAGE_LIMIT
+  limit = POST_PAGE_LIMIT,
 ): Promise<ForumThreadView | null> {
   const safePage = Math.max(1, Math.floor(page));
   const safeLimit = Math.min(50, Math.max(1, Math.floor(limit)));
@@ -110,10 +107,7 @@ export async function getThread(
   };
 }
 
-export async function createThread(
-  input: unknown,
-  user: User
-): Promise<ForumThread> {
+export async function createThread(input: unknown, user: User): Promise<ForumThread> {
   const data = validateThreadInput(input);
   return repositoryCreateThread({
     section: data.section,
@@ -128,7 +122,7 @@ export async function createThread(
 export async function replyToThread(
   id: string,
   input: unknown,
-  user: User
+  user: User,
 ): Promise<ForumPost | null> {
   const data = validatePostInput(input);
   const thread = await repositoryGetThreadById(id);
@@ -156,7 +150,7 @@ export async function search(
   query: string,
   type: ForumSearchType = "all",
   page = 1,
-  limit = SEARCH_PAGE_LIMIT
+  limit = SEARCH_PAGE_LIMIT,
 ): Promise<ForumSearchResult> {
   const text = query.trim();
   const safePage = Math.max(1, Math.floor(page));
@@ -173,8 +167,7 @@ export async function search(
     type === "threads"
       ? []
       : buildSections(stats).filter(
-          (section) =>
-            !text || section.title.toLowerCase().includes(text.toLowerCase())
+          (section) => !text || section.title.toLowerCase().includes(text.toLowerCase()),
         );
   return {
     sections,

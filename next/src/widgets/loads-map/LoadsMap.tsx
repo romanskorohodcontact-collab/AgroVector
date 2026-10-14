@@ -12,10 +12,7 @@ import {
   type YmapsPlacemark,
 } from "@/features/map/loadYmaps";
 import { createClusterLayout } from "@/features/map/clusterLayout";
-import {
-  LOAD_MARKER_FILL,
-  LOAD_MARKER_OPTIONS,
-} from "@/features/map/markerIcons";
+import { LOAD_MARKER_FILL, LOAD_MARKER_OPTIONS } from "@/features/map/markerIcons";
 
 const DEFAULT_CENTER: GeoPoint = { lat: 55.7558, lng: 37.6173 };
 const MAP_ZOOM = 5;
@@ -51,9 +48,7 @@ export function LoadsMap({
   showHoverCardRef.current = showHoverCard;
   const onClusterChangeRef = useRef(onClusterChange);
   onClusterChangeRef.current = onClusterChange;
-  const placemarkItemsRef = useRef<Map<YmapsPlacemark, LoadMapItem>>(
-    new Map()
-  );
+  const placemarkItemsRef = useRef<Map<YmapsPlacemark, LoadMapItem>>(new Map());
   const activeClusterFilterRef = useRef<string[] | null>(null);
   activeClusterFilterRef.current = activeClusterFilter ?? null;
   const outsiderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -108,10 +103,7 @@ export function LoadsMap({
       for (const item of mapItemsRef.current) {
         if (!item.loadingLocation) continue;
         const coords = toYandexCoords(item.loadingLocation);
-        const placemark = new ymapsRef.current!.Placemark(
-          coords,
-          LOAD_MARKER_OPTIONS
-        );
+        const placemark = new ymapsRef.current!.Placemark(coords, LOAD_MARKER_OPTIONS);
         placemarkItemsRef.current.set(placemark, item);
         if (onSelectRef.current) {
           placemark.events.add("click", () => onSelectRef.current?.(item));
@@ -156,19 +148,12 @@ export function LoadsMap({
         const prototypeCreateCluster = (
           ymaps.Clusterer as unknown as {
             prototype: {
-              createCluster: (
-                center?: unknown,
-                geoObjects?: YmapsPlacemark[]
-              ) => YmapsCluster;
+              createCluster: (center?: unknown, geoObjects?: YmapsPlacemark[]) => YmapsCluster;
             };
           }
         ).prototype.createCluster;
         clusterer.createCluster = function (center, geoObjects) {
-          const cluster = prototypeCreateCluster.call(
-            this,
-            center,
-            geoObjects
-          );
+          const cluster = prototypeCreateCluster.call(this, center, geoObjects);
           cluster.events.add("click", () => {
             const members = cluster.getGeoObjects();
             const ids: string[] = [];
@@ -178,9 +163,7 @@ export function LoadsMap({
                 if (member === placemark) {
                   ids.push(item.id);
                   if (item.loadingLocation) {
-                    coordKeys.add(
-                      `${item.loadingLocation.lat},${item.loadingLocation.lng}`
-                    );
+                    coordKeys.add(`${item.loadingLocation.lat},${item.loadingLocation.lng}`);
                   }
                   break;
                 }

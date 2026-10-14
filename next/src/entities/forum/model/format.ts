@@ -1,8 +1,5 @@
 export function toInitials(name: string): string {
-  const parts = name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
+  const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length >= 2) {
     return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
   }
@@ -38,10 +35,7 @@ export function formatForumDateTime(date: Date | string): string {
   return `${day} · ${time}`;
 }
 
-export function pluralize(
-  count: number,
-  forms: [string, string, string]
-): string {
+export function pluralize(count: number, forms: [string, string, string]): string {
   const mod10 = Math.abs(count) % 10;
   const mod100 = Math.abs(count) % 100;
   if (mod10 === 1 && mod100 !== 11) return forms[0];

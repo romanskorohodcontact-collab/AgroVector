@@ -73,7 +73,4 @@ function buildMarkerOptions(shapes: string[], fill: string): YmapsPlacemarkOptio
 }
 
 export const LOAD_MARKER_OPTIONS = buildMarkerOptions(PACKAGE_SHAPES, LOAD_FILL);
-export const TRANSPORT_MARKER_OPTIONS = buildMarkerOptions(
-  TRUCK_SHAPES,
-  TRANSPORT_FILL
-);
+export const TRANSPORT_MARKER_OPTIONS = buildMarkerOptions(TRUCK_SHAPES, TRANSPORT_FILL);

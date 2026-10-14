@@ -60,8 +60,9 @@ export function FormSelect({ children, className, ...props }: FormSelectProps) {
     <div className={FORM_INPUT_WRAP}>
       <select
         {...props}
-        className={`${FORM_SELECT} ${isPlaceholder ? "text-icon-subtle" : "text-text-primary"
-          }${className ? ` ${className}` : ""}`}
+        className={`${FORM_SELECT} ${
+          isPlaceholder ? "text-icon-subtle" : "text-text-primary"
+        }${className ? ` ${className}` : ""}`}
       >
         {children}
       </select>
@@ -73,9 +74,7 @@ export function FormSelect({ children, className, ...props }: FormSelectProps) {
 export const FORM_TEXTAREA =
   "w-full min-h-[96px] px-4 py-3 rounded-2xl bg-bg-subtle text-sm text-text-primary tracking-[-0.14px] placeholder:text-icon-subtle resize-y transition-colors duration-150 focus:outline-none focus:border-accent";
 
-export function FormTextarea(
-  props: TextareaHTMLAttributes<HTMLTextAreaElement>,
-) {
+export function FormTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={FORM_TEXTAREA} {...props} />;
 }
 
